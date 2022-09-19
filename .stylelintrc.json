@@ -26,7 +26,7 @@
     "media-feature-name-no-unknown": true,
     "at-rule-no-unknown": null,
     "comment-no-empty": true,
-    "no-empty-source": true,
+    "no-empty-source": null,
     "no-extra-semicolons": true,
     "no-invalid-double-slash-comments": true,
     "no-unknown-animations": true,

@@ -1,0 +1,39 @@
+.header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 1920px;
+  background-color: var(--background);
+}
+
+.nav {
+  width: 100%;
+  max-width: 1280px;
+  height: 100%;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  margin: 0;
+
+  &:last-child {
+    justify-self: end;
+  }
+}
+
+.button {
+  display: flex;
+  background: none;
+  border: none;
+  outline: none;
+}
