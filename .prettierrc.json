@@ -1,5 +1,5 @@
 {
-  "arrowParens": "always",
+  "arrowParens": "avoid",
   "bracketSameLine": false,
   "bracketSpacing": true,
   "embeddedLanguageFormatting": "auto",
@@ -11,6 +11,7 @@
   "quoteProps": "as-needed",
   "requirePragma": false,
   "semi": false,
+  "singleAttributePerLine": false,
   "singleQuote": true,
   "overrides": [
     {
