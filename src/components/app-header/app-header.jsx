@@ -4,6 +4,9 @@ import {
   ListIcon,
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
+
+import HeaderButton from '../header-button'
+
 import headerStyles from './app-header.module.scss'
 
 const AppHeader = () => {
@@ -12,38 +15,20 @@ const AppHeader = () => {
       <nav className={headerStyles.nav}>
         <ul className={`${headerStyles.list} pt-4 pb-4`}>
           <li className={headerStyles.item}>
-            <button
-              type='button'
-              className={`${headerStyles.button} pt-4 pr-5 pb-4 pl-5 mr-2`}
-            >
+            <HeaderButton text='Конструктор'>
               <BurgerIcon type='primary' />
-              <p className='text text_type_main-default text_color_primary ml-2'>
-                Конструктор
-              </p>
-            </button>
-            <button
-              type='button'
-              className={`${headerStyles.button} pt-4 pr-5 pb-4 pl-5`}
-            >
+            </HeaderButton>
+            <HeaderButton text='Лента заказов'>
               <ListIcon type='secondary' />
-              <p className='text text_type_main-default text_color_inactive ml-2'>
-                Лента заказов
-              </p>
-            </button>
+            </HeaderButton>
           </li>
           <li className={headerStyles.item}>
             <Logo />
           </li>
           <li className={headerStyles.item}>
-            <button
-              type='button'
-              className={`${headerStyles.button} pt-4 pr-5 pb-4 pl-5`}
-            >
+            <HeaderButton text='Личный кабинет'>
               <ProfileIcon type='secondary' />
-              <p className='text text_type_main-default text_color_inactive ml-2'>
-                Личный кабинет
-              </p>
-            </button>
+            </HeaderButton>
           </li>
         </ul>
       </nav>
