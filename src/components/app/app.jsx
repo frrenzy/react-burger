@@ -1,5 +1,4 @@
-import { AppHeader } from 'components'
-import { BurgerIngredients } from 'components'
+import { AppHeader, BurgerIngredients } from 'components'
 
 import { ingredients } from 'utils/data'
 

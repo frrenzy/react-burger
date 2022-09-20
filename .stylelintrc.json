@@ -20,7 +20,15 @@
     ],
     "declaration-block-no-shorthand-property-overrides": true,
     "block-no-empty": true,
-    "selector-pseudo-class-no-unknown": true,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": [
+          "start",
+          "end"
+        ]
+      }
+    ],
     "selector-pseudo-element-no-unknown": true,
     "selector-type-no-unknown": true,
     "media-feature-name-no-unknown": true,
@@ -77,7 +85,9 @@
     "declaration-block-trailing-semicolon": "always",
     "declaration-empty-line-before": "never",
     "declaration-property-unit-allowed-list": {
-      "line-height": ["px"]
+      "line-height": [
+        "px"
+      ]
     },
     "block-closing-brace-empty-line-before": "never",
     "block-closing-brace-newline-after": "always-multi-line",
