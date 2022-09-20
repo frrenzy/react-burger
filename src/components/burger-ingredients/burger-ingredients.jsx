@@ -7,7 +7,7 @@ import { IngredientsSection } from 'components'
 
 import burgerIngredientsStyles from './burger-ingredients.module.scss'
 
-const BurgerIngredients = ({ ingredients }) => {
+const BurgerIngredients = ({ ingredients, cart, updateCart }) => {
   const [current, setCurrent] = useState('bun')
 
   const refs = useRef([])
@@ -23,16 +23,19 @@ const BurgerIngredients = ({ ingredients }) => {
     name: 'Булки',
     type: 'bun',
     ingredients: ingredients.filter(ingredient => ingredient.type === 'bun'),
+    cart: cart.filter(ingredient => ingredient.type === 'bun'),
   }
   const sauces = {
     name: 'Соусы',
     type: 'sauce',
     ingredients: ingredients.filter(ingredient => ingredient.type === 'sauce'),
+    cart: cart.filter(ingredient => ingredient.type === 'sauce'),
   }
   const mains = {
     name: 'Начинки',
     type: 'main',
     ingredients: ingredients.filter(ingredient => ingredient.type === 'main'),
+    cart: cart.filter(ingredient => ingredient.type === 'main'),
   }
 
   return (
@@ -72,15 +75,19 @@ const BurgerIngredients = ({ ingredients }) => {
         </ul>
       </nav>
       <div className={`${burgerIngredientsStyles.ingredients}`}>
-        {[buns, sauces, mains].map(({ name, type, ingredients }, index) => (
-          <IngredientsSection
-            key={name}
-            name={name}
-            sectionRef={setRef(index)}
-            ingredients={ingredients}
-            type={type}
-          />
-        ))}
+        {[buns, sauces, mains].map(
+          ({ name, type, ingredients, cart }, index) => (
+            <IngredientsSection
+              key={name}
+              name={name}
+              sectionRef={setRef(index)}
+              ingredients={ingredients}
+              type={type}
+              cart={cart}
+              updateCart={updateCart}
+            />
+          ),
+        )}
       </div>
     </section>
   )
@@ -103,6 +110,19 @@ BurgerIngredients.propTypes = {
       __v: PropTypes.number.isRequired,
     }).isRequired,
   ).isRequired,
+  cart: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
+      image: PropTypes.string.isRequired,
+      image_mobile: PropTypes.string.isRequired,
+      image_large: PropTypes.string.isRequired,
+      count: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
+  updateCart: PropTypes.func.isRequired,
 }
 
 export default BurgerIngredients

@@ -1,7 +1,7 @@
 @mixin custom-scroll($offset-bottom) {
   &::-webkit-scrollbar {
     width: 8px;
-    height: calc(100% - 52px);
+    height: calc(100% - $offset-bottom);
 
     &-thumb {
       width: 8px;

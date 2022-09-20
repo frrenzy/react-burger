@@ -36,7 +36,7 @@ IngredientCard.propTypes = {
   image: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
-  count: PropTypes.number,
+  count: PropTypes.number.isRequired,
 }
 
 export default IngredientCard

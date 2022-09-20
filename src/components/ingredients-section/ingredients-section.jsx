@@ -4,7 +4,22 @@ import { IngredientCard } from 'components'
 
 import ingredientsSectionStyles from './ingredients-section.module.scss'
 
-const IngredientsSection = ({ name, ingredients, sectionRef, type }) => {
+const IngredientsSection = ({
+  name,
+  ingredients,
+  sectionRef,
+  type,
+  cart,
+  updateCart,
+}) => {
+  const ingredientsWithCount = ingredients.map(item => {
+    const cartIndex = cart.findIndex(({ _id }) => _id === item._id)
+    return {
+      ...item,
+      count: cartIndex > -1 ? cart[cartIndex].count : 0,
+    }
+  })
+
   return (
     <section>
       <h2
@@ -15,12 +30,13 @@ const IngredientsSection = ({ name, ingredients, sectionRef, type }) => {
       </h2>
       <ul className={`${ingredientsSectionStyles.list} pt-6 pr-4 pl-4 pb-10`}>
         {ingredients.length ? (
-          ingredients.map(({ image, name, price, _id }) => (
+          ingredientsWithCount.map(({ image, name, price, _id, count }) => (
             <li key={_id}>
               <IngredientCard
                 image={image}
                 name={name}
                 price={price}
+                count={count}
               />
             </li>
           ))
@@ -52,6 +68,19 @@ IngredientsSection.propTypes = {
   ).isRequired,
   sectionRef: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
+  cart: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
+      image: PropTypes.string.isRequired,
+      image_mobile: PropTypes.string.isRequired,
+      image_large: PropTypes.string.isRequired,
+      count: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
+  updateCart: PropTypes.func.isRequired,
 }
 
 export default IngredientsSection
