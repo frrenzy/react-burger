@@ -1,8 +1,19 @@
-import React from 'react'
-import AppHeader from 'components/app-header'
+import { AppHeader } from 'components'
+import { BurgerIngredients } from 'components'
+
+import { ingredients } from 'utils/data'
+
+import styles from './app.module.scss'
 
 const App = () => {
-  return <AppHeader />
+  return (
+    <>
+      <AppHeader />
+      <main className={styles.main}>
+        <BurgerIngredients ingredients={ingredients} />
+      </main>
+    </>
+  )
 }
 
 export default App

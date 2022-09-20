@@ -1,0 +1,7 @@
+export { default as App } from './app'
+export { default as AppHeader } from './app-header'
+export { default as BurgerIngredients } from './burger-ingredients'
+export { default as HeaderButton } from './header-button'
+export { default as IngredientCard } from './ingredient-card'
+export { default as IngredientsSection } from './ingredients-section'
+export { default as Price } from './price'

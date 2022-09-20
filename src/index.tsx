@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.scss'
-import App from './components/app'
+import { App } from 'components'
 import reportWebVitals from './reportWebVitals'
 
 import '@ya.praktikum/react-developer-burger-ui-components'

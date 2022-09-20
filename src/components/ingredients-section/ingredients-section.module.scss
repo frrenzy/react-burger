@@ -1,0 +1,11 @@
+.heading {
+  margin: 0;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: calc(8 * var(--offset-base-size)) calc(6 * var(--offset-base-size));
+  margin: 0;
+  list-style: none;
+}
