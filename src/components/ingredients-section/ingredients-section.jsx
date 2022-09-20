@@ -48,7 +48,7 @@ IngredientsSection.propTypes = {
       image_mobile: PropTypes.string.isRequired,
       image_large: PropTypes.string.isRequired,
       __v: PropTypes.number.isRequired,
-    }),
+    }).isRequired,
   ).isRequired,
   sectionRef: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
