@@ -1,4 +1,4 @@
-export { default as App } from './app'
+export { default } from './app'
 export { default as AppHeader } from './app-header'
 export { default as BurgerIngredients } from './burger-ingredients'
 export { default as HeaderButton } from './header-button'
