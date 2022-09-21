@@ -19,3 +19,5 @@
 
 Запускает приложение в dev-режиме.  
 Откройте [http://localhost:3000](http://localhost:3000) для просмотра в браузере.
+
+## [GitHub Pages](https://frrenzy.github.io/react-burger/)

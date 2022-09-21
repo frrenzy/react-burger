@@ -1,6 +1,7 @@
 {
   "name": "react-burger",
   "version": "0.1.0",
+  "homepage": "https://frrenzy.github.io/react-burger/",
   "private": true,
   "dependencies": {
     "@ya.praktikum/react-developer-burger-ui-components": "^1.13.1",
