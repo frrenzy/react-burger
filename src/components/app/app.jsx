@@ -1,6 +1,11 @@
 import { useState } from 'react'
 
-import { AppHeader, BurgerIngredients } from 'components'
+import {
+  AppHeader,
+  BurgerIngredients,
+  BurgerConstructor,
+  Section,
+} from 'components'
 
 import { ingredients, initialCart } from 'utils/data'
 
@@ -13,11 +18,19 @@ const App = () => {
     <>
       <AppHeader />
       <main className={styles.main}>
-        <BurgerIngredients
-          ingredients={ingredients}
-          cart={cart}
-          updateCart={setCart}
-        />
+        <Section>
+          <BurgerIngredients
+            ingredients={ingredients}
+            cart={cart}
+            updateCart={setCart}
+          />
+        </Section>
+        <Section>
+          <BurgerConstructor
+            cart={cart}
+            updateCart={setCart}
+          />
+        </Section>
       </main>
     </>
   )

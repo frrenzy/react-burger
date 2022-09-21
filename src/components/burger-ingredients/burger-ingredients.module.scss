@@ -1,9 +1,5 @@
 @use 'shared';
 
-.section {
-  width: calc(50% - 5 * var(--offset-base-size));
-}
-
 .list {
   display: flex;
   margin: 0;
@@ -13,6 +9,6 @@
 
 .ingredients {
   @include shared.custom-scroll(52px);
-  height: calc(100vh - 284px);
+  height: calc(100vh - 286px);
   overflow: auto;
 }

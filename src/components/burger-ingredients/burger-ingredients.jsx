@@ -39,7 +39,7 @@ const BurgerIngredients = ({ ingredients, cart, updateCart }) => {
   }
 
   return (
-    <section className={burgerIngredientsStyles.section}>
+    <>
       <h1 className='text text_type_main-large text_color_primary mt-10 mb-5'>
         Соберите бургер
       </h1>
@@ -89,7 +89,7 @@ const BurgerIngredients = ({ ingredients, cart, updateCart }) => {
           ),
         )}
       </div>
-    </section>
+    </>
   )
 }
 

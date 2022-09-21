@@ -30,7 +30,7 @@ HeaderButton.propTypes = {
   value: PropTypes.string.isRequired,
   isActive: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
-  icon: PropTypes.elementType.isRequired,
+  icon: PropTypes.func.isRequired,
 }
 
 export default HeaderButton
