@@ -14,6 +14,10 @@ import styles from './app.module.scss'
 const App = () => {
   const [cart, setCart] = useState(initialCart.length > 0 ? initialCart : [])
 
+  const updateCart = _id => () => {
+    setCart(cart.filter(item => item._id !== _id))
+  }
+
   return (
     <>
       <AppHeader />
@@ -22,13 +26,13 @@ const App = () => {
           <BurgerIngredients
             ingredients={ingredients}
             cart={cart}
-            updateCart={setCart}
+            updateCart={updateCart}
           />
         </Section>
         <Section>
           <BurgerConstructor
             cart={cart}
-            updateCart={setCart}
+            updateCart={updateCart}
           />
         </Section>
       </main>

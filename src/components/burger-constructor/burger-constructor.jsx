@@ -27,7 +27,7 @@ const BurgerConstructor = ({ cart, updateCart }) => {
   return (
     <>
       <ul className={`${burgerConstructorStyles.list} mt-25 pl-4 pr-4`}>
-        {cart.map(({ name, price, image }, index) => (
+        {cart.map(({ name, price, image, _id }, index) => (
           <li
             key={index}
             className={burgerConstructorStyles.item}
@@ -38,7 +38,7 @@ const BurgerConstructor = ({ cart, updateCart }) => {
               price={price}
               thumbnail={image}
               {...getTypeByIndex(index)}
-              handleClose={console.log}
+              handleClose={updateCart(_id)}
             />
           </li>
         ))}
