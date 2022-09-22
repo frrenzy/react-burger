@@ -3,29 +3,33 @@ import PropTypes from 'prop-types'
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { Price } from 'components'
+import { ingredient } from '../../utils/prop-types'
 
 import ingredientCardStyles from './ingredient-card.module.scss'
 
-const IngredientCard = ({ image, name, price, count = 0 }) => {
+const IngredientCard = ({ ingredient, onClick }) => {
   return (
-    <figure className={ingredientCardStyles.figure}>
+    <figure
+      className={ingredientCardStyles.figure}
+      onClick={onClick}
+    >
       <img
-        src={image}
-        alt={name}
+        src={ingredient.image}
+        alt={ingredient.name}
         className={`mr-4 ml-4 mb-1 ${ingredientCardStyles.image}`}
       />
-      {count > 0 && (
+      {ingredient.count > 0 && (
         <Counter
           size='default'
-          count={count}
+          count={ingredient.count}
         />
       )}
       <figcaption className={ingredientCardStyles.caption}>
-        <Price value={price} />
+        <Price value={ingredient.price} />
         <p
           className={`text text_type_main-default text_color_primary ${ingredientCardStyles.paragraph}`}
         >
-          {name}
+          {ingredient.name}
         </p>
       </figcaption>
     </figure>
@@ -33,10 +37,8 @@ const IngredientCard = ({ image, name, price, count = 0 }) => {
 }
 
 IngredientCard.propTypes = {
-  image: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  count: PropTypes.number.isRequired,
+  ingredient: ingredient.isRequired,
+  onClick: PropTypes.func.isRequired,
 }
 
 export default IngredientCard

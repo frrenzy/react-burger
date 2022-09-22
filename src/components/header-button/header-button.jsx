@@ -8,8 +8,9 @@ const HeaderButton = ({ text, value, isActive, onClick, icon: Icon }) => {
   }
 
   return (
-    <button
+    <a
       type='button'
+      href='#'
       className={`${headerButtonStyles.button} pt-4 pr-5 pb-4 pl-5`}
       onClick={handleClick}
     >
@@ -21,7 +22,7 @@ const HeaderButton = ({ text, value, isActive, onClick, icon: Icon }) => {
       >
         {text}
       </p>
-    </button>
+    </a>
   )
 }
 

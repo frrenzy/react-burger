@@ -8,44 +8,56 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { Price } from 'components'
+import { ingredient } from 'utils/prop-types'
 
 import burgerConstructorStyles from './burger-constructor.module.scss'
 
-const BurgerConstructor = ({ cart, updateCart }) => {
-  const cartLength = cart.length
+const BurgerConstructor = ({ ingredients, deleteItemFromCart }) => {
+  const cartLength = ingredients.length
 
   const getTypeByIndex = useCallback(
-    idx =>
-      idx === 0
-        ? { type: 'top', isLocked: true }
-        : idx === cartLength - 1
-        ? { type: 'bottom', isLocked: true }
-        : { type: undefined, isLocked: undefined },
+    idx => {
+      if (idx === 0) {
+        return { type: 'top', isLocked: true }
+      }
+      if (idx === cartLength - 1) {
+        return { type: 'bottom', isLocked: true }
+      }
+      return { type: undefined, isLocked: undefined }
+    },
     [cartLength],
   )
+  const totalPrice = ingredients.reduce((total, { price }) => total + price, 0)
 
   return (
     <>
       <ul className={`${burgerConstructorStyles.list} mt-25 pl-4 pr-4`}>
-        {cart.map(({ name, price, image, _id }, index) => (
-          <li
-            key={index}
-            className={burgerConstructorStyles.item}
-          >
-            {!getTypeByIndex(index)?.isLocked && <DragIcon type='primary' />}
-            <ConstructorElement
-              text={name}
-              price={price}
-              thumbnail={image}
-              {...getTypeByIndex(index)}
-              handleClose={updateCart(_id)}
-            />
-          </li>
-        ))}
+        {ingredients.map(({ name, price, image, _id, count }, index) => {
+          {
+            return [...Array(count).keys()] //простой способ получить массив чисел от 0 до количества одинаковых элементов в корзинке
+              .map(idx => (
+                <li
+                  key={`${_id}_${idx}`}
+                  className={burgerConstructorStyles.item}
+                >
+                  {!getTypeByIndex(index)?.isLocked && (
+                    <DragIcon type='primary' />
+                  )}
+                  <ConstructorElement
+                    text={name}
+                    price={price}
+                    thumbnail={image}
+                    {...getTypeByIndex(index)}
+                    handleClose={deleteItemFromCart(_id)}
+                  />
+                </li>
+              ))
+          }
+        })}
       </ul>
       <div className={`${burgerConstructorStyles.controls} mt-10 mr-4`}>
         <Price
-          value={cart.reduce((total, { price }) => total + price, 0)}
+          value={totalPrice}
           size='medium'
         />
         <Button
@@ -62,19 +74,8 @@ const BurgerConstructor = ({ cart, updateCart }) => {
 BurgerConstructor.propTypes = {}
 
 BurgerConstructor.propTypes = {
-  cart: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired,
-      image: PropTypes.string.isRequired,
-      image_mobile: PropTypes.string.isRequired,
-      image_large: PropTypes.string.isRequired,
-      count: PropTypes.number.isRequired,
-    }),
-  ).isRequired,
-  updateCart: PropTypes.func.isRequired,
+  ingredients: PropTypes.arrayOf(ingredient).isRequired,
+  deleteItemFromCart: PropTypes.func.isRequired,
 }
 
 export default BurgerConstructor

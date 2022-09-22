@@ -7,15 +7,49 @@ import {
   Section,
 } from 'components'
 
-import { ingredients, initialCart } from 'utils/data'
+import { initialIngredients } from 'utils/data'
 
 import styles from './app.module.scss'
 
 const App = () => {
-  const [cart, setCart] = useState(initialCart.length > 0 ? initialCart : [])
+  let initialState
+  if (initialIngredients.length === 0) {
+    initialState = []
+  } else {
+    initialState = initialIngredients.map(item => ({
+      ...item,
+      count: Math.floor(Math.random() * 3),
+    }))
+  }
 
-  const updateCart = _id => () => {
-    setCart(cart.filter(item => item._id !== _id))
+  const [ingredients, setIngredients] = useState(initialState)
+
+  const deleteItemFromCart = _id => () => {
+    setIngredients(
+      ingredients.map(item => {
+        if (item._id === _id) {
+          return {
+            ...item,
+            count: 0,
+          }
+        }
+        return item
+      }),
+    )
+  }
+
+  const addItemToCart = _id => () => {
+    setIngredients(
+      ingredients.map(item => {
+        if (item._id === _id) {
+          return {
+            ...item,
+            count: item.count + 1,
+          }
+        }
+        return item
+      }),
+    )
   }
 
   return (
@@ -25,14 +59,13 @@ const App = () => {
         <Section>
           <BurgerIngredients
             ingredients={ingredients}
-            cart={cart}
-            updateCart={updateCart}
+            addItemToCart={addItemToCart}
           />
         </Section>
         <Section>
           <BurgerConstructor
-            cart={cart}
-            updateCart={updateCart}
+            ingredients={ingredients}
+            deleteItemFromCart={deleteItemFromCart}
           />
         </Section>
       </main>

@@ -18,6 +18,7 @@
   justify-content: end;
   align-items: center;
   gap: calc(2 * var(--offset-base-size));
+  cursor: pointer;
 }
 
 .controls {
