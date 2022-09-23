@@ -1,0 +1,8 @@
+.main {
+  display: flex;
+  gap: calc(10 * var(--offset-base-size));
+  width: 100%;
+  max-width: 1240px;
+  margin: 0;
+  padding: 0;
+}

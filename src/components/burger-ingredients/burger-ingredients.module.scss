@@ -1,0 +1,14 @@
+@use 'shared';
+
+.list {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ingredients {
+  @include shared.custom-scroll(52px);
+  height: calc(100vh - 286px);
+  overflow: auto;
+}
