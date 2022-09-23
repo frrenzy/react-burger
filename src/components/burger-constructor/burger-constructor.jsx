@@ -33,7 +33,6 @@ const BurgerConstructor = ({ ingredients, deleteItemFromCart }) => {
     <>
       <ul className={`${burgerConstructorStyles.list} mt-25 pl-4 pr-4`}>
         {ingredients.map(({ name, price, image, _id, count }, index) => {
-          {
             return [...Array(count).keys()] //простой способ получить массив чисел от 0 до количества одинаковых элементов в корзинке
               .map(idx => (
                 <li
@@ -53,7 +52,7 @@ const BurgerConstructor = ({ ingredients, deleteItemFromCart }) => {
                 </li>
               ))
           }
-        })}
+        )}
       </ul>
       <div className={`${burgerConstructorStyles.controls} mt-10 mr-4`}>
         <Price
