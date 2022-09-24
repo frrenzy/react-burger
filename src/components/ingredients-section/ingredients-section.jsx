@@ -26,7 +26,7 @@ const IngredientsSection = ({
             <li key={ingredient._id}>
               <IngredientCard
                 ingredient={ingredient}
-                onClick={addItemToCart(ingredient._id)}
+                onClick={addItemToCart(ingredient)}
               />
             </li>
           ))

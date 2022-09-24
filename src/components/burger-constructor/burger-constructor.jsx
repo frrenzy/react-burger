@@ -1,4 +1,3 @@
-import { useCallback } from 'react'
 import PropTypes from 'prop-types'
 
 import {
@@ -9,51 +8,74 @@ import {
 
 import { Price } from 'components'
 import { ingredient } from 'utils/prop-types'
+import { INGREDIENT_TYPES } from 'utils/constants'
 
 import burgerConstructorStyles from './burger-constructor.module.scss'
 
 const BurgerConstructor = ({ ingredients, deleteItemFromCart }) => {
-  const cartLength = ingredients.length
-
-  const getTypeByIndex = useCallback(
-    idx => {
-      if (idx === 0) {
-        return { type: 'top', isLocked: true }
-      }
-      if (idx === cartLength - 1) {
-        return { type: 'bottom', isLocked: true }
-      }
-      return { type: undefined, isLocked: undefined }
-    },
-    [cartLength],
+  const totalPrice = ingredients.ingredients.reduce(
+    (total, { price }) => total + price,
+    0,
   )
-  const totalPrice = ingredients.reduce((total, { price }) => total + price, 0)
+
+  const bun = ingredients.ingredients.find(item => item._id === ingredients.bun)
 
   return (
     <>
-      <ul className={`${burgerConstructorStyles.list} mt-25 pl-4 pr-4`}>
-        {ingredients.map(({ name, price, image, _id, count }, index) => {
-            return [...Array(count).keys()] //простой способ получить массив чисел от 0 до количества одинаковых элементов в корзинке
-              .map(idx => (
-                <li
-                  key={`${_id}_${idx}`}
-                  className={burgerConstructorStyles.item}
-                >
-                  {!getTypeByIndex(index)?.isLocked && (
-                    <DragIcon type='primary' />
-                  )}
-                  <ConstructorElement
-                    text={name}
-                    price={price}
-                    thumbnail={image}
-                    {...getTypeByIndex(index)}
-                    handleClose={deleteItemFromCart(_id)}
-                  />
-                </li>
-              ))
-          }
+      <div className={`${burgerConstructorStyles.list} mt-25`}>
+        {ingredients.bun.length > 0 && (
+          <li
+            key={`${bun._id}_top`}
+            className={`${burgerConstructorStyles.item} pl-4 pr-4`}
+          >
+            <ConstructorElement
+              text={`${bun.name} (верх)`}
+              price={bun.price}
+              thumbnail={bun.image}
+              type='top'
+              isLocked={true}
+            />
+          </li>
         )}
-      </ul>
+        <ul className={`${burgerConstructorStyles.scrollable} mt-4 mb-4`}>
+          {ingredients.ingredients.map(
+            ({ name, price, image, _id, count, type }) => {
+              if (type === INGREDIENT_TYPES.BUN) {
+                return null
+              }
+              return [...Array(count).keys()] //простой способ получить массив чисел от 0 до количества одинаковых элементов в корзинке
+                .map(idx => (
+                  <li
+                    key={`${_id}_${idx}`}
+                    className={`${burgerConstructorStyles.item} pl-4 pr-4`}
+                  >
+                    <DragIcon type='primary' />
+                    <ConstructorElement
+                      text={name}
+                      price={price}
+                      thumbnail={image}
+                      handleClose={deleteItemFromCart(_id)}
+                    />
+                  </li>
+                ))
+            },
+          )}
+        </ul>
+        {ingredients.bun.length > 0 && (
+          <li
+            key={`${bun._id}_bottom`}
+            className={`${burgerConstructorStyles.item} pl-4 pr-4`}
+          >
+            <ConstructorElement
+              text={`${bun.name} (низ)`}
+              price={bun.price}
+              thumbnail={bun.image}
+              type='bottom'
+              isLocked={true}
+            />
+          </li>
+        )}
+      </div>
       <div className={`${burgerConstructorStyles.controls} mt-10 mr-4`}>
         <Price
           value={totalPrice}
@@ -70,10 +92,11 @@ const BurgerConstructor = ({ ingredients, deleteItemFromCart }) => {
   )
 }
 
-BurgerConstructor.propTypes = {}
-
 BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredient).isRequired,
+  ingredients: PropTypes.shape({
+    ingredients: PropTypes.arrayOf(ingredient),
+    bun: PropTypes.string.isRequired,
+  }).isRequired,
   deleteItemFromCart: PropTypes.func.isRequired,
 }
 

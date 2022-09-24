@@ -1,14 +1,19 @@
 @use 'shared';
 
 .list {
-  @include shared.custom-scroll(96px, 96px);
+  width: 100%;
+  height: calc(100vh - 346px);
+  margin-bottom: 0;
+}
+
+.scrollable {
+  @include shared.custom-scroll;
   display: flex;
   flex-direction: column;
   gap: calc(4 * var(--offset-base-size));
   box-sizing: border-box;
-  width: 100%;
-  height: calc(100vh - 346px);
-  margin-bottom: 0;
+  max-height: calc(100% - 224px);
+  padding: 0;
   overflow: auto;
   list-style: none;
 }
