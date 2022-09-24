@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import {
   AppHeader,
@@ -7,26 +7,39 @@ import {
   Section,
 } from 'components'
 
-import { initialIngredients } from 'utils/data'
+import { API_URL, INGREDIENT_TYPES } from 'utils/constants'
 
 import styles from './app.module.scss'
 
 const App = () => {
-  let initialState
-  if (initialIngredients.length === 0) {
-    initialState = []
-  } else {
-    initialState = initialIngredients.map(item => ({
-      ...item,
-      count: Math.floor(Math.random() * 3),
-    }))
-  }
+  const [ingredients, setIngredients] = useState({
+    ingredients: [],
+    bun: '',
+  })
 
-  const [ingredients, setIngredients] = useState(initialState)
+  useEffect(() => {
+    const getIngredients = () =>
+      fetch(API_URL)
+        .then(res =>
+          res.ok ? res.json() : Promise.reject(`Error: ${res.status}`),
+        )
+        .then(data => {
+          setIngredients({
+            ingredients: data.data.map(item => ({
+              ...item,
+              count: 0,
+            })),
+            bun: '',
+          })
+        })
+        .catch(console.log)
+
+    getIngredients()
+  }, [])
 
   const deleteItemFromCart = _id => () => {
-    setIngredients(
-      ingredients.map(item => {
+    setIngredients({
+      ingredients: ingredients.ingredients.map(item => {
         if (item._id === _id) {
           return {
             ...item,
@@ -35,22 +48,33 @@ const App = () => {
         }
         return item
       }),
-    )
+      bun: ingredients.bun,
+    })
   }
 
-  const addItemToCart = _id => () => {
-    setIngredients(
-      ingredients.map(item => {
-        if (item._id === _id) {
-          return {
-            ...item,
-            count: item.count + 1,
-          }
-        }
-        return item
-      }),
-    )
-  }
+  const addItemToCart =
+    ({ _id, type }) =>
+    () => {
+      if (type === INGREDIENT_TYPES.BUN) {
+        setIngredients({
+          ingredients: [...ingredients.ingredients],
+          bun: _id,
+        })
+      } else {
+        setIngredients({
+          ingredients: ingredients.ingredients.map(item => {
+            if (item._id === _id) {
+              return {
+                ...item,
+                count: item.count + 1,
+              }
+            }
+            return item
+          }),
+          bun: ingredients.bun,
+        })
+      }
+    }
 
   return (
     <>
@@ -58,7 +82,7 @@ const App = () => {
       <main className={styles.main}>
         <Section>
           <BurgerIngredients
-            ingredients={ingredients}
+            ingredients={ingredients.ingredients}
             addItemToCart={addItemToCart}
           />
         </Section>
