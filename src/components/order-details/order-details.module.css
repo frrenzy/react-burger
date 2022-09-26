@@ -1,0 +1,6 @@
+.container {
+  width: calc(100% - 25 * var(--offset-base-size));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

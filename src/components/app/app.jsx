@@ -52,15 +52,9 @@ const App = () => {
     })
   }
 
-  const addItemToCart =
-    ({ _id, type }) =>
-    () => {
-      if (type === INGREDIENT_TYPES.BUN) {
-        setIngredients({
-          ingredients: [...ingredients.ingredients],
-          bun: _id,
-        })
-      } else {
+  const addItemToCart = ({ _id, type }) => {
+    if (type !== INGREDIENT_TYPES.BUN) {
+      return () => {
         setIngredients({
           ingredients: ingredients.ingredients.map(item => {
             if (item._id === _id) {
@@ -74,7 +68,29 @@ const App = () => {
           bun: ingredients.bun,
         })
       }
+    } else {
+      return () => {
+        setIngredients({
+          ingredients: ingredients.ingredients.map(item => {
+            if (item._id === _id) {
+              return {
+                ...item,
+                count: 1,
+              }
+            }
+            if (item.type === INGREDIENT_TYPES.BUN) {
+              return {
+                ...item,
+                count: 0,
+              }
+            }
+            return item
+          }),
+          bun: _id,
+        })
+      }
     }
+  }
 
   return (
     <>

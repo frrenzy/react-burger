@@ -2,23 +2,23 @@ import ReactDOM from 'react-dom'
 import { useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
-import { ModalOverlay } from 'components'
-
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+
+import { ModalOverlay } from 'components'
 
 import modalStyles from './modal.module.scss'
 
-const Modal = ({ isOpen, onClick, children }) => {
+const Modal = ({ isOpen, setOpen, children }) => {
   const modalRoot = document.querySelector('#modal')
 
-  const closeModal = useCallback(() => onClick(false), [onClick])
+  const closeModal = useCallback(() => setOpen(false), [setOpen])
   const handleEscape = useCallback(
     evt => {
       if (evt.key === 'Escape') {
-        onClick(false)
+        setOpen(false)
       }
     },
-    [onClick],
+    [setOpen],
   )
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const Modal = ({ isOpen, onClick, children }) => {
 
 Modal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired,
+  setOpen: PropTypes.func.isRequired,
 }
 
 export default Modal
