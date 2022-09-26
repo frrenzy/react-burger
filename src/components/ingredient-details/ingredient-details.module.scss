@@ -1,0 +1,34 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(100% - 2 * 10 * var(--offset-base-size));
+}
+
+.specs {
+  display: flex;
+  gap: calc(4 * var(--offset-base-size));
+}
+
+.spec {
+  display: grid;
+  grid-template-areas:
+    'name unit'
+    'value value';
+  justify-content: space-evenly;
+  gap: calc(2 * var(--offset-base-size)) 0;
+  min-width: 112px;
+}
+
+.item {
+  grid-area: value;
+  justify-self: center;
+
+  &:first-child {
+    grid-area: name;
+  }
+
+  &:nth-child(2) {
+    grid-area: unit;
+  }
+}
