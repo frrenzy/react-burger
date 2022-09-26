@@ -6,7 +6,7 @@ import { ModalOverlay, CloseButton } from 'components'
 
 import modalStyles from './modal.module.scss'
 
-const Modal = ({ isOpen, closeModal, children }) => {
+const Modal = ({ closeModal, children }) => {
   const modalRoot = document.querySelector('#modal')
 
   const handleEscape = useCallback(
@@ -43,7 +43,6 @@ const Modal = ({ isOpen, closeModal, children }) => {
 }
 
 Modal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
 }
 

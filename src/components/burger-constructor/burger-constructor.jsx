@@ -97,7 +97,6 @@ const BurgerConstructor = ({ ingredients, deleteItemFromCart }) => {
       </div>
       {isOpen && (
         <Modal
-          isOpen={isOpen}
           closeModal={closeModal}
         >
           <OrderDetails />

@@ -109,7 +109,6 @@ const BurgerIngredients = ({ ingredients, addItemToCart }) => {
       </div>
       {isOpen && detail && (
         <Modal
-          isOpen={isOpen}
           closeModal={closeModal}
         >
           <IngredientDetails ingredient={detail} />
