@@ -7,7 +7,8 @@ import {
   Section,
 } from 'components'
 
-import { API_URL, INGREDIENT_TYPES } from 'utils/constants'
+import { INGREDIENT_TYPES } from 'utils/constants'
+import { getIngredients } from 'api'
 
 import styles from './app.module.scss'
 
@@ -18,11 +19,8 @@ const App = () => {
   })
 
   useEffect(() => {
-    const getIngredients = () =>
-      fetch(API_URL)
-        .then(res =>
-          res.ok ? res.json() : Promise.reject(`Error: ${res.status}`),
-        )
+    const getIngredientsList = () =>
+      getIngredients()
         .then(data => {
           setIngredients({
             ingredients: data.data.map(item => ({
@@ -34,7 +32,7 @@ const App = () => {
         })
         .catch(console.log)
 
-    getIngredients()
+    getIngredientsList()
   }, [])
 
   const deleteItemFromCart = _id => () => {
