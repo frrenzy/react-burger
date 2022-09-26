@@ -1,16 +1,13 @@
-import { useState } from 'react'
 import PropTypes from 'prop-types'
 
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { Price, Modal, IngredientDetails } from 'components'
+import { Price } from 'components'
 import { ingredient } from '../../utils/prop-types'
 
 import ingredientCardStyles from './ingredient-card.module.scss'
 
-const IngredientCard = ({ ingredient, onClick }) => {
-  const [isOpen, setOpen] = useState(false)
-
+const IngredientCard = ({ ingredient, onClick, openDetails }) => {
   return (
     <>
       <figure className={ingredientCardStyles.figure}>
@@ -18,7 +15,7 @@ const IngredientCard = ({ ingredient, onClick }) => {
           src={ingredient.image}
           alt={ingredient.name}
           className={`mr-4 ml-4 mb-1 ${ingredientCardStyles.image}`}
-          onClick={() => setOpen(true)}
+          onClick={openDetails}
         />
         {ingredient.count > 0 && (
           <Counter
@@ -38,12 +35,6 @@ const IngredientCard = ({ ingredient, onClick }) => {
           </p>
         </figcaption>
       </figure>
-      <Modal
-        isOpen={isOpen}
-        setOpen={setOpen}
-      >
-        <IngredientDetails ingredient={ingredient} />
-      </Modal>
     </>
   )
 }
@@ -51,6 +42,7 @@ const IngredientCard = ({ ingredient, onClick }) => {
 IngredientCard.propTypes = {
   ingredient: ingredient.isRequired,
   onClick: PropTypes.func.isRequired,
+  openDetails: PropTypes.func.isRequired,
 }
 
 export default IngredientCard

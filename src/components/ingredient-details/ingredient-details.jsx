@@ -13,7 +13,7 @@ const IngredientDetails = ({ ingredient }) => {
       </h2>
       <img
         src={image_large}
-        alt='изображение ингредиента'
+        alt={name}
         className='mb-4'
       />
       <h3 className='text text_type_main-medium text_color_primary mb-8'>

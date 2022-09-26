@@ -1,9 +1,9 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import PropTypes from 'prop-types'
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { IngredientsSection } from 'components'
+import { IngredientsSection, Modal, IngredientDetails } from 'components'
 import { ingredient } from 'utils/prop-types'
 import { INGREDIENT_TYPES } from 'utils/constants'
 
@@ -11,6 +11,21 @@ import burgerIngredientsStyles from './burger-ingredients.module.scss'
 
 const BurgerIngredients = ({ ingredients, addItemToCart }) => {
   const [current, setCurrent] = useState(INGREDIENT_TYPES.BUN)
+  const [isOpen, setOpen] = useState(false)
+  const [detail, setDetail] = useState()
+
+  const openDetails = useCallback(
+    ingredient => () => {
+      setDetail(ingredient)
+      setOpen(true)
+    },
+    [setOpen, setDetail],
+  )
+  const closeModal = useCallback(() => {
+    setOpen(false)
+    setDetail()
+  }, [setOpen, setDetail])
+
 
   const refs = useRef([])
   const setRef = index => type => el => (refs.current[index] = { type, el })
@@ -88,9 +103,18 @@ const BurgerIngredients = ({ ingredients, addItemToCart }) => {
             ingredients={ingredients}
             type={type}
             addItemToCart={addItemToCart}
+            openDetails={openDetails}
           />
         ))}
       </div>
+      {isOpen && detail && (
+        <Modal
+          isOpen={isOpen}
+          closeModal={closeModal}
+        >
+          <IngredientDetails ingredient={detail} />
+        </Modal>
+      )}
     </>
   )
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import {
@@ -20,6 +20,9 @@ const BurgerConstructor = ({ ingredients, deleteItemFromCart }) => {
     (total, { price, count }) => total + price * count,
     0,
   )
+
+  const openModal = useCallback(() => setOpen(true), [setOpen])
+  const closeModal = useCallback(() => setOpen(false), [setOpen])
 
   const bun = ingredients.ingredients.find(item => item._id === ingredients.bun)
 
@@ -85,19 +88,21 @@ const BurgerConstructor = ({ ingredients, deleteItemFromCart }) => {
           size='medium'
         />
         <Button
-          onClick={() => setOpen(true)}
+          onClick={openModal}
           type='primary'
           size='large'
         >
           Оформить заказ
         </Button>
       </div>
-      <Modal
-        isOpen={isOpen}
-        setOpen={setOpen}
-      >
-        <OrderDetails />
-      </Modal>
+      {isOpen && (
+        <Modal
+          isOpen={isOpen}
+          closeModal={closeModal}
+        >
+          <OrderDetails />
+        </Modal>
+      )}
     </>
   )
 }

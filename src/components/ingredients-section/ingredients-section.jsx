@@ -1,3 +1,4 @@
+import { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 
 import { IngredientCard } from 'components'
@@ -11,6 +12,7 @@ const IngredientsSection = ({
   sectionRef,
   type,
   addItemToCart,
+  openDetails,
 }) => {
   return (
     <section>
@@ -27,6 +29,7 @@ const IngredientsSection = ({
               <IngredientCard
                 ingredient={ingredient}
                 onClick={addItemToCart(ingredient)}
+                openDetails={openDetails(ingredient)}
               />
             </li>
           ))
@@ -44,6 +47,7 @@ IngredientsSection.propTypes = {
   sectionRef: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
   addItemToCart: PropTypes.func.isRequired,
+  openDetails: PropTypes.func.isRequired,
 }
 
 export default IngredientsSection

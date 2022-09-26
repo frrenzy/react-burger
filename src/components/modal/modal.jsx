@@ -6,17 +6,16 @@ import { ModalOverlay, CloseButton } from 'components'
 
 import modalStyles from './modal.module.scss'
 
-const Modal = ({ isOpen, setOpen, children }) => {
+const Modal = ({ isOpen, closeModal, children }) => {
   const modalRoot = document.querySelector('#modal')
 
-  const closeModal = useCallback(() => setOpen(false), [setOpen])
   const handleEscape = useCallback(
     evt => {
       if (evt.key === 'Escape') {
-        setOpen(false)
+        closeModal()
       }
     },
-    [setOpen],
+    [closeModal],
   )
 
   useEffect(() => {
@@ -26,11 +25,8 @@ const Modal = ({ isOpen, setOpen, children }) => {
   }, [handleEscape])
 
   useEffect(() => {
-    if (isOpen) {
-      modalRoot.classList.add('modal_opened')
-    } else {
-      modalRoot.classList.remove('modal_opened')
-    }
+    modalRoot.classList.add('modal_opened')
+    return () => modalRoot.classList.remove('modal_opened')
   }, [isOpen, modalRoot])
 
   const modalWrapper = (
@@ -43,12 +39,12 @@ const Modal = ({ isOpen, setOpen, children }) => {
     </>
   )
 
-  return isOpen && ReactDOM.createPortal(modalWrapper, modalRoot)
+  return ReactDOM.createPortal(modalWrapper, modalRoot)
 }
 
 Modal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  setOpen: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 }
 
 export default Modal
