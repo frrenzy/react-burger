@@ -27,7 +27,7 @@ const Modal = ({ isOpen, closeModal, children }) => {
   useEffect(() => {
     modalRoot.classList.add('modal_opened')
     return () => modalRoot.classList.remove('modal_opened')
-  }, [isOpen, modalRoot])
+  }, [])
 
   const modalWrapper = (
     <>
