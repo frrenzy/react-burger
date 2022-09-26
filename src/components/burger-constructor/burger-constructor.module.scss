@@ -7,9 +7,8 @@
 }
 
 .scrollable {
-  @include shared.custom-scroll;
-  display: flex;
-  flex-direction: column;
+  @include shared.custom-scroll();
+  @include shared.flex(column);
   gap: calc(4 * var(--offset-base-size));
   box-sizing: border-box;
   max-height: calc(100% - 224px);
@@ -19,15 +18,14 @@
 }
 
 .item {
-  display: flex;
-  justify-content: end;
-  align-items: center;
+  @include shared.flex(row, $jc: end);
   gap: calc(2 * var(--offset-base-size));
+  box-sizing: border-box;
+  width: 100%;
   cursor: pointer;
 }
 
 .controls {
-  display: flex;
-  justify-content: end;
+  @include shared.flex(row, end);
   gap: calc(10 * var(--offset-base-size));
 }

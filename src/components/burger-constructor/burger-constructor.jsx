@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import {
@@ -6,17 +7,22 @@ import {
   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { Price } from 'components'
+import { Price, Modal, OrderDetails } from 'components'
 import { ingredient } from 'utils/prop-types'
 import { INGREDIENT_TYPES } from 'utils/constants'
 
 import burgerConstructorStyles from './burger-constructor.module.scss'
 
 const BurgerConstructor = ({ ingredients, deleteItemFromCart }) => {
+  const [isOpen, setOpen] = useState(false)
+
   const totalPrice = ingredients.ingredients.reduce(
-    (total, { price }) => total + price,
+    (total, { price, count }) => total + price * count,
     0,
   )
+
+  const openModal = useCallback(() => setOpen(true), [setOpen])
+  const closeModal = useCallback(() => setOpen(false), [setOpen])
 
   const bun = ingredients.ingredients.find(item => item._id === ingredients.bun)
 
@@ -82,12 +88,20 @@ const BurgerConstructor = ({ ingredients, deleteItemFromCart }) => {
           size='medium'
         />
         <Button
+          onClick={openModal}
           type='primary'
           size='large'
         >
           Оформить заказ
         </Button>
       </div>
+      {isOpen && (
+        <Modal
+          closeModal={closeModal}
+        >
+          <OrderDetails />
+        </Modal>
+      )}
     </>
   )
 }

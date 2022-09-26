@@ -1,5 +1,7 @@
+@use 'shared';
+
 .button {
-  display: flex;
+  @include shared.flex(row);
   text-decoration: none;
   background: none;
   border: none;

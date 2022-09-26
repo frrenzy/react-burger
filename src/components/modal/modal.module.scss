@@ -1,0 +1,11 @@
+@use 'shared';
+
+.container {
+  @include shared.flex(column);
+  position: relative;
+  z-index: 10;
+  box-sizing: border-box;
+  width: 720px;
+  background-color: var(--background);
+  border-radius: 40px;
+}

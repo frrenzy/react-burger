@@ -7,7 +7,8 @@ import {
   Section,
 } from 'components'
 
-import { API_URL, INGREDIENT_TYPES } from 'utils/constants'
+import { INGREDIENT_TYPES } from 'utils/constants'
+import { getIngredients } from 'api'
 
 import styles from './app.module.scss'
 
@@ -18,11 +19,8 @@ const App = () => {
   })
 
   useEffect(() => {
-    const getIngredients = () =>
-      fetch(API_URL)
-        .then(res =>
-          res.ok ? res.json() : Promise.reject(`Error: ${res.status}`),
-        )
+    const getIngredientsList = () =>
+      getIngredients()
         .then(data => {
           setIngredients({
             ingredients: data.data.map(item => ({
@@ -34,7 +32,7 @@ const App = () => {
         })
         .catch(console.log)
 
-    getIngredients()
+    getIngredientsList()
   }, [])
 
   const deleteItemFromCart = _id => () => {
@@ -52,15 +50,9 @@ const App = () => {
     })
   }
 
-  const addItemToCart =
-    ({ _id, type }) =>
-    () => {
-      if (type === INGREDIENT_TYPES.BUN) {
-        setIngredients({
-          ingredients: [...ingredients.ingredients],
-          bun: _id,
-        })
-      } else {
+  const addItemToCart = ({ _id, type }) => {
+    if (type !== INGREDIENT_TYPES.BUN) {
+      return () => {
         setIngredients({
           ingredients: ingredients.ingredients.map(item => {
             if (item._id === _id) {
@@ -74,7 +66,29 @@ const App = () => {
           bun: ingredients.bun,
         })
       }
+    } else {
+      return () => {
+        setIngredients({
+          ingredients: ingredients.ingredients.map(item => {
+            if (item._id === _id) {
+              return {
+                ...item,
+                count: 1,
+              }
+            }
+            if (item.type === INGREDIENT_TYPES.BUN) {
+              return {
+                ...item,
+                count: 0,
+              }
+            }
+            return item
+          }),
+          bun: _id,
+        })
+      }
     }
+  }
 
   return (
     <>

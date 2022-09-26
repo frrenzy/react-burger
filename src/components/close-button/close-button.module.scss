@@ -1,0 +1,10 @@
+.button {
+  position: absolute;
+  top: calc(15 * var(--offset-base-size));
+  right: calc(10 * var(--offset-base-size));
+  z-index: 15;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
