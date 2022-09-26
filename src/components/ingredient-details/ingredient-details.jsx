@@ -2,12 +2,12 @@ import { ingredient as ingredientType } from 'utils/prop-types'
 
 import ingredientDetailsStyles from './ingredient-details.module.scss'
 
-const IngredientDetails = ingredient => {
+const IngredientDetails = ({ ingredient }) => {
   const { image_large, name, fat, calories, proteins, carbohydrates } =
     ingredient
 
   return (
-    <div className={`${ingredientDetailsStyles.container} mt-10 mb-15`}>
+    <div className={`${ingredientDetailsStyles.container} mt-15 mb-15`}>
       <h2 className='text text_type_main-large text_color_primary'>
         Детали ингредиента
       </h2>

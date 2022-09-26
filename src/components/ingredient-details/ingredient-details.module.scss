@@ -1,12 +1,12 @@
+@use 'shared';
+
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include shared.flex(column);
   width: calc(100% - 2 * 10 * var(--offset-base-size));
 }
 
 .specs {
-  display: flex;
+  @include shared.flex(row);
   gap: calc(4 * var(--offset-base-size));
 }
 

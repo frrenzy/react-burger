@@ -1,20 +1,11 @@
+@use 'shared';
+
 .container {
+  @include shared.flex(column);
   position: relative;
   z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   box-sizing: border-box;
   width: 720px;
   background-color: var(--background);
   border-radius: 40px;
-}
-
-.button {
-  position: absolute;
-  top: calc(15 * var(--offset-base-size));
-  right: calc(10 * var(--offset-base-size));
-  background: transparent;
-  border: none;
-  outline: none;
 }

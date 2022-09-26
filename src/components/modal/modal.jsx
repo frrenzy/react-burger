@@ -2,9 +2,7 @@ import ReactDOM from 'react-dom'
 import { useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-
-import { ModalOverlay } from 'components'
+import { ModalOverlay, CloseButton } from 'components'
 
 import modalStyles from './modal.module.scss'
 
@@ -39,12 +37,7 @@ const Modal = ({ isOpen, setOpen, children }) => {
     <>
       <ModalOverlay onClick={closeModal} />
       <div className={modalStyles.container}>
-        <button
-          onClick={closeModal}
-          className={modalStyles.button}
-        >
-          <CloseIcon type='primary' />
-        </button>
+        <CloseButton onClick={closeModal} />
         {children}
       </div>
     </>

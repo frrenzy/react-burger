@@ -42,7 +42,7 @@ const IngredientCard = ({ ingredient, onClick }) => {
         isOpen={isOpen}
         setOpen={setOpen}
       >
-        <IngredientDetails {...ingredient} />
+        <IngredientDetails ingredient={ingredient} />
       </Modal>
     </>
   )

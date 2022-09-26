@@ -1,5 +1,7 @@
+@use 'shared';
+
 .header {
-  display: flex;
+  @include shared.flex(row, center);
   justify-content: center;
   width: 100%;
   max-width: 1920px;
@@ -22,8 +24,7 @@
 }
 
 .item {
-  display: flex;
-  align-items: center;
+  @include shared.flex(row);
   gap: calc(2 * var(--offset-base-size));
   margin: 0;
 
