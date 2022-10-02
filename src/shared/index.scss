@@ -23,6 +23,6 @@
 @mixin flex($dir, $jc: start, $ai: center) {
   display: flex;
   flex-direction: $dir;
-  justify-content: $jc;
-  align-items: $ai;
+  justify-content: flex-$jc;
+  align-items: flex-$ai;
 }

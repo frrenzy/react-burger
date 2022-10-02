@@ -23,9 +23,8 @@ const BurgerIngredients = ({ ingredients, addItemToCart }) => {
   )
   const closeModal = useCallback(() => {
     setOpen(false)
-    setDetail()
+    setDetail({})
   }, [setOpen, setDetail])
-
 
   const refs = useRef([])
   const setRef = index => type => el => (refs.current[index] = { type, el })
@@ -108,9 +107,7 @@ const BurgerIngredients = ({ ingredients, addItemToCart }) => {
         ))}
       </div>
       {isOpen && detail && (
-        <Modal
-          closeModal={closeModal}
-        >
+        <Modal closeModal={closeModal}>
           <IngredientDetails ingredient={detail} />
         </Modal>
       )}
