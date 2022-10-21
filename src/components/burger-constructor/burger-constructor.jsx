@@ -1,5 +1,4 @@
-import { useCallback, useState } from 'react'
-import PropTypes from 'prop-types'
+import { useCallback, useContext, useState } from 'react'
 
 import {
   ConstructorElement,
@@ -8,28 +7,52 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { Price, Modal, OrderDetails } from 'components'
-import { ingredient } from 'utils/prop-types'
 import { INGREDIENT_TYPES } from 'utils/constants'
 
 import burgerConstructorStyles from './burger-constructor.module.scss'
+import { IngredientsContext, TotalContext } from 'services/appContext'
 
-const BurgerConstructor = ({ ingredients, deleteItemFromCart }) => {
+const BurgerConstructor = () => {
   const [isOpen, setOpen] = useState(false)
 
-  const totalPrice = ingredients.ingredients.reduce(
-    (total, { price, count }) => total + price * count,
-    0,
-  )
+  const { ingredientsState, ingredientsDispatcher } =
+    useContext(IngredientsContext)
+  const { totalState, totalDispatcher } = useContext(TotalContext)
+
+  // const totalPrice = useMemo(() => {
+  //   return ingredients.ingredients.reduce(
+  //     (total, { price, count, type }) =>
+  //       total + price * (type === 'bun' ? 2 : 1) * count,
+  //     0,
+  //   )
+  // }, [ingredients])
+
+  const ids = ingredientsState.ingredients
+    .filter(({ count }) => count > 0)
+    .map(({ _id }) => _id)
 
   const openModal = useCallback(() => setOpen(true), [setOpen])
   const closeModal = useCallback(() => setOpen(false), [setOpen])
 
-  const bun = ingredients.ingredients.find(item => item._id === ingredients.bun)
+  const bun = ingredientsState.ingredients.find(
+    item => item._id === ingredientsState.bun,
+  )
+
+  const deleteFromCart = (_id, price) => () => {
+    ingredientsDispatcher({
+      type: 'deleteFromCart',
+      payload: { _id: _id },
+    })
+    totalDispatcher({
+      type: 'delete',
+      payload: { price: price },
+    })
+  }
 
   return (
     <>
       <div className={`${burgerConstructorStyles.list} mt-25`}>
-        {ingredients.bun.length > 0 && (
+        {ingredientsState.bun.length > 0 && (
           <li
             key={`${bun._id}_top`}
             className={`${burgerConstructorStyles.item} pl-4 pr-4`}
@@ -44,7 +67,7 @@ const BurgerConstructor = ({ ingredients, deleteItemFromCart }) => {
           </li>
         )}
         <ul className={`${burgerConstructorStyles.scrollable} mt-4 mb-4`}>
-          {ingredients.ingredients.map(
+          {ingredientsState.ingredients.map(
             ({ name, price, image, _id, count, type }) => {
               if (type === INGREDIENT_TYPES.BUN) {
                 return null
@@ -60,14 +83,14 @@ const BurgerConstructor = ({ ingredients, deleteItemFromCart }) => {
                       text={name}
                       price={price}
                       thumbnail={image}
-                      handleClose={deleteItemFromCart(_id)}
+                      handleClose={deleteFromCart(_id, price)}
                     />
                   </li>
                 ))
             },
           )}
         </ul>
-        {ingredients.bun.length > 0 && (
+        {ingredientsState.bun.length > 0 && (
           <li
             key={`${bun._id}_bottom`}
             className={`${burgerConstructorStyles.item} pl-4 pr-4`}
@@ -84,7 +107,7 @@ const BurgerConstructor = ({ ingredients, deleteItemFromCart }) => {
       </div>
       <div className={`${burgerConstructorStyles.controls} mt-10 mr-4`}>
         <Price
-          value={totalPrice}
+          value={totalState.total}
           size='medium'
         />
         <Button
@@ -96,22 +119,12 @@ const BurgerConstructor = ({ ingredients, deleteItemFromCart }) => {
         </Button>
       </div>
       {isOpen && (
-        <Modal
-          closeModal={closeModal}
-        >
-          <OrderDetails />
+        <Modal closeModal={closeModal}>
+          <OrderDetails ids={ids} />
         </Modal>
       )}
     </>
   )
-}
-
-BurgerConstructor.propTypes = {
-  ingredients: PropTypes.shape({
-    ingredients: PropTypes.arrayOf(ingredient),
-    bun: PropTypes.string.isRequired,
-  }).isRequired,
-  deleteItemFromCart: PropTypes.func.isRequired,
 }
 
 export default BurgerConstructor
