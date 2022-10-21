@@ -6,7 +6,7 @@ import doneIcon from 'images/done.png'
 import orderDetailsStyles from './order-details.module.css'
 import { createOrder } from 'api'
 
-const OrderDetails = ids => {
+const OrderDetails = ({ ids }) => {
   const [orderId, setOrderId] = useState(null)
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const OrderDetails = ids => {
         .catch(console.error)
     }
 
-    getOrderId(ids)
+    getOrderId()
   }, [ids])
 
   return (
