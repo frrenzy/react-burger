@@ -47,7 +47,7 @@ const OrderDetails = ({ ids }) => {
 }
 
 OrderDetails.propTypes = {
-  ids: PropTypes.arrayOf(PropTypes.string),
+  ids: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
 }
 
 export default OrderDetails

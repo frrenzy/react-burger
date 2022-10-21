@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from 'react'
+import { useCallback, useContext, useMemo, useState } from 'react'
 
 import {
   ConstructorElement,
@@ -7,10 +7,11 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { Price, Modal, OrderDetails } from 'components'
+
 import { INGREDIENT_TYPES } from 'utils/constants'
+import { IngredientsContext, TotalContext } from 'services/appContext'
 
 import burgerConstructorStyles from './burger-constructor.module.scss'
-import { IngredientsContext, TotalContext } from 'services/appContext'
 
 const BurgerConstructor = () => {
   const [isOpen, setOpen] = useState(false)
@@ -19,15 +20,20 @@ const BurgerConstructor = () => {
     useContext(IngredientsContext)
   const { totalState, totalDispatcher } = useContext(TotalContext)
 
-  const ids = ingredientsState.ingredients
-    .filter(({ count }) => count > 0)
-    .map(({ _id }) => _id)
+  const ids = useMemo(
+    () =>
+      ingredientsState.ingredients
+        .filter(({ count }) => count > 0)
+        .map(({ _id }) => _id),
+    [ingredientsState],
+  )
 
-  const openModal = useCallback(() => setOpen(true), [setOpen])
-  const closeModal = useCallback(() => setOpen(false), [setOpen])
-
-  const bun = ingredientsState.ingredients.find(
-    item => item._id === ingredientsState.bun,
+  const bun = useMemo(
+    () =>
+      ingredientsState.ingredients.find(
+        item => item._id === ingredientsState.bun,
+      ),
+    [ingredientsState],
   )
 
   const deleteFromCart = (_id, price) => () => {
@@ -40,6 +46,14 @@ const BurgerConstructor = () => {
       payload: { price: price },
     })
   }
+
+  const openModal = useCallback(() => {
+    if (ids.length > 0) {
+      setOpen(true)
+    }
+  }, [setOpen, ids.length])
+
+  const closeModal = useCallback(() => setOpen(false), [setOpen])
 
   return (
     <>
