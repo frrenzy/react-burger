@@ -19,14 +19,6 @@ const BurgerConstructor = () => {
     useContext(IngredientsContext)
   const { totalState, totalDispatcher } = useContext(TotalContext)
 
-  // const totalPrice = useMemo(() => {
-  //   return ingredients.ingredients.reduce(
-  //     (total, { price, count, type }) =>
-  //       total + price * (type === 'bun' ? 2 : 1) * count,
-  //     0,
-  //   )
-  // }, [ingredients])
-
   const ids = ingredientsState.ingredients
     .filter(({ count }) => count > 0)
     .map(({ _id }) => _id)
