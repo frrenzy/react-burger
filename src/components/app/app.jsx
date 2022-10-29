@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useReducer } from 'react'
 
 import {
   AppHeader,
@@ -7,107 +7,63 @@ import {
   Section,
 } from 'components'
 
-import { INGREDIENT_TYPES } from 'utils/constants'
 import { getIngredients } from 'api'
+import { IngredientsContext, TotalContext } from 'services/appContext'
+import { ingredientsReducer, totalReducer } from 'services/reducers'
 
 import styles from './app.module.scss'
 
 const App = () => {
-  const [ingredients, setIngredients] = useState({
-    ingredients: [],
-    bun: '',
-  })
+  const [ingredientsState, ingredientsDispatcher] = useReducer(
+    ingredientsReducer,
+    {
+      ingredients: [],
+      bun: '',
+    },
+    undefined,
+  )
+
+  const [totalState, totalDispatcher] = useReducer(
+    totalReducer,
+    { total: 0 },
+    undefined,
+  )
 
   useEffect(() => {
     const getIngredientsList = () =>
       getIngredients()
         .then(data => {
-          setIngredients({
-            ingredients: data.data.map(item => ({
-              ...item,
-              count: 0,
-            })),
-            bun: '',
+          ingredientsDispatcher({
+            type: 'set',
+            payload: {
+              ingredients: data.data.map(item => ({
+                ...item,
+                count: 0,
+              })),
+            },
           })
         })
-        .catch(console.log)
+        .catch(console.error)
 
     getIngredientsList()
   }, [])
 
-  const deleteItemFromCart = _id => () => {
-    setIngredients({
-      ingredients: ingredients.ingredients.map(item => {
-        if (item._id === _id) {
-          return {
-            ...item,
-            count: 0,
-          }
-        }
-        return item
-      }),
-      bun: ingredients.bun,
-    })
-  }
-
-  const addItemToCart = ({ _id, type }) => {
-    if (type !== INGREDIENT_TYPES.BUN) {
-      return () => {
-        setIngredients({
-          ingredients: ingredients.ingredients.map(item => {
-            if (item._id === _id) {
-              return {
-                ...item,
-                count: item.count + 1,
-              }
-            }
-            return item
-          }),
-          bun: ingredients.bun,
-        })
-      }
-    } else {
-      return () => {
-        setIngredients({
-          ingredients: ingredients.ingredients.map(item => {
-            if (item._id === _id) {
-              return {
-                ...item,
-                count: 1,
-              }
-            }
-            if (item.type === INGREDIENT_TYPES.BUN) {
-              return {
-                ...item,
-                count: 0,
-              }
-            }
-            return item
-          }),
-          bun: _id,
-        })
-      }
-    }
-  }
-
   return (
-    <>
-      <AppHeader />
-      <main className={styles.main}>
-        <Section>
-          <BurgerIngredients
-            ingredients={ingredients.ingredients}
-            addItemToCart={addItemToCart}
-          />
-        </Section>
-        <Section>
-          <BurgerConstructor
-            ingredients={ingredients}
-            deleteItemFromCart={deleteItemFromCart}
-          />
-        </Section>
-      </main>
-    </>
+    <IngredientsContext.Provider
+      value={{ ingredientsState, ingredientsDispatcher }}
+    >
+      <TotalContext.Provider value={{ totalState, totalDispatcher }}>
+        <AppHeader />
+        <main className={styles.main}>
+          <Section>
+            <BurgerIngredients />
+          </Section>
+          <Section>
+            <BurgerConstructor />
+          </Section>
+        </main>
+      </TotalContext.Provider>
+    </IngredientsContext.Provider>
   )
 }
 

@@ -1,15 +1,14 @@
 import { useState, useRef, useCallback } from 'react'
-import PropTypes from 'prop-types'
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { IngredientsSection, Modal, IngredientDetails } from 'components'
-import { ingredient } from 'utils/prop-types'
+
 import { INGREDIENT_TYPES } from 'utils/constants'
 
 import burgerIngredientsStyles from './burger-ingredients.module.scss'
 
-const BurgerIngredients = ({ ingredients, addItemToCart }) => {
+const BurgerIngredients = () => {
   const [current, setCurrent] = useState(INGREDIENT_TYPES.BUN)
   const [isOpen, setOpen] = useState(false)
   const [detail, setDetail] = useState()
@@ -35,27 +34,11 @@ const BurgerIngredients = ({ ingredients, addItemToCart }) => {
     setCurrent(value)
   }
 
-  const buns = {
-    name: 'Булки',
-    type: INGREDIENT_TYPES.BUN,
-    ingredients: ingredients.filter(
-      ingredient => ingredient.type === INGREDIENT_TYPES.BUN,
-    ),
-  }
-  const sauces = {
-    name: 'Соусы',
-    type: INGREDIENT_TYPES.SAUCE,
-    ingredients: ingredients.filter(
-      ingredient => ingredient.type === INGREDIENT_TYPES.SAUCE,
-    ),
-  }
-  const mains = {
-    name: 'Начинки',
-    type: INGREDIENT_TYPES.MAIN,
-    ingredients: ingredients.filter(
-      ingredient => ingredient.type === INGREDIENT_TYPES.MAIN,
-    ),
-  }
+  const sections = [
+    { name: 'Булки', type: INGREDIENT_TYPES.BUN },
+    { name: 'Соусы', type: INGREDIENT_TYPES.SAUCE },
+    { name: 'Начинки', type: INGREDIENT_TYPES.MAIN },
+  ]
 
   return (
     <>
@@ -94,14 +77,12 @@ const BurgerIngredients = ({ ingredients, addItemToCart }) => {
         </ul>
       </nav>
       <div className={`${burgerIngredientsStyles.ingredients}`}>
-        {[buns, sauces, mains].map(({ name, type, ingredients }, index) => (
+        {sections.map(({ name, type }, index) => (
           <IngredientsSection
             key={name}
             name={name}
             sectionRef={setRef(index)}
-            ingredients={ingredients}
             type={type}
-            addItemToCart={addItemToCart}
             openDetails={openDetails}
           />
         ))}
@@ -113,11 +94,6 @@ const BurgerIngredients = ({ ingredients, addItemToCart }) => {
       )}
     </>
   )
-}
-
-BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredient).isRequired,
-  addItemToCart: PropTypes.func.isRequired,
 }
 
 export default BurgerIngredients
