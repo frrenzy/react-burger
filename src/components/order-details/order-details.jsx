@@ -1,27 +1,17 @@
-import { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { createOrder } from 'services/actions/order'
 
 import doneIcon from 'images/done.png'
 
 import orderDetailsStyles from './order-details.module.css'
-import { createOrder } from 'api'
 
-const OrderDetails = ({ ids }) => {
-  const [orderId, setOrderId] = useState(null)
+const OrderDetails = () => {
+  const { cart, orderId } = useSelector(store => store.order)
+  const dispatch = useDispatch()
 
-  useEffect(() => {
-    const getOrderId = async () => {
-      createOrder(ids)
-        .then(order => {
-          if (order.success) {
-            setOrderId(order.order.number)
-          }
-        })
-        .catch(console.error)
-    }
-
-    getOrderId()
-  }, [ids])
+  useEffect(() => dispatch(createOrder(cart)), [dispatch, cart])
 
   return (
     <div className={`${orderDetailsStyles.container} mt-30 mb-30`}>
@@ -44,10 +34,6 @@ const OrderDetails = ({ ids }) => {
       </p>
     </div>
   )
-}
-
-OrderDetails.propTypes = {
-  ids: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
 }
 
 export default OrderDetails

@@ -6,7 +6,7 @@ const checkResponse = response =>
 const request = (url, options) => fetch(url, options).then(checkResponse)
 
 export const getIngredientsRequest = () => request(INGREDIENTS_URL)
-export const createOrder = ids =>
+export const createOrderRequest = ids =>
   request(ORDERS_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

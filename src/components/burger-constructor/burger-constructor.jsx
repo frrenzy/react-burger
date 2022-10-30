@@ -1,4 +1,4 @@
-import { useCallback, useContext, useMemo, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 import {
   ConstructorElement,
@@ -11,10 +11,17 @@ import { Price, Modal, OrderDetails } from 'components'
 import { INGREDIENT_TYPES } from 'utils/constants'
 
 import burgerConstructorStyles from './burger-constructor.module.scss'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { ADD_TO_ORDER, OPEN_MODAL } from 'services/actions/order'
 
 const BurgerConstructor = () => {
-  const [isOpen, setOpen] = useState(false)
+  const isOpen = useSelector(store => store.order.isModalOpen)
+  //const id = useSelector(store => store.ingredients.items[0]._id)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch({ type: ADD_TO_ORDER, id: '60d3b41abdacab0026a733c6' })
+  }, [dispatch])
 
   // const ingredientsState = useSelector(store => store.ingredients)
   //
@@ -63,8 +70,8 @@ const BurgerConstructor = () => {
     //       {ingredientsState.ingredients.map(
     //         ({ name, price, image, _id, count, type }) => {
     //           if (type === INGREDIENT_TYPES.BUN) {
-    //             return null
-    //           }
+    // return null
+    // }
     //           return [...Array(count).keys()] //простой способ получить массив чисел от 0 до количества одинаковых элементов в корзинке
     //             .map(idx => (
     //               <li
@@ -104,21 +111,21 @@ const BurgerConstructor = () => {
     //       value={69}
     //       size='medium'
     //     />
-    //     <Button
-    //       onClick={openModal}
-    //       type='primary'
-    //       size='large'
-    //     >
-    //       Оформить заказ
-    //     </Button>
-    //   </div>
-    //   {isOpen && (
-    //     <Modal closeModal={closeModal}>
-    //       <OrderDetails ids={ids} />
-    //     </Modal>
-    //   )}
-    // </>
-    <p>hi</p>
+    <>
+      <p>hi</p>
+      <Button
+        onClick={() => dispatch({ type: OPEN_MODAL })}
+        type='primary'
+        size='large'
+      >
+        Оформить заказ
+      </Button>
+      {isOpen && (
+        <Modal>
+          <OrderDetails />
+        </Modal>
+      )}
+    </>
   )
 }
 
