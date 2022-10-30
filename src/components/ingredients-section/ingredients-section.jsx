@@ -1,4 +1,3 @@
-import { useMemo, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 import { IngredientCard } from 'components'
@@ -7,19 +6,9 @@ import ingredientsSectionStyles from './ingredients-section.module.scss'
 import { useSelector } from 'react-redux'
 
 const IngredientsSection = ({ name, sectionRef, type }) => {
-  const ingredientsState = useSelector(store => store.ingredients.items)
-
-  const ingredients = useMemo(
-    () =>
-      ingredientsState.filter(
-        ingredient => ingredient.type === type,
-      ),
-    [ingredientsState, type],
+  const ingredients = useSelector(store =>
+    store.ingredients.items.filter(ingredient => ingredient.type === type),
   )
-
-  useEffect(() => {
-    console.log(ingredientsState)
-  })
 
   return (
     <section>
@@ -36,7 +25,6 @@ const IngredientsSection = ({ name, sectionRef, type }) => {
               <IngredientCard
                 ingredient={ingredient}
                 // onClick={addToCart(ingredient)}
-                // openDetails={openDetails(ingredient)}
               />
             </li>
           ))
@@ -52,7 +40,6 @@ IngredientsSection.propTypes = {
   name: PropTypes.string.isRequired,
   sectionRef: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
-  openDetails: PropTypes.func.isRequired,
 }
 
 export default IngredientsSection

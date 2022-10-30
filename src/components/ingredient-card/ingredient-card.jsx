@@ -6,8 +6,17 @@ import { Price } from 'components'
 import { ingredient } from '../../utils/prop-types'
 
 import ingredientCardStyles from './ingredient-card.module.scss'
+import { useDispatch } from 'react-redux'
+import { SET_DETAIL } from 'services/actions/detail'
+import { useCallback } from 'react'
 
-const IngredientCard = ({ ingredient, onClick, openDetails }) => {
+const IngredientCard = ({ ingredient }) => {
+  const dispatch = useDispatch()
+  const onClick = useCallback(
+    () => dispatch({ type: SET_DETAIL, ingredient }),
+    [dispatch, ingredient],
+  )
+
   return (
     <>
       <figure className={ingredientCardStyles.figure}>
@@ -15,7 +24,7 @@ const IngredientCard = ({ ingredient, onClick, openDetails }) => {
           src={ingredient.image}
           alt={ingredient.name}
           className={`mr-4 ml-4 mb-1 ${ingredientCardStyles.image}`}
-          onClick={openDetails}
+          onClick={onClick}
         />
         {ingredient.count > 0 && (
           <Counter
@@ -25,7 +34,7 @@ const IngredientCard = ({ ingredient, onClick, openDetails }) => {
         )}
         <figcaption
           className={ingredientCardStyles.caption}
-          onClick={onClick}
+          // onClick={onClick}
         >
           <Price value={ingredient.price} />
           <p
@@ -41,8 +50,6 @@ const IngredientCard = ({ ingredient, onClick, openDetails }) => {
 
 IngredientCard.propTypes = {
   ingredient: ingredient.isRequired,
-  onClick: PropTypes.func.isRequired,
-  openDetails: PropTypes.func.isRequired,
 }
 
 export default IngredientCard

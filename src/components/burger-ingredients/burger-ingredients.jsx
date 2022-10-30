@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef } from 'react'
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 
@@ -7,23 +7,12 @@ import { IngredientsSection, Modal, IngredientDetails } from 'components'
 import { INGREDIENT_TYPES } from 'utils/constants'
 
 import burgerIngredientsStyles from './burger-ingredients.module.scss'
+import { useSelector } from 'react-redux'
 
 const BurgerIngredients = () => {
-  const [current, setCurrent] = useState(INGREDIENT_TYPES.BUN)
-  const [isOpen, setOpen] = useState(false)
-  const [detail, setDetail] = useState()
+  const isOpen = useSelector(store => store.detail.isModalOpen)
 
-  const openDetails = useCallback(
-    ingredient => () => {
-      setDetail(ingredient)
-      setOpen(true)
-    },
-    [setOpen, setDetail],
-  )
-  const closeModal = useCallback(() => {
-    setOpen(false)
-    setDetail({})
-  }, [setOpen, setDetail])
+  const [current, setCurrent] = useState(INGREDIENT_TYPES.BUN)
 
   const refs = useRef([])
   const setRef = index => type => el => (refs.current[index] = { type, el })
@@ -83,13 +72,12 @@ const BurgerIngredients = () => {
             name={name}
             sectionRef={setRef(index)}
             type={type}
-            openDetails={openDetails}
           />
         ))}
       </div>
-      {isOpen && detail && (
-        <Modal closeModal={closeModal}>
-          <IngredientDetails ingredient={detail} />
+      {isOpen && (
+        <Modal>
+          <IngredientDetails />
         </Modal>
       )}
     </>
