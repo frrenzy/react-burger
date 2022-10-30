@@ -5,7 +5,7 @@ const checkResponse = response =>
 
 const request = (url, options) => fetch(url, options).then(checkResponse)
 
-export const getIngredients = () => request(INGREDIENTS_URL)
+export const getIngredientsRequest = () => request(INGREDIENTS_URL)
 export const createOrder = ids =>
   request(ORDERS_URL, {
     method: 'POST',

@@ -1,46 +1,25 @@
-import { useContext, useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 import { IngredientCard } from 'components'
 
-import { IngredientsContext, TotalContext } from 'services/appContext'
-import { INGREDIENT_TYPES } from 'utils/constants'
-
 import ingredientsSectionStyles from './ingredients-section.module.scss'
+import { useSelector } from 'react-redux'
 
-const IngredientsSection = ({ name, sectionRef, type, openDetails }) => {
-  const { ingredientsState, ingredientsDispatcher } =
-    useContext(IngredientsContext)
-  const { totalDispatcher } = useContext(TotalContext)
+const IngredientsSection = ({ name, sectionRef, type }) => {
+  const ingredientsState = useSelector(store => store.ingredients.items)
 
   const ingredients = useMemo(
     () =>
-      ingredientsState.ingredients.filter(
+      ingredientsState.filter(
         ingredient => ingredient.type === type,
       ),
     [ingredientsState, type],
   )
 
-  const addToCart = ({ _id, type, price }) => {
-    if (type === INGREDIENT_TYPES.BUN) {
-      return () => {
-        const oldBunPrice =
-          ingredientsState.ingredients.find(
-            ingredient => ingredient._id === ingredientsState.bun,
-          )?.price ?? 0
-        ingredientsDispatcher({ type: 'selectBun', payload: { _id: _id } })
-        totalDispatcher({
-          type: 'add',
-          payload: { price: 2 * (price - oldBunPrice) },
-        })
-      }
-    } else {
-      return () => {
-        ingredientsDispatcher({ type: 'addToCart', payload: { _id: _id } })
-        totalDispatcher({ type: 'add', payload: { price: price } })
-      }
-    }
-  }
+  useEffect(() => {
+    console.log(ingredientsState)
+  })
 
   return (
     <section>
@@ -56,8 +35,8 @@ const IngredientsSection = ({ name, sectionRef, type, openDetails }) => {
             <li key={ingredient._id}>
               <IngredientCard
                 ingredient={ingredient}
-                onClick={addToCart(ingredient)}
-                openDetails={openDetails(ingredient)}
+                // onClick={addToCart(ingredient)}
+                // openDetails={openDetails(ingredient)}
               />
             </li>
           ))
