@@ -1,14 +1,17 @@
 import {
   ADD_TO_ORDER,
+  SET_BUN,
   CLOSE_ORDER_MODAL,
   CREATE_ORDER_FAILED,
   CREATE_ORDER_REQUEST,
   CREATE_ORDER_SUCCESS,
   OPEN_MODAL,
+  REMOVE_FROM_ORDER,
 } from 'services/actions/order'
 
 const initialState = {
   cart: [],
+  bun: null,
   name: '',
   isModalOpen: false,
   orderId: null,
@@ -43,11 +46,9 @@ export const orderReducer = (state = initialState, action) => {
       }
     }
     case ADD_TO_ORDER: {
-      const cart = state.cart
-      cart.push(action.id)
       return {
         ...state,
-        cart,
+        cart: [...state.cart, action.ingredient],
       }
     }
     case OPEN_MODAL: {
@@ -60,6 +61,20 @@ export const orderReducer = (state = initialState, action) => {
       return {
         ...state,
         isModalOpen: false,
+      }
+    }
+    case SET_BUN: {
+      return {
+        ...state,
+        bun: action.bun,
+      }
+    }
+    case REMOVE_FROM_ORDER: {
+      const cart = state.cart
+      cart.splice(action.idx, 1)
+      return {
+        ...state,
+        cart,
       }
     }
     default: {

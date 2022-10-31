@@ -1,6 +1,8 @@
 import { createOrderRequest } from 'api'
 
 export const ADD_TO_ORDER = 'ADD_TO_ORDER'
+export const REMOVE_FROM_ORDER = 'REMOVE_FROM_ORDER'
+export const SET_BUN = 'SET_BUN'
 export const OPEN_MODAL = 'OPEN_MODAL'
 export const CLOSE_ORDER_MODAL = 'CLOSE_ORDER_MODAL'
 export const CREATE_ORDER_REQUEST = 'CREATE_ORDER_REQUEST'

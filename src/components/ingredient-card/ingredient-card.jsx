@@ -1,14 +1,14 @@
-import PropTypes from 'prop-types'
-
+import { useCallback, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import { Price } from 'components'
+import { SET_DETAIL } from 'services/actions/detail'
 import { ingredient } from '../../utils/prop-types'
 
 import ingredientCardStyles from './ingredient-card.module.scss'
-import { useDispatch } from 'react-redux'
-import { SET_DETAIL } from 'services/actions/detail'
-import { useCallback } from 'react'
+import { ADD_TO_ORDER, SET_BUN } from 'services/actions/order'
+import { INGREDIENT_TYPES } from 'utils/constants'
 
 const IngredientCard = ({ ingredient }) => {
   const dispatch = useDispatch()
@@ -16,6 +16,20 @@ const IngredientCard = ({ ingredient }) => {
     () => dispatch({ type: SET_DETAIL, ingredient }),
     [dispatch, ingredient],
   )
+
+  const addToCart = useCallback(() => {
+    if (ingredient.type === INGREDIENT_TYPES.BUN) {
+      dispatch({
+        type: SET_BUN,
+        bun: ingredient,
+      })
+    } else {
+      dispatch({
+        type: ADD_TO_ORDER,
+        ingredient,
+      })
+    }
+  }, [dispatch, ingredient])
 
   return (
     <>
@@ -34,7 +48,7 @@ const IngredientCard = ({ ingredient }) => {
         )}
         <figcaption
           className={ingredientCardStyles.caption}
-          // onClick={onClick}
+          onClick={addToCart}
         >
           <Price value={ingredient.price} />
           <p

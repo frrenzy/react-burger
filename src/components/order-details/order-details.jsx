@@ -8,10 +8,14 @@ import doneIcon from 'images/done.png'
 import orderDetailsStyles from './order-details.module.css'
 
 const OrderDetails = () => {
-  const { cart, orderId } = useSelector(store => store.order)
+  const { cart, orderId, bun } = useSelector(store => store.order)
   const dispatch = useDispatch()
 
-  useEffect(() => dispatch(createOrder(cart)), [dispatch, cart])
+  useEffect(
+    () =>
+      dispatch(createOrder([bun._id, ...cart.map(item => item._id), bun._id])),
+    [dispatch, cart, bun._id],
+  )
 
   return (
     <div className={`${orderDetailsStyles.container} mt-30 mb-30`}>
