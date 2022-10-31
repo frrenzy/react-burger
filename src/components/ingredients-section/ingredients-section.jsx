@@ -1,20 +1,20 @@
 import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
 
 import { IngredientCard } from 'components'
 
 import ingredientsSectionStyles from './ingredients-section.module.scss'
-import { useSelector } from 'react-redux'
 
-const IngredientsSection = ({ name, sectionRef, type }) => {
+const IngredientsSection = ({ name, sectionRef, headerRef, type }) => {
   const ingredients = useSelector(store =>
     store.ingredients.items.filter(ingredient => ingredient.type === type),
   )
 
   return (
-    <section>
+    <section ref={sectionRef}>
       <h2
+        ref={headerRef}
         className={`${ingredientsSectionStyles.heading} text text_type_main-medium`}
-        ref={sectionRef(type)}
       >
         {name}
       </h2>
@@ -22,10 +22,7 @@ const IngredientsSection = ({ name, sectionRef, type }) => {
         {ingredients.length > 0 ? (
           ingredients.map(ingredient => (
             <li key={ingredient._id}>
-              <IngredientCard
-                ingredient={ingredient}
-                // onClick={addToCart(ingredient)}
-              />
+              <IngredientCard ingredient={ingredient} />
             </li>
           ))
         ) : (
@@ -39,6 +36,7 @@ const IngredientsSection = ({ name, sectionRef, type }) => {
 IngredientsSection.propTypes = {
   name: PropTypes.string.isRequired,
   sectionRef: PropTypes.func.isRequired,
+  headerRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
   type: PropTypes.string.isRequired,
 }
 

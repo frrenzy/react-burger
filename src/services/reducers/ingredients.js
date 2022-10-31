@@ -2,10 +2,12 @@ import {
   GET_INGREDIENTS_REQUEST,
   GET_INGREDIENTS_SUCCESS,
   GET_INGREDIENTS_FAILED,
+  SET_TAB,
 } from 'services/actions/ingredients'
 
 const initialState = {
   items: [],
+  currentTab: '',
   ingredientsRequest: false,
   ingredientsFailed: false,
   ingredientsError: '',
@@ -33,6 +35,12 @@ export const ingredientsReducer = (state = initialState, action) => {
         ...state,
         ingredientsFailed: true,
         ingredientsError: action.error,
+      }
+    }
+    case SET_TAB: {
+      return {
+        ...state,
+        currentTab: action.tab
       }
     }
     default: {
