@@ -1,18 +1,28 @@
 import { useCallback, useMemo } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { useDrop } from 'react-dnd'
 
 import {
   ConstructorElement,
   Button,
   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-
 import { Price, Modal, OrderDetails } from 'components'
+
+import {
+  ADD_TO_ORDER,
+  OPEN_MODAL,
+  REMOVE_FROM_ORDER,
+  SET_BUN,
+} from 'services/actions/order'
+import {
+  DECREASE_COUNTER,
+  INCREASE_COUNTER,
+} from 'services/actions/ingredients'
 
 import { INGREDIENT_TYPES } from 'utils/constants'
 
 import burgerConstructorStyles from './burger-constructor.module.scss'
-import { useSelector, useDispatch } from 'react-redux'
-import { OPEN_MODAL, REMOVE_FROM_ORDER } from 'services/actions/order'
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch()
@@ -27,16 +37,50 @@ const BurgerConstructor = () => {
     [cart, bun],
   )
 
+  const [, dropRef] = useDrop({
+    accept: 'ingredient',
+    drop(ingredient) {
+      if (ingredient.type === INGREDIENT_TYPES.BUN) {
+        dispatch({
+          type: SET_BUN,
+          bun: ingredient,
+        })
+      } else {
+        dispatch({
+          type: ADD_TO_ORDER,
+          ingredient,
+        })
+      }
+      dispatch({
+        type: INCREASE_COUNTER,
+        ingredientType: ingredient.type,
+        _id: ingredient._id,
+      })
+    },
+    collect: monitor => ({
+      isHover: monitor.isOver(),
+    }),
+  })
+
   const openModal = useCallback(
     () => dispatch({ type: OPEN_MODAL }),
     [dispatch],
   )
 
-  const deleteFromCart = idx => () => dispatch({ type: REMOVE_FROM_ORDER, idx })
+  const deleteFromCart = useCallback(
+    (idx, _id) => () => {
+      dispatch({ type: REMOVE_FROM_ORDER, idx })
+      dispatch({ type: DECREASE_COUNTER, _id })
+    },
+    [dispatch],
+  )
 
   return (
     <>
-      <div className={`${burgerConstructorStyles.list} mt-25`}>
+      <div
+        className={`${burgerConstructorStyles.list} mt-25`}
+        ref={dropRef}
+      >
         {bun && (
           <li
             key={`${bun._id}_top`}
@@ -62,7 +106,7 @@ const BurgerConstructor = () => {
                 text={name}
                 price={price}
                 thumbnail={image}
-                handleClose={deleteFromCart(idx)}
+                handleClose={deleteFromCart(idx, _id)}
               />
             </li>
           ))}

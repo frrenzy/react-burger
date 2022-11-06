@@ -13,4 +13,5 @@ export const ingredient = PropTypes.shape({
   image_mobile: PropTypes.string.isRequired,
   image_large: PropTypes.string.isRequired,
   __v: PropTypes.number.isRequired,
+  count: PropTypes.number.isRequired,
 })

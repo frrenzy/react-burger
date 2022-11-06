@@ -1,11 +1,11 @@
 import { useState } from 'react'
+
 import {
   Logo,
   BurgerIcon,
   ListIcon,
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-
 import { HeaderButton } from 'components'
 
 import headerStyles from './app-header.module.scss'

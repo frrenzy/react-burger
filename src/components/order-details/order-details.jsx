@@ -5,7 +5,7 @@ import { createOrder } from 'services/actions/order'
 
 import doneIcon from 'images/done.png'
 
-import orderDetailsStyles from './order-details.module.css'
+import orderDetailsStyles from './order-details.module.scss'
 
 const OrderDetails = () => {
   const { cart, orderId, bun } = useSelector(store => store.order)

@@ -2,6 +2,12 @@
   position: relative;
   margin: 0;
   padding: 0;
+  border: none;
+  border-radius: 9px;
+
+  &_dragged {
+    box-shadow: 0 0 5px 5px #4c4cff;
+  }
 }
 
 .image {

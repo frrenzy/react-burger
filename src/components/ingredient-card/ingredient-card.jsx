@@ -1,14 +1,15 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
+import { useDrag } from 'react-dnd'
 
+import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Price } from 'components'
+
 import { SET_DETAIL } from 'services/actions/detail'
-import { ingredient } from '../../utils/prop-types'
+
+import { ingredient as ingredientType } from '../../utils/prop-types'
 
 import ingredientCardStyles from './ingredient-card.module.scss'
-import { ADD_TO_ORDER, SET_BUN } from 'services/actions/order'
-import { INGREDIENT_TYPES } from 'utils/constants'
 
 const IngredientCard = ({ ingredient }) => {
   const dispatch = useDispatch()
@@ -17,23 +18,22 @@ const IngredientCard = ({ ingredient }) => {
     [dispatch, ingredient],
   )
 
-  const addToCart = useCallback(() => {
-    if (ingredient.type === INGREDIENT_TYPES.BUN) {
-      dispatch({
-        type: SET_BUN,
-        bun: ingredient,
-      })
-    } else {
-      dispatch({
-        type: ADD_TO_ORDER,
-        ingredient,
-      })
-    }
-  }, [dispatch, ingredient])
+  const [{ isDragged }, dragRef] = useDrag({
+    type: 'ingredient',
+    item: ingredient,
+    collect: monitor => ({
+      isDragged: monitor.isDragging(),
+    }),
+  })
 
   return (
     <>
-      <figure className={ingredientCardStyles.figure}>
+      <figure
+        className={`${ingredientCardStyles.figure} ${
+          isDragged ? `${ingredientCardStyles.figure_dragged}` : ''
+        }`}
+        ref={dragRef}
+      >
         <img
           src={ingredient.image}
           alt={ingredient.name}
@@ -46,10 +46,7 @@ const IngredientCard = ({ ingredient }) => {
             count={ingredient.count}
           />
         )}
-        <figcaption
-          className={ingredientCardStyles.caption}
-          onClick={addToCart}
-        >
+        <figcaption className={ingredientCardStyles.caption}>
           <Price value={ingredient.price} />
           <p
             className={`text text_type_main-default text_color_primary ${ingredientCardStyles.paragraph}`}
@@ -63,7 +60,7 @@ const IngredientCard = ({ ingredient }) => {
 }
 
 IngredientCard.propTypes = {
-  ingredient: ingredient.isRequired,
+  ingredient: ingredientType.isRequired,
 }
 
 export default IngredientCard

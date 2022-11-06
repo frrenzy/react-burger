@@ -1,15 +1,15 @@
+import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useInView } from 'react-intersection-observer'
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
-
 import { IngredientsSection, Modal, IngredientDetails } from 'components'
+
+import { SET_TAB } from 'services/actions/ingredients'
 
 import { INGREDIENT_TYPES } from 'utils/constants'
 
 import burgerIngredientsStyles from './burger-ingredients.module.scss'
-import { SET_TAB } from 'services/actions/ingredients'
-import { useInView } from 'react-intersection-observer'
-import { useEffect, useRef } from 'react'
 
 const BurgerIngredients = () => {
   const isOpen = useSelector(store => store.detail.isModalOpen)
