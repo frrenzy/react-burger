@@ -3,7 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useInView } from 'react-intersection-observer'
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
-import { IngredientsSection, Modal, IngredientDetails } from 'components'
+import {
+  IngredientsSection,
+  Modal,
+  IngredientDetails,
+  Loading,
+} from 'components'
 
 import { SET_TAB } from 'services/actions/ingredients'
 
@@ -13,7 +18,9 @@ import burgerIngredientsStyles from './burger-ingredients.module.scss'
 
 const BurgerIngredients = () => {
   const isOpen = useSelector(store => store.detail.isModalOpen)
-  const { currentTab } = useSelector(store => store.ingredients)
+  const { currentTab, ingredientsRequest: isLoading } = useSelector(
+    store => store.ingredients,
+  )
 
   const dispatch = useDispatch()
 
@@ -99,15 +106,19 @@ const BurgerIngredients = () => {
         </ul>
       </nav>
       <div className={`${burgerIngredientsStyles.ingredients}`}>
-        {sectionsProps.map(({ name, type, sectionRef, headerRef }) => (
-          <IngredientsSection
-            key={name}
-            name={name}
-            sectionRef={sectionRef}
-            headerRef={headerRef}
-            type={type}
-          />
-        ))}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          sectionsProps.map(({ name, type, sectionRef, headerRef }) => (
+            <IngredientsSection
+              key={name}
+              name={name}
+              sectionRef={sectionRef}
+              headerRef={headerRef}
+              type={type}
+            />
+          ))
+        )}
       </div>
       {isOpen && (
         <Modal>

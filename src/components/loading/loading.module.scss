@@ -1,0 +1,25 @@
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
+.spinner {
+  position: absolute;
+  content: '';
+  top: calc(50% - 50px);
+  right: calc(50% - 50px);
+  z-index: 1000;
+  box-sizing: border-box;
+  width: 100px;
+  height: 100px;
+  border: 10px solid;
+  border-color: var(--colors-button-inactive) transparent
+    var(--colors-button-inactive) transparent;
+  border-radius: 50%;
+  animation: spin 1s infinite linear;
+}
