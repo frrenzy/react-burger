@@ -78,6 +78,11 @@ const BurgerConstructor = () => {
         className={`${burgerConstructorStyles.list} mt-25`}
         ref={dropRef}
       >
+        {!cart.length && !bun && (
+          <h2 className='text text_color_primary text_type_main-medium pl-30'>
+            Перетащите ингредиенты в эту область, чтобы собрать бургер :)
+          </h2>
+        )}
         {bun && (
           <ConstructorTile
             name={`${bun.name} (верх)`}
