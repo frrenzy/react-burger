@@ -1,13 +1,10 @@
 import { useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useDrop } from 'react-dnd'
+import { v4 as uuidv4 } from 'uuid'
 
-import {
-  ConstructorElement,
-  Button,
-  DragIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components'
-import { Price, Modal, OrderDetails } from 'components'
+import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
+import { Price, Modal, OrderDetails, ConstructorTile } from 'components'
 
 import {
   ADD_TO_ORDER,
@@ -20,7 +17,7 @@ import {
   INCREASE_COUNTER,
 } from 'services/actions/ingredients'
 
-import { INGREDIENT_TYPES } from 'utils/constants'
+import { DRAG_TYPES, INGREDIENT_TYPES, TILE_TYPES } from 'utils/constants'
 
 import burgerConstructorStyles from './burger-constructor.module.scss'
 
@@ -38,8 +35,8 @@ const BurgerConstructor = () => {
   )
 
   const [, dropRef] = useDrop({
-    accept: 'ingredient',
-    drop(ingredient) {
+    accept: DRAG_TYPES.INGREDIENT,
+    drop: ingredient => {
       if (ingredient.type === INGREDIENT_TYPES.BUN) {
         dispatch({
           type: SET_BUN,
@@ -48,7 +45,10 @@ const BurgerConstructor = () => {
       } else {
         dispatch({
           type: ADD_TO_ORDER,
-          ingredient,
+          ingredient: {
+            ...ingredient,
+            uuid: uuidv4(),
+          },
         })
       }
       dispatch({
@@ -57,9 +57,6 @@ const BurgerConstructor = () => {
         _id: ingredient._id,
       })
     },
-    collect: monitor => ({
-      isHover: monitor.isOver(),
-    }),
   })
 
   const openModal = useCallback(
@@ -82,48 +79,33 @@ const BurgerConstructor = () => {
         ref={dropRef}
       >
         {bun && (
-          <li
-            key={`${bun._id}_top`}
-            className={`${burgerConstructorStyles.item} pl-4 pr-4`}
-          >
-            <ConstructorElement
-              text={`${bun.name} (верх)`}
-              price={bun.price}
-              thumbnail={bun.image}
-              type='top'
-              isLocked={true}
-            />
-          </li>
+          <ConstructorTile
+            name={`${bun.name} (верх)`}
+            price={bun.price}
+            image={bun.image}
+            type={TILE_TYPES.TOP}
+          />
         )}
         <ul className={`${burgerConstructorStyles.scrollable} mt-4 mb-4`}>
-          {cart.map(({ name, price, image, _id }, idx) => (
-            <li
-              key={`${_id}_${idx}`}
-              className={`${burgerConstructorStyles.item} pl-4 pr-4`}
-            >
-              <DragIcon type='primary' />
-              <ConstructorElement
-                text={name}
-                price={price}
-                thumbnail={image}
-                handleClose={deleteFromCart(idx, _id)}
-              />
-            </li>
+          {cart.map(({ name, price, image, _id, uuid }, idx) => (
+            <ConstructorTile
+              key={uuid}
+              name={name}
+              price={price}
+              image={image}
+              deleteHandler={deleteFromCart(idx, _id)}
+              type={TILE_TYPES.CENTER}
+              index={idx}
+            />
           ))}
         </ul>
         {bun && (
-          <li
-            key={`${bun._id}_bottom`}
-            className={`${burgerConstructorStyles.item} pl-4 pr-4`}
-          >
-            <ConstructorElement
-              text={`${bun.name} (низ)`}
-              price={bun.price}
-              thumbnail={bun.image}
-              type='bottom'
-              isLocked={true}
-            />
-          </li>
+          <ConstructorTile
+            name={`${bun.name} (низ)`}
+            price={bun.price}
+            image={bun.image}
+            type={TILE_TYPES.BOTTOM}
+          />
         )}
       </div>
       <div className={`${burgerConstructorStyles.controls} mt-10 mr-4`}>

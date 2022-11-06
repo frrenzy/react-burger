@@ -7,6 +7,7 @@ import {
   CREATE_ORDER_SUCCESS,
   OPEN_MODAL,
   REMOVE_FROM_ORDER,
+  MOVE_INGREDIENT,
 } from 'services/actions/order'
 
 const initialState = {
@@ -70,11 +71,19 @@ export const orderReducer = (state = initialState, action) => {
       }
     }
     case REMOVE_FROM_ORDER: {
-      const cart = state.cart
-      cart.splice(action.idx, 1)
       return {
         ...state,
-        cart,
+        cart: [...state.cart].splice(action.idx, 1),
+      }
+    }
+    case MOVE_INGREDIENT: {
+      const cart = [...state.cart]
+      const item = { ...cart[action.from] }
+      cart.splice(action.from, 1)
+      cart.splice(action.to, 0, item)
+      return {
+        ...state,
+        cart: cart,
       }
     }
     default: {

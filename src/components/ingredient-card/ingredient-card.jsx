@@ -10,6 +10,7 @@ import { SET_DETAIL } from 'services/actions/detail'
 import { ingredient as ingredientType } from '../../utils/prop-types'
 
 import ingredientCardStyles from './ingredient-card.module.scss'
+import { DRAG_TYPES } from 'utils/constants'
 
 const IngredientCard = ({ ingredient }) => {
   const dispatch = useDispatch()
@@ -19,7 +20,7 @@ const IngredientCard = ({ ingredient }) => {
   )
 
   const [{ isDragged }, dragRef] = useDrag({
-    type: 'ingredient',
+    type: DRAG_TYPES.INGREDIENT,
     item: ingredient,
     collect: monitor => ({
       isDragged: monitor.isDragging(),
