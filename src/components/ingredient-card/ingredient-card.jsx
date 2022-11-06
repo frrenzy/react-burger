@@ -28,35 +28,33 @@ const IngredientCard = ({ ingredient }) => {
   })
 
   return (
-    <>
-      <figure
-        className={`${ingredientCardStyles.figure} ${
-          isDragged ? `${ingredientCardStyles.figure_dragged}` : ''
-        }`}
+    <figure
+      className={`${ingredientCardStyles.figure} ${
+        isDragged ? `${ingredientCardStyles.figure_dragged}` : ''
+      }`}
+    >
+      <img
+        src={ingredient.image}
+        alt={ingredient.name}
+        className={`mr-4 ml-4 mb-1 ${ingredientCardStyles.image}`}
+        onClick={onClick}
         ref={dragRef}
-      >
-        <img
-          src={ingredient.image}
-          alt={ingredient.name}
-          className={`mr-4 ml-4 mb-1 ${ingredientCardStyles.image}`}
-          onClick={onClick}
+      />
+      {ingredient.count > 0 && (
+        <Counter
+          size='default'
+          count={ingredient.count}
         />
-        {ingredient.count > 0 && (
-          <Counter
-            size='default'
-            count={ingredient.count}
-          />
-        )}
-        <figcaption className={ingredientCardStyles.caption}>
-          <Price value={ingredient.price} />
-          <p
-            className={`text text_type_main-default text_color_primary ${ingredientCardStyles.paragraph}`}
-          >
-            {ingredient.name}
-          </p>
-        </figcaption>
-      </figure>
-    </>
+      )}
+      <figcaption className={ingredientCardStyles.caption}>
+        <Price value={ingredient.price} />
+        <p
+          className={`text text_type_main-default text_color_primary ${ingredientCardStyles.paragraph}`}
+        >
+          {ingredient.name}
+        </p>
+      </figcaption>
+    </figure>
   )
 }
 

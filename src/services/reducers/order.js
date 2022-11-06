@@ -71,9 +71,11 @@ export const orderReducer = (state = initialState, action) => {
       }
     }
     case REMOVE_FROM_ORDER: {
+      const newCart = [...state.cart]
+      newCart.splice(action.idx, 1)
       return {
         ...state,
-        cart: [...state.cart].splice(action.idx, 1),
+        cart: newCart,
       }
     }
     case MOVE_INGREDIENT: {
