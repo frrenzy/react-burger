@@ -1,132 +1,145 @@
-import { useCallback, useContext, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { useDrop } from 'react-dnd'
+import { v4 as uuidv4 } from 'uuid'
+
+import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
+import { Price, Modal, OrderDetails, ConstructorTile } from 'components'
 
 import {
-  ConstructorElement,
-  Button,
-  DragIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components'
+  ADD_TO_ORDER,
+  CLOSE_ORDER_MODAL,
+  REMOVE_FROM_ORDER,
+  SET_BUN,
+  createOrder,
+} from 'services/actions/order'
+import {
+  DECREASE_COUNTER,
+  INCREASE_COUNTER,
+} from 'services/actions/ingredients'
 
-import { Price, Modal, OrderDetails } from 'components'
-
-import { INGREDIENT_TYPES } from 'utils/constants'
-import { IngredientsContext, TotalContext } from 'services/appContext'
+import { DRAG_TYPES, INGREDIENT_TYPES, TILE_TYPES } from 'utils/constants'
 
 import burgerConstructorStyles from './burger-constructor.module.scss'
 
 const BurgerConstructor = () => {
-  const [isOpen, setOpen] = useState(false)
+  const dispatch = useDispatch()
 
-  const { ingredientsState, ingredientsDispatcher } =
-    useContext(IngredientsContext)
-  const { totalState, totalDispatcher } = useContext(TotalContext)
+  const {
+    isModalOpen,
+    cart,
+    bun,
+    orderRequest: isLoading,
+  } = useSelector(store => store.order)
 
-  const ids = useMemo(
-    () =>
-      ingredientsState.ingredients
-        .filter(({ count }) => count > 0)
-        .map(({ _id }) => _id),
-    [ingredientsState],
+  const totalPrice = useMemo(() => {
+    let sum = 0
+    sum += bun ? 2 * bun.price : 0
+    sum += cart ? cart.reduce((acc, { price }) => acc + price, 0) : 0
+    return sum
+  }, [cart, bun])
+
+  const [, dropRef] = useDrop({
+    accept: DRAG_TYPES.INGREDIENT,
+    drop: ingredient => {
+      if (ingredient.type === INGREDIENT_TYPES.BUN) {
+        dispatch({
+          type: SET_BUN,
+          bun: ingredient,
+        })
+      } else {
+        dispatch({
+          type: ADD_TO_ORDER,
+          ingredient: {
+            ...ingredient,
+            uuid: uuidv4(),
+          },
+        })
+      }
+      dispatch({
+        type: INCREASE_COUNTER,
+        ingredientType: ingredient.type,
+        _id: ingredient._id,
+      })
+    },
+  })
+
+  const openModal = useCallback(
+    () => dispatch(createOrder([bun._id, cart.map(item => item._id), bun._id])),
+    [dispatch, cart, bun],
   )
 
-  const bun = useMemo(
-    () =>
-      ingredientsState.ingredients.find(
-        item => item._id === ingredientsState.bun,
-      ),
-    [ingredientsState],
+  const closeModal = useCallback(
+    () => dispatch({ type: CLOSE_ORDER_MODAL }),
+    [dispatch],
   )
 
-  const deleteFromCart = (_id, price) => () => {
-    ingredientsDispatcher({
-      type: 'deleteFromCart',
-      payload: { _id: _id },
-    })
-    totalDispatcher({
-      type: 'delete',
-      payload: { price: price },
-    })
-  }
-
-  const openModal = useCallback(() => {
-    if (ids.length > 0) {
-      setOpen(true)
-    }
-  }, [setOpen, ids.length])
-
-  const closeModal = useCallback(() => setOpen(false), [setOpen])
+  const deleteFromCart = useCallback(
+    (idx, _id) => () => {
+      dispatch({ type: REMOVE_FROM_ORDER, idx })
+      dispatch({ type: DECREASE_COUNTER, _id })
+    },
+    [dispatch],
+  )
 
   return (
     <>
-      <div className={`${burgerConstructorStyles.list} mt-25`}>
-        {ingredientsState.bun.length > 0 && (
-          <li
-            key={`${bun._id}_top`}
-            className={`${burgerConstructorStyles.item} pl-4 pr-4`}
-          >
-            <ConstructorElement
-              text={`${bun.name} (верх)`}
-              price={bun.price}
-              thumbnail={bun.image}
-              type='top'
-              isLocked={true}
-            />
-          </li>
+      <div
+        className={`${burgerConstructorStyles.list} mt-25`}
+        ref={dropRef}
+      >
+        {!cart.length && !bun && (
+          <h2 className='text text_color_primary text_type_main-medium pl-30'>
+            Перетащите ингредиенты в эту область, чтобы собрать бургер :)
+          </h2>
+        )}
+        {bun && (
+          <ConstructorTile
+            name={`${bun.name} (верх)`}
+            price={bun.price}
+            image={bun.image}
+            type={TILE_TYPES.TOP}
+          />
         )}
         <ul className={`${burgerConstructorStyles.scrollable} mt-4 mb-4`}>
-          {ingredientsState.ingredients.map(
-            ({ name, price, image, _id, count, type }) => {
-              if (type === INGREDIENT_TYPES.BUN) {
-                return null
-              }
-              return [...Array(count).keys()] //простой способ получить массив чисел от 0 до количества одинаковых элементов в корзинке
-                .map(idx => (
-                  <li
-                    key={`${_id}_${idx}`}
-                    className={`${burgerConstructorStyles.item} pl-4 pr-4`}
-                  >
-                    <DragIcon type='primary' />
-                    <ConstructorElement
-                      text={name}
-                      price={price}
-                      thumbnail={image}
-                      handleClose={deleteFromCart(_id, price)}
-                    />
-                  </li>
-                ))
-            },
-          )}
-        </ul>
-        {ingredientsState.bun.length > 0 && (
-          <li
-            key={`${bun._id}_bottom`}
-            className={`${burgerConstructorStyles.item} pl-4 pr-4`}
-          >
-            <ConstructorElement
-              text={`${bun.name} (низ)`}
-              price={bun.price}
-              thumbnail={bun.image}
-              type='bottom'
-              isLocked={true}
+          {cart.map(({ name, price, image, _id, uuid }, idx) => (
+            <ConstructorTile
+              key={uuid}
+              name={name}
+              price={price}
+              image={image}
+              deleteHandler={deleteFromCart(idx, _id)}
+              type={TILE_TYPES.CENTER}
+              index={idx}
             />
-          </li>
+          ))}
+        </ul>
+        {bun && (
+          <ConstructorTile
+            name={`${bun.name} (низ)`}
+            price={bun.price}
+            image={bun.image}
+            type={TILE_TYPES.BOTTOM}
+          />
         )}
       </div>
       <div className={`${burgerConstructorStyles.controls} mt-10 mr-4`}>
         <Price
-          value={totalState.total}
+          value={totalPrice}
           size='medium'
         />
         <Button
           onClick={openModal}
           type='primary'
           size='large'
+          disabled={!bun}
         >
-          Оформить заказ
+          {isLoading ? 'Пожалуйста, подождите...' : 'Оформить заказ'}
         </Button>
       </div>
-      {isOpen && (
+      {isModalOpen && (
         <Modal closeModal={closeModal}>
-          <OrderDetails ids={ids} />
+          <OrderDetails />
         </Modal>
       )}
     </>

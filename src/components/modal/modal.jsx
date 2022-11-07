@@ -1,5 +1,5 @@
-import ReactDOM from 'react-dom'
 import { useCallback, useEffect } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 
 import { ModalOverlay, CloseButton } from 'components'
@@ -20,7 +20,6 @@ const Modal = ({ closeModal, children }) => {
 
   useEffect(() => {
     document.addEventListener('keydown', handleEscape)
-
     return () => document.removeEventListener('keydown', handleEscape)
   }, [handleEscape])
 

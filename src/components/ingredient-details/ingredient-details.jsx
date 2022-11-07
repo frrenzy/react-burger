@@ -1,10 +1,10 @@
-import { ingredient as ingredientType } from 'utils/prop-types'
+import { useSelector } from 'react-redux'
 
 import ingredientDetailsStyles from './ingredient-details.module.scss'
 
-const IngredientDetails = ({ ingredient }) => {
+const IngredientDetails = () => {
   const { image_large, name, fat, calories, proteins, carbohydrates } =
-    ingredient
+    useSelector(store => store.detail.ingredient)
 
   return (
     <div className={`${ingredientDetailsStyles.container} mt-15 mb-15`}>
@@ -91,10 +91,6 @@ const IngredientDetails = ({ ingredient }) => {
       </div>
     </div>
   )
-}
-
-IngredientDetails.propTypes = {
-  ingredient: ingredientType.isRequired,
 }
 
 export default IngredientDetails

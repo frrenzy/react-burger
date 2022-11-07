@@ -9,6 +9,7 @@
 
 .ingredients {
   @include shared.custom-scroll(52px);
+  position: relative;
   max-height: calc(100vh - 286px);
   overflow: auto;
 }

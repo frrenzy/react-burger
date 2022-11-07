@@ -8,4 +8,8 @@
   height: 100vh;
   background-color: #000000;
   opacity: .6;
+
+  &:hover {
+    cursor: pointer;
+  }
 }

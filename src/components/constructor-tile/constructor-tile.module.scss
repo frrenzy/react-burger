@@ -1,0 +1,9 @@
+@use 'shared';
+
+.tile {
+  @include shared.flex(row, $jc: end);
+  gap: calc(2 * var(--offset-base-size));
+  box-sizing: border-box;
+  width: 100%;
+  cursor: pointer;
+}

@@ -1,4 +1,7 @@
-import { useEffect, useReducer } from 'react'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import {
   AppHeader,
@@ -7,63 +10,29 @@ import {
   Section,
 } from 'components'
 
-import { getIngredients } from 'api'
-import { IngredientsContext, TotalContext } from 'services/appContext'
-import { ingredientsReducer, totalReducer } from 'services/reducers'
+import { getIngredients } from 'services/actions/ingredients'
 
 import styles from './app.module.scss'
 
 const App = () => {
-  const [ingredientsState, ingredientsDispatcher] = useReducer(
-    ingredientsReducer,
-    {
-      ingredients: [],
-      bun: '',
-    },
-    undefined,
-  )
-
-  const [totalState, totalDispatcher] = useReducer(
-    totalReducer,
-    { total: 0 },
-    undefined,
-  )
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    const getIngredientsList = () =>
-      getIngredients()
-        .then(data => {
-          ingredientsDispatcher({
-            type: 'set',
-            payload: {
-              ingredients: data.data.map(item => ({
-                ...item,
-                count: 0,
-              })),
-            },
-          })
-        })
-        .catch(console.error)
-
-    getIngredientsList()
-  }, [])
+    dispatch(getIngredients())
+  }, [dispatch])
 
   return (
-    <IngredientsContext.Provider
-      value={{ ingredientsState, ingredientsDispatcher }}
-    >
-      <TotalContext.Provider value={{ totalState, totalDispatcher }}>
-        <AppHeader />
-        <main className={styles.main}>
-          <Section>
-            <BurgerIngredients />
-          </Section>
-          <Section>
-            <BurgerConstructor />
-          </Section>
-        </main>
-      </TotalContext.Provider>
-    </IngredientsContext.Provider>
+    <DndProvider backend={HTML5Backend}>
+      <AppHeader />
+      <main className={styles.main}>
+        <Section>
+          <BurgerIngredients />
+        </Section>
+        <Section>
+          <BurgerConstructor />
+        </Section>
+      </main>
+    </DndProvider>
   )
 }
 
