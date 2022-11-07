@@ -1,22 +1,13 @@
-import ReactDOM from 'react-dom'
 import { useCallback, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import ReactDOM from 'react-dom'
+import PropTypes from 'prop-types'
 
 import { ModalOverlay, CloseButton } from 'components'
 
-import { RESET_DETAIL } from 'services/actions/detail'
-import { CLOSE_ORDER_MODAL } from 'services/actions/order'
-
 import modalStyles from './modal.module.scss'
 
-const Modal = ({ children }) => {
+const Modal = ({ closeModal, children }) => {
   const modalRoot = document.querySelector('#modal')
-  const dispatch = useDispatch()
-
-  const closeModal = useCallback(() => {
-    dispatch({ type: RESET_DETAIL })
-    dispatch({ type: CLOSE_ORDER_MODAL })
-  }, [dispatch])
 
   const handleEscape = useCallback(
     evt => {
@@ -48,6 +39,10 @@ const Modal = ({ children }) => {
   )
 
   return ReactDOM.createPortal(modalWrapper, modalRoot)
+}
+
+Modal.propTypes = {
+  closeModal: PropTypes.func.isRequired,
 }
 
 export default Modal

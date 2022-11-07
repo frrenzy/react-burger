@@ -8,9 +8,10 @@ import { Price, Modal, OrderDetails, ConstructorTile } from 'components'
 
 import {
   ADD_TO_ORDER,
-  OPEN_MODAL,
+  CLOSE_ORDER_MODAL,
   REMOVE_FROM_ORDER,
   SET_BUN,
+  createOrder,
 } from 'services/actions/order'
 import {
   DECREASE_COUNTER,
@@ -24,15 +25,19 @@ import burgerConstructorStyles from './burger-constructor.module.scss'
 const BurgerConstructor = () => {
   const dispatch = useDispatch()
 
-  const { isModalOpen, cart, bun } = useSelector(store => store.order)
+  const {
+    isModalOpen,
+    cart,
+    bun,
+    orderRequest: isLoading,
+  } = useSelector(store => store.order)
 
-  const totalPrice = useMemo(
-    () =>
-      bun && cart
-        ? 2 * bun.price + cart.reduce((acc, { price }) => acc + price, 0)
-        : 0,
-    [cart, bun],
-  )
+  const totalPrice = useMemo(() => {
+    let sum = 0
+    sum += bun ? 2 * bun.price : 0
+    sum += cart ? cart.reduce((acc, { price }) => acc + price, 0) : 0
+    return sum
+  }, [cart, bun])
 
   const [, dropRef] = useDrop({
     accept: DRAG_TYPES.INGREDIENT,
@@ -60,7 +65,12 @@ const BurgerConstructor = () => {
   })
 
   const openModal = useCallback(
-    () => dispatch({ type: OPEN_MODAL }),
+    () => dispatch(createOrder([bun._id, cart.map(item => item._id), bun._id])),
+    [dispatch, cart, bun],
+  )
+
+  const closeModal = useCallback(
+    () => dispatch({ type: CLOSE_ORDER_MODAL }),
     [dispatch],
   )
 
@@ -122,12 +132,13 @@ const BurgerConstructor = () => {
           onClick={openModal}
           type='primary'
           size='large'
+          disabled={!bun}
         >
-          Оформить заказ
+          {isLoading ? 'Пожалуйста, подождите...' : 'Оформить заказ'}
         </Button>
       </div>
       {isModalOpen && (
-        <Modal>
+        <Modal closeModal={closeModal}>
           <OrderDetails />
         </Modal>
       )}

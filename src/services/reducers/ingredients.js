@@ -5,6 +5,7 @@ import {
   SET_TAB,
   INCREASE_COUNTER,
   DECREASE_COUNTER,
+  RESET_COUNTERS,
 } from 'services/actions/ingredients'
 import { INGREDIENT_TYPES } from 'utils/constants'
 
@@ -81,6 +82,12 @@ export const ingredientsReducer = (state = initialState, action) => {
         items: [...state.items].map(item =>
           item._id === action._id ? { ...item, count: item.count - 1 } : item,
         ),
+      }
+    }
+    case RESET_COUNTERS: {
+      return {
+        ...state,
+        items: [...state.items].map(item => ({ ...item, count: 0 })),
       }
     }
     default: {

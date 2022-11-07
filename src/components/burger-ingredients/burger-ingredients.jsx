@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useInView } from 'react-intersection-observer'
 
@@ -15,13 +15,13 @@ import { SET_TAB } from 'services/actions/ingredients'
 import { INGREDIENT_TYPES } from 'utils/constants'
 
 import burgerIngredientsStyles from './burger-ingredients.module.scss'
+import { RESET_DETAIL } from 'services/actions/detail'
 
 const BurgerIngredients = () => {
   const isOpen = useSelector(store => store.detail.isModalOpen)
   const { currentTab, ingredientsRequest: isLoading } = useSelector(
     store => store.ingredients,
   )
-
   const dispatch = useDispatch()
 
   const [bunSectionRef, bunInView] = useInView({ threshold: 0.01 })
@@ -68,6 +68,11 @@ const BurgerIngredients = () => {
       dispatch({ type: SET_TAB, tab: INGREDIENT_TYPES.MAIN })
     }
   }, [bunInView, sauceInView, mainInView, dispatch])
+
+  const closeModal = useCallback(
+    () => dispatch({ type: RESET_DETAIL }),
+    [dispatch],
+  )
 
   return (
     <>
@@ -121,7 +126,7 @@ const BurgerIngredients = () => {
         )}
       </div>
       {isOpen && (
-        <Modal>
+        <Modal closeModal={closeModal}>
           <IngredientDetails />
         </Modal>
       )}

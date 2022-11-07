@@ -5,7 +5,6 @@ import {
   CREATE_ORDER_FAILED,
   CREATE_ORDER_REQUEST,
   CREATE_ORDER_SUCCESS,
-  OPEN_MODAL,
   REMOVE_FROM_ORDER,
   MOVE_INGREDIENT,
 } from 'services/actions/order'
@@ -13,7 +12,6 @@ import {
 const initialState = {
   cart: [],
   bun: null,
-  name: '',
   isModalOpen: false,
   orderId: null,
   orderRequest: false,
@@ -42,20 +40,16 @@ export const orderReducer = (state = initialState, action) => {
       return {
         ...state,
         orderRequest: false,
-        name: action.order.name,
         orderId: action.order.order.number,
+        cart: [],
+        isModalOpen: true,
+        bun: '',
       }
     }
     case ADD_TO_ORDER: {
       return {
         ...state,
         cart: [...state.cart, action.ingredient],
-      }
-    }
-    case OPEN_MODAL: {
-      return {
-        ...state,
-        isModalOpen: true,
       }
     }
     case CLOSE_ORDER_MODAL: {
