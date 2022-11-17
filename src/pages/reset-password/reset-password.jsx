@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 import {
   Button,
@@ -51,14 +52,16 @@ const ResetPasswordPage = () => {
         >
           Вспомнили пароль?
           {
-            <Button
-              size='medium'
-              htmlType='button'
-              type='secondary'
-              extraClass={`${resetPasswordStyles.button} mb-2`}
-            >
-              Войти
-            </Button>
+            <Link to='/login'>
+              <Button
+                size='medium'
+                htmlType='button'
+                type='secondary'
+                extraClass={`${resetPasswordStyles.button} mb-2`}
+              >
+                Войти
+              </Button>
+            </Link>
           }
         </p>
       </form>

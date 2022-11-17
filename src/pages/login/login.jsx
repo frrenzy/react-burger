@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 import {
   Button,
@@ -51,14 +52,16 @@ const LoginPage = () => {
         >
           Вы - новый пользователь?
           {
-            <Button
-              size='medium'
-              htmlType='button'
-              type='secondary'
-              extraClass={`${loginStyles.button} mb-2`}
-            >
-              Зарегистрироваться
-            </Button>
+            <Link to='/register'>
+              <Button
+                size='medium'
+                htmlType='button'
+                type='secondary'
+                extraClass={`${loginStyles.button} mb-2`}
+              >
+                Зарегистрироваться
+              </Button>
+            </Link>
           }
         </p>
         <p
@@ -66,14 +69,16 @@ const LoginPage = () => {
         >
           Забыли пароль?
           {
-            <Button
-              size='medium'
-              htmlType='button'
-              type='secondary'
-              extraClass={`${loginStyles.button} mb-2`}
-            >
-              Восстановить пароль
-            </Button>
+            <Link to='/forgot-password'>
+              <Button
+                size='medium'
+                htmlType='button'
+                type='secondary'
+                extraClass={`${loginStyles.button} mb-2`}
+              >
+                Восстановить пароль
+              </Button>
+            </Link>
           }
         </p>
       </form>
