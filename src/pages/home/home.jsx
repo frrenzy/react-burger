@@ -1,16 +1,10 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
-import {
-  AppHeader,
-  BurgerIngredients,
-  BurgerConstructor,
-  Section,
-} from 'components'
+import BasePage from '../base'
+import { BurgerIngredients, BurgerConstructor, Section } from 'components'
 
 import { getIngredients } from 'services/actions/ingredients'
-
-import styles from './home.module.scss'
 
 const HomePage = () => {
   const dispatch = useDispatch()
@@ -20,17 +14,14 @@ const HomePage = () => {
   }, [dispatch])
 
   return (
-    <>
-      <AppHeader />
-      <main className={styles.main}>
-        <Section>
-          <BurgerIngredients />
-        </Section>
-        <Section>
-          <BurgerConstructor />
-        </Section>
-      </main>
-    </>
+    <BasePage>
+      <Section>
+        <BurgerIngredients />
+      </Section>
+      <Section>
+        <BurgerConstructor />
+      </Section>
+    </BasePage>
   )
 }
 
