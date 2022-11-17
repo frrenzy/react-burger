@@ -1,12 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import thunk from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import reportWebVitals from './reportWebVitals'
 
-import App from 'components'
+import App from 'app'
 import { rootReducer } from 'services/reducers'
 
 import './index.scss'
@@ -21,7 +23,9 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <DndProvider backend={HTML5Backend}>
+        <App />
+      </DndProvider>
     </Provider>
   </React.StrictMode>,
 )

@@ -1,4 +1,3 @@
-export { default } from './app'
 export { default as AppHeader } from './app-header'
 export { default as BurgerConstructor } from './burger-constructor'
 export { default as BurgerIngredients } from './burger-ingredients'
