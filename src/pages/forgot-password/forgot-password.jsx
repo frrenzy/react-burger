@@ -4,12 +4,12 @@ import {
   Button,
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import BasePage from 'pages/base/base'
+import BasePage from 'pages/base'
 
 import forgotPasswordStyles from './forgot-password.module.scss'
 
 const ForgotPasswordPage = () => {
-  const [form, setForm] = useState({ email: '', password: '' })
+  const [form, setForm] = useState({ email: '' })
 
   const handleInputChange = useCallback(
     e => setForm(form => ({ ...form, [e.target.name]: e.target.value })),
@@ -25,7 +25,7 @@ const ForgotPasswordPage = () => {
         <EmailInput
           name='email'
           onChange={handleInputChange}
-          placeholder='E-mail'
+          placeholder='Укажите e-mail'
           value={form.email}
           errorText='Ой! Кажется, в Вашем адресе ошибка :('
           extraClass='mb-6'

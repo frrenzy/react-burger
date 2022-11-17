@@ -5,7 +5,7 @@ import {
   PasswordInput,
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import BasePage from 'pages/base/base'
+import BasePage from 'pages/base'
 
 import loginStyles from './login.module.scss'
 
