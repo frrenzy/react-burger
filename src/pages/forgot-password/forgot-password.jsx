@@ -2,7 +2,6 @@ import { useCallback, useState } from 'react'
 
 import {
   Button,
-  PasswordInput,
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import BasePage from 'pages/base/base'
@@ -21,7 +20,7 @@ const ForgotPasswordPage = () => {
     <BasePage>
       <form className={forgotPasswordStyles.form}>
         <h2 className='text text_type_main-medium text_color_primary mb-6'>
-          Вход
+          Восстановление пароля
         </h2>
         <EmailInput
           name='email'
@@ -37,7 +36,7 @@ const ForgotPasswordPage = () => {
           type='primary'
           extraClass='mb-20'
         >
-          Войти
+          Восстановить
         </Button>
         <p
           className={`${forgotPasswordStyles.paragraph} text text_type_main-default text_color_inactive mb-4`}
