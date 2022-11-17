@@ -2,15 +2,16 @@ import { useCallback, useState } from 'react'
 
 import {
   Button,
-  PasswordInput,
   EmailInput,
+  PasswordInput,
+  Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import BasePage from 'pages/base/base'
 
-import loginStyles from './login.module.scss'
+import registrationStyles from './registration.module.scss'
 
-const LoginPage = () => {
-  const [form, setForm] = useState({ email: '', password: '' })
+const RegistrationPage = () => {
+  const [form, setForm] = useState({ name: '', email: '', password: '' })
 
   const handleInputChange = useCallback(
     e => setForm(form => ({ ...form, [e.target.name]: e.target.value })),
@@ -19,10 +20,17 @@ const LoginPage = () => {
 
   return (
     <BasePage>
-      <form className={loginStyles.form}>
+      <form className={registrationStyles.form}>
         <h2 className='text text_type_main-medium text_color_primary mb-6'>
-          Вход
+          Регистрация
         </h2>
+        <Input
+          name='name'
+          onChange={handleInputChange}
+          placeholder='Имя'
+          value={form.name}
+          extraClass='mb-6'
+        />
         <EmailInput
           name='email'
           onChange={handleInputChange}
@@ -44,35 +52,20 @@ const LoginPage = () => {
           type='primary'
           extraClass='mb-20'
         >
-          Войти
+          Зарегистрироваться
         </Button>
         <p
-          className={`${loginStyles.paragraph} text text_type_main-default text_color_inactive mb-4`}
+          className={`${registrationStyles.paragraph} text text_type_main-default text_color_inactive mb-4`}
         >
-          Вы - новый пользователь?
+          Уже зарегистрированы?
           {
             <Button
               size='medium'
               htmlType='button'
               type='secondary'
-              extraClass={`${loginStyles.button} mb-2`}
+              extraClass={`${registrationStyles.button} mb-2`}
             >
-              Зарегистрироваться
-            </Button>
-          }
-        </p>
-        <p
-          className={`${loginStyles.paragraph} text text_type_main-default text_color_inactive mb-4`}
-        >
-          Забыли пароль?
-          {
-            <Button
-              size='medium'
-              htmlType='button'
-              type='secondary'
-              extraClass={`${loginStyles.button} mb-2`}
-            >
-              Восстановить пароль
+              Войти
             </Button>
           }
         </p>
@@ -81,4 +74,4 @@ const LoginPage = () => {
   )
 }
 
-export default LoginPage
+export default RegistrationPage
