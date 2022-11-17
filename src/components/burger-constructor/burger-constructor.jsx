@@ -131,6 +131,7 @@ const BurgerConstructor = () => {
         <Button
           onClick={openModal}
           type='primary'
+          htmlType='button'
           size='large'
           disabled={!bun}
         >
