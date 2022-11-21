@@ -14,8 +14,8 @@ export const createOrder = ids => {
   return dispatch => {
     dispatch({ type: CREATE_ORDER_REQUEST })
     createOrderRequest(ids)
-      .then(res => {
-        dispatch({ type: CREATE_ORDER_SUCCESS, order: res })
+      .then(order => {
+        dispatch({ type: CREATE_ORDER_SUCCESS, order: order })
         dispatch({ type: RESET_COUNTERS })
       })
       .catch(error => dispatch({ type: CREATE_ORDER_FAILED, error }))

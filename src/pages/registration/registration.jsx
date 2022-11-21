@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, Redirect } from 'react-router-dom'
 
 import {
   Button,
@@ -9,9 +10,14 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import BasePage from 'pages/base'
 
+import { registerUser } from 'services/actions/auth'
+
 import registrationStyles from './registration.module.scss'
 
 const RegistrationPage = () => {
+  const user = useSelector(store => store.auth.user)
+  const dispatch = useDispatch()
+
   const [form, setForm] = useState({ name: '', email: '', password: '' })
 
   const handleInputChange = useCallback(
@@ -19,9 +25,22 @@ const RegistrationPage = () => {
     [setForm],
   )
 
-  return (
+  const submitHandler = useCallback(
+    e => {
+      e.preventDefault()
+      dispatch(registerUser(form))
+    },
+    [dispatch, form],
+  )
+
+  return user ? (
+    <Redirect to='/' />
+  ) : (
     <BasePage>
-      <form className={registrationStyles.form}>
+      <form
+        className={registrationStyles.form}
+        onSubmit={submitHandler}
+      >
         <h2 className='text text_type_main-medium text_color_primary mb-6'>
           Регистрация
         </h2>

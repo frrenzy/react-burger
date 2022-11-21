@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 import {
   Button,
@@ -9,8 +9,13 @@ import {
 import BasePage from 'pages/base'
 
 import loginStyles from './login.module.scss'
+import { useDispatch, useSelector } from 'react-redux'
+import { signIn } from 'services/actions/auth'
 
 const LoginPage = () => {
+  const user = useSelector(store => store.auth.user)
+  const dispatch = useDispatch()
+
   const [form, setForm] = useState({ email: '', password: '' })
 
   const handleInputChange = useCallback(
@@ -18,9 +23,22 @@ const LoginPage = () => {
     [setForm],
   )
 
-  return (
+  const handleSubmit = useCallback(
+    e => {
+      e.preventDefault()
+      dispatch(signIn(form))
+    },
+    [dispatch, form],
+  )
+
+  return user ? (
+    <Redirect to='/' />
+  ) : (
     <BasePage>
-      <form className={loginStyles.form}>
+      <form
+        className={loginStyles.form}
+        onSubmit={handleSubmit}
+      >
         <h2 className='text text_type_main-medium text_color_primary mb-6'>
           Вход
         </h2>
