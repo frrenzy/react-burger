@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 import {
   Button,
@@ -7,19 +7,35 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import BasePage from 'pages/base'
 
+import { getUserRequest } from 'api'
+
 import forgotPasswordStyles from './forgot-password.module.scss'
 
 const ForgotPasswordPage = () => {
   const [form, setForm] = useState({ email: '' })
+  const [isResetSuccess, setResetSuccess] = useState(false)
 
   const handleInputChange = useCallback(
     e => setForm(form => ({ ...form, [e.target.name]: e.target.value })),
     [setForm],
   )
 
-  return (
+  const handleSubmit = useCallback(
+    e => {
+      e.preventDefault()
+      getUserRequest().then(res => setResetSuccess(true))
+    },
+    [setResetSuccess],
+  )
+
+  return isResetSuccess ? (
+    <Redirect to='/reset-password' />
+  ) : (
     <BasePage>
-      <form className={forgotPasswordStyles.form}>
+      <form
+        className={forgotPasswordStyles.form}
+        onSubmit={handleSubmit}
+      >
         <h2 className='text text_type_main-medium text_color_primary mb-6'>
           Восстановление пароля
         </h2>

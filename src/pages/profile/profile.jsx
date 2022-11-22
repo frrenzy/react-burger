@@ -9,7 +9,7 @@ const ProfilePage = () => {
   const form = useState({ })
 
   return (
-    <BasePage>
+    <BasePage />
 
   )
 }

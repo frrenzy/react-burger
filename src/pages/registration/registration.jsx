@@ -28,7 +28,7 @@ const RegistrationPage = () => {
   const submitHandler = useCallback(
     e => {
       e.preventDefault()
-      dispatch(registerUser(form))
+      dispatch(registerUser({...form, a:true}))
     },
     [dispatch, form],
   )

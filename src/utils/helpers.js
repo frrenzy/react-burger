@@ -1,10 +1,16 @@
 export const checkResponse = response =>
-  response.ok ? response.json() : Promise.reject(`Error: ${response.status}`)
+  response.ok ? response.json() : Promise.reject(response)
 
-export const composeHeaders = token => ({
-  'Content-Type': 'application/json',
-  ...(token && { Authorization: `Bearer ${token}` }),
-})
+export const checkResponseSuccess = data =>
+  data.success ? Promise.resolve(data) : Promise.reject(data)
+
+export const composeHeaders = () => {
+  const token = getCookie('token')
+  return {
+    'Content-Type': 'application/json',
+    ...(token && { Authorization: `Bearer ${token}` }),
+  }
+}
 
 export function getCookie(name) {
   const matches = document.cookie.match(

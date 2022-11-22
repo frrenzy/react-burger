@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 import {
   Button,
@@ -8,19 +8,35 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import BasePage from 'pages/base'
 
+import { resetPasswordRequest } from 'api'
+
 import resetPasswordStyles from './reset-password.module.scss'
 
 const ResetPasswordPage = () => {
   const [form, setForm] = useState({ code: '', password: '' })
+  const [isResetSuccess, setResetSuccess] = useState(false)
 
   const handleInputChange = useCallback(
     e => setForm(form => ({ ...form, [e.target.name]: e.target.value })),
     [setForm],
   )
 
-  return (
+  const handleSubmit = useCallback(
+    e => {
+      e.preventDefault()
+      resetPasswordRequest().then(res => setResetSuccess(true))
+    },
+    [setResetSuccess],
+  )
+
+  return isResetSuccess ? (
+    <Redirect to='/' />
+  ) : (
     <BasePage>
-      <form className={resetPasswordStyles.form}>
+      <form
+        className={resetPasswordStyles.form}
+        onSubmit={handleSubmit}
+      >
         <h2 className='text text_type_main-medium text_color_primary mb-6'>
           Восстановление пароля
         </h2>
@@ -35,7 +51,7 @@ const ResetPasswordPage = () => {
           name='code'
           onChange={handleInputChange}
           placeholder='Введите код из письма'
-          value={form.email}
+          value={form.code}
           errorText='Проверьте введённый код'
           extraClass='mb-6'
         />
