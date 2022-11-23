@@ -6,7 +6,7 @@ import {
   ListIcon,
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import { HeaderButton } from 'components'
+import { HeaderLink } from 'components'
 
 import headerStyles from './app-header.module.scss'
 
@@ -18,31 +18,25 @@ const AppHeader = () => {
       <nav className={headerStyles.nav}>
         <ul className={`${headerStyles.list} pt-4 pb-4`}>
           <li className={headerStyles.item}>
-            <HeaderButton
+            <HeaderLink
               text='Конструктор'
-              value='constructor'
-              isActive={current === 'constructor'}
-              onClick={setCurrent}
               icon={BurgerIcon}
+              to='/'
             />
-            <HeaderButton
+            <HeaderLink
               text='Лента заказов'
-              value='orders'
-              isActive={current === 'orders'}
-              onClick={setCurrent}
               icon={ListIcon}
+              to='/orders'
             />
           </li>
           <li className={headerStyles.item}>
             <Logo />
           </li>
           <li className={headerStyles.item}>
-            <HeaderButton
+            <HeaderLink
               text='Личный кабинет'
-              value='profile'
-              isActive={current === 'profile'}
-              onClick={setCurrent}
               icon={ProfileIcon}
+              to='/profile'
             />
           </li>
         </ul>

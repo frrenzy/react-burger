@@ -6,6 +6,7 @@ import {
   RegistrationPage,
   ForgotPasswordPage,
   ResetPasswordPage,
+  ProfilePage,
 } from 'pages'
 
 const App = () => {
@@ -17,6 +18,12 @@ const App = () => {
           exact
         >
           <HomePage />
+        </Route>
+        <Route
+          path='/profile'
+          exact
+        >
+          <ProfilePage />
         </Route>
         <Route
           path='/login'
