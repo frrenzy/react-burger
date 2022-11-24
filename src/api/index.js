@@ -25,7 +25,9 @@ const request = (url, options) =>
 const requestWithRefreshToken = (url, options) =>
   request(url, options)
     .catch(res =>
-      res.status === 401 ? refreshTokenRequest() : Promise.reject(res),
+      res.status === 401 || res.status === 403
+        ? refreshTokenRequest()
+        : Promise.reject(res.message),
     )
     .then(res => request(url, options))
 
@@ -69,7 +71,6 @@ export const refreshTokenRequest = () => {
   }).then(res => {
     setCookie('token', res.accessToken.split('Bearer ')[1])
     sessionStorage.setItem('refreshToken', res.refreshToken)
-    return Promise.resolve('token has been successfully refreshed')
   })
 }
 
@@ -82,3 +83,9 @@ export const logoutRequest = () => {
 }
 
 export const getUserRequest = () => requestWithRefreshToken(USER_URL)
+
+export const editUserRequest = form =>
+  requestWithRefreshToken(USER_URL, {
+    method: 'PATCH',
+    body: JSON.stringify(form),
+  })

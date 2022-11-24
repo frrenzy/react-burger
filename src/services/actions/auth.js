@@ -1,10 +1,17 @@
-import { authenticateUserRequest, logoutRequest, registerUserRequest } from 'api'
+import {
+  authenticateUserRequest,
+  editUserRequest,
+  getUserRequest,
+  logoutRequest,
+  registerUserRequest,
+} from 'api'
 import { setCookie, deleteCookie } from 'utils/helpers'
 
 export const USER_REQUEST = 'USER_REQUEST'
 export const USER_REQUEST_SUCCESS = 'USER_REQUEST_SUCCESS'
 export const USER_REQUEST_FAILED = 'USER_REQUEST_FAILED'
 export const LOGOUT = 'LOGOUT'
+export const RESET_PROFILE = 'RESET_PROFILE'
 
 export const registerUser = userInfo => {
   return dispatch => {
@@ -32,6 +39,28 @@ export const signIn = credentials => {
   }
 }
 
+export const getUser = () => {
+  return dispatch => {
+    dispatch({ type: USER_REQUEST })
+    getUserRequest()
+      .then(res => {
+        dispatch({ type: USER_REQUEST_SUCCESS, user: res.user })
+      })
+      .catch(error => {
+        dispatch({ type: USER_REQUEST_FAILED, error })
+      })
+  }
+}
+
+export const editUser = form => {
+  return dispatch => {
+    dispatch({ type: USER_REQUEST })
+    editUserRequest(form)
+      .then(res => dispatch({ type: USER_REQUEST_SUCCESS, user: res.user }))
+      .catch(error => dispatch({ type: USER_REQUEST_FAILED, error }))
+  }
+}
+
 export const signOut = () => {
   return dispatch => {
     dispatch({ type: USER_REQUEST })
@@ -39,8 +68,8 @@ export const signOut = () => {
       .then(res => {
         dispatch({ type: LOGOUT })
         deleteCookie('token')
-        sessionStorage.removeItem('refreshToken')
       })
       .catch(error => dispatch({ type: USER_REQUEST_FAILED, error }))
+      .finally(res => sessionStorage.removeItem('refreshToken'))
   }
 }

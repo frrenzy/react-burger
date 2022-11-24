@@ -1,8 +1,12 @@
-export const checkResponse = response =>
-  response.ok ? response.json() : Promise.reject(response)
+export const checkResponse = response => {
+  return response.ok || response.status === 401
+    ? response.json()
+    : Promise.reject(response)
+}
 
-export const checkResponseSuccess = data =>
-  data.success ? Promise.resolve(data) : Promise.reject(data)
+export const checkResponseSuccess = data => {
+  return data.success ? Promise.resolve(data) : Promise.reject(data)
+}
 
 export const composeHeaders = () => {
   const token = getCookie('token')
