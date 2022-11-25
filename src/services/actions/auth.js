@@ -22,7 +22,9 @@ export const registerUser = userInfo => {
         sessionStorage.setItem('refreshToken', res.refreshToken)
         dispatch({ type: USER_REQUEST_SUCCESS, user: res.user })
       })
-      .catch(error => dispatch({ type: USER_REQUEST_FAILED, error }))
+      .catch(error =>
+        dispatch({ type: USER_REQUEST_FAILED, error: error.message }),
+      )
   }
 }
 
@@ -35,7 +37,9 @@ export const signIn = credentials => {
         sessionStorage.setItem('refreshToken', res.refreshToken)
         dispatch({ type: USER_REQUEST_SUCCESS, user: res.user })
       })
-      .catch(error => dispatch({ type: USER_REQUEST_FAILED, error }))
+      .catch(error =>
+        dispatch({ type: USER_REQUEST_FAILED, error: error.message }),
+      )
   }
 }
 
@@ -46,9 +50,9 @@ export const getUser = () => {
       .then(res => {
         dispatch({ type: USER_REQUEST_SUCCESS, user: res.user })
       })
-      .catch(error => {
-        dispatch({ type: USER_REQUEST_FAILED, error })
-      })
+      .catch(error =>
+        dispatch({ type: USER_REQUEST_FAILED, error: error.message }),
+      )
   }
 }
 
@@ -57,7 +61,9 @@ export const editUser = form => {
     dispatch({ type: USER_REQUEST })
     editUserRequest(form)
       .then(res => dispatch({ type: USER_REQUEST_SUCCESS, user: res.user }))
-      .catch(error => dispatch({ type: USER_REQUEST_FAILED, error }))
+      .catch(error =>
+        dispatch({ type: USER_REQUEST_FAILED, error: error.message }),
+      )
   }
 }
 
@@ -69,7 +75,9 @@ export const signOut = () => {
         dispatch({ type: LOGOUT })
         deleteCookie('token')
       })
-      .catch(error => dispatch({ type: USER_REQUEST_FAILED, error }))
+      .catch(error =>
+        dispatch({ type: USER_REQUEST_FAILED, error: error.message }),
+      )
       .finally(res => sessionStorage.removeItem('refreshToken'))
   }
 }

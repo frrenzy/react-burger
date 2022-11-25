@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { Link, Redirect } from 'react-router-dom'
+import { Link, Redirect, useLocation } from 'react-router-dom'
 
 import {
   Button,
@@ -11,9 +11,11 @@ import BasePage from 'pages/base'
 import loginStyles from './login.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { signIn } from 'services/actions/auth'
+import { Loading } from 'components'
 
 const LoginPage = () => {
-  const user = useSelector(store => store.auth.user)
+  const { state } = useLocation()
+  const { user, userRequest } = useSelector(store => store.auth)
   const dispatch = useDispatch()
 
   const [form, setForm] = useState({ email: '', password: '' })
@@ -31,8 +33,10 @@ const LoginPage = () => {
     [dispatch, form],
   )
 
-  return user ? (
-    <Redirect to='/' />
+  return userRequest ? (
+    <Loading />
+  ) : user ? (
+    <Redirect to={state?.from || '/'} />
   ) : (
     <BasePage>
       <form

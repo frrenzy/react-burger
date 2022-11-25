@@ -3,7 +3,6 @@ import {
   USER_REQUEST,
   USER_REQUEST_FAILED,
   USER_REQUEST_SUCCESS,
-  RESET_PROFILE,
 } from 'services/actions/auth'
 
 const initialState = {

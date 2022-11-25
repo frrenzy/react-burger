@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import BasePage from 'pages/base/base'
 
@@ -10,27 +10,22 @@ import {
   Input,
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import { Loading } from 'components'
 
-import { editUser, getUser, signOut } from 'services/actions/auth'
+import { editUser, signOut } from 'services/actions/auth'
 
 import profileStyles from './profile.module.scss'
 
 const ProfilePage = () => {
-  const { user, userFailed } = useSelector(store => store.auth)
+  const { user } = useSelector(store => store.auth)
   const dispatch = useDispatch()
 
-  const refreshToken = sessionStorage.getItem('refreshToken')
+  const history = useHistory()
 
   const [form, setForm] = useState({
     name: user?.name || '',
     email: user?.email || '',
     password: '',
   })
-
-  useEffect(() => {
-    dispatch(getUser())
-  }, [dispatch])
 
   useEffect(() => {
     setForm({ ...form, name: user?.name || '', email: user?.email || '' })
@@ -46,13 +41,12 @@ const ProfilePage = () => {
     dispatch(editUser(form))
   }
 
-  const handleExit = useCallback(() => dispatch(signOut()), [dispatch])
+  const handleExit = useCallback(() => {
+    dispatch(signOut())
+    history.replace('/login')
+  }, [dispatch, history])
 
-  return userFailed || !refreshToken ? (
-    <Redirect to='/login' />
-  ) : !user ? (
-    <Loading />
-  ) : (
+  return (
     <BasePage>
       <div className={`${profileStyles.container} mt-30`}>
         <div>

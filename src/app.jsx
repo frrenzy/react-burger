@@ -9,6 +9,8 @@ import {
   ProfilePage,
 } from 'pages'
 
+import { ProtectedRoute } from 'components'
+
 const App = () => {
   return (
     <Router>
@@ -19,12 +21,12 @@ const App = () => {
         >
           <HomePage />
         </Route>
-        <Route
+        <ProtectedRoute
           path='/profile'
           exact
         >
           <ProfilePage />
-        </Route>
+        </ProtectedRoute>
         <Route
           path='/login'
           exact

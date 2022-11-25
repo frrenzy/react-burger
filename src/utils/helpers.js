@@ -1,12 +1,15 @@
-export const checkResponse = response => {
-  return response.ok || response.status === 401
-    ? response.json()
-    : Promise.reject(response)
-}
+import { TOKEN_URL } from './constants'
 
-export const checkResponseSuccess = data => {
-  return data.success ? Promise.resolve(data) : Promise.reject(data)
-}
+export const checkResponse = response =>
+  response.ok
+    ? response.json()
+    : (response.status === 401 || response.status === 403) &&
+      response.url !== TOKEN_URL
+    ? Promise.reject(response)
+    : response.json().then(error => error)
+
+export const checkResponseSuccess = data =>
+  data.success ? Promise.resolve(data) : Promise.reject(data)
 
 export const composeHeaders = () => {
   const token = getCookie('token')
