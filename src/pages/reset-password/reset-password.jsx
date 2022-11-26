@@ -1,18 +1,24 @@
 import { useCallback, useState } from 'react'
-import { Link, Redirect } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Link, Redirect, useLocation } from 'react-router-dom'
 
 import {
   Button,
   PasswordInput,
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import BasePage from 'pages/base'
+import { BasePage } from 'pages'
 
 import { resetPasswordRequest } from 'api'
+import { getCookie } from 'utils/helpers'
 
 import resetPasswordStyles from './reset-password.module.scss'
 
 const ResetPasswordPage = () => {
+  const { state } = useLocation()
+  const authToken = getCookie('token')
+  const user = useSelector(store => store.auth.user)
+
   const [form, setForm] = useState({ code: '', password: '' })
   const [isResetSuccess, setResetSuccess] = useState(false)
 
@@ -29,7 +35,10 @@ const ResetPasswordPage = () => {
     [setResetSuccess],
   )
 
-  return isResetSuccess ? (
+  return isResetSuccess ||
+    state?.from !== 'forgot-password' ||
+    user ||
+    authToken ? (
     <Redirect to='/' />
   ) : (
     <BasePage>

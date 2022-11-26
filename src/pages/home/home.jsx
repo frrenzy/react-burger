@@ -1,17 +1,7 @@
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-
-import BasePage from '../base'
+import { BasePage } from 'pages'
 import { BurgerIngredients, BurgerConstructor, Section } from 'components'
 
-import { getIngredients } from 'services/actions/ingredients'
-
 const HomePage = () => {
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(getIngredients())
-  }, [dispatch])
 
   return (
     <BasePage>

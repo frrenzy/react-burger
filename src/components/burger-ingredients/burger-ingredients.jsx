@@ -5,8 +5,6 @@ import { useInView } from 'react-intersection-observer'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import {
   IngredientsSection,
-  Modal,
-  IngredientDetails,
   Loading,
 } from 'components'
 
@@ -15,10 +13,8 @@ import { SET_TAB } from 'services/actions/ingredients'
 import { INGREDIENT_TYPES } from 'utils/constants'
 
 import burgerIngredientsStyles from './burger-ingredients.module.scss'
-import { RESET_DETAIL } from 'services/actions/detail'
 
 const BurgerIngredients = () => {
-  const isOpen = useSelector(store => store.detail.isModalOpen)
   const { currentTab, ingredientsRequest: isLoading } = useSelector(
     store => store.ingredients,
   )
@@ -68,11 +64,6 @@ const BurgerIngredients = () => {
       dispatch({ type: SET_TAB, tab: INGREDIENT_TYPES.MAIN })
     }
   }, [bunInView, sauceInView, mainInView, dispatch])
-
-  const closeModal = useCallback(
-    () => dispatch({ type: RESET_DETAIL }),
-    [dispatch],
-  )
 
   return (
     <>
@@ -125,11 +116,6 @@ const BurgerIngredients = () => {
           ))
         )}
       </div>
-      {isOpen && (
-        <Modal closeModal={closeModal}>
-          <IngredientDetails />
-        </Modal>
-      )}
     </>
   )
 }

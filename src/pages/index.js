@@ -1,3 +1,4 @@
+export { default as BasePage } from './base'
 export { default as HomePage } from './home'
 export { default as LoginPage } from './login'
 export { default as RegistrationPage } from './registration'

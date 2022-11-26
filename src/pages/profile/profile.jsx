@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import BasePage from 'pages/base/base'
+import { BasePage } from 'pages'
 
 import {
   Button,
@@ -43,7 +43,7 @@ const ProfilePage = () => {
 
   const handleExit = useCallback(() => {
     dispatch(signOut())
-    history.replace('/login')
+    history.push('/login')
   }, [dispatch, history])
 
   return (

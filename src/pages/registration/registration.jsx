@@ -8,15 +8,19 @@ import {
   PasswordInput,
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import BasePage from 'pages/base'
+import { Loading } from 'components'
+import { BasePage } from 'pages'
 
 import { registerUser } from 'services/actions/auth'
+import { getCookie } from 'utils/helpers'
 
 import registrationStyles from './registration.module.scss'
 
 const RegistrationPage = () => {
-  const user = useSelector(store => store.auth.user)
+  const { user, userRequest } = useSelector(store => store.auth)
   const dispatch = useDispatch()
+
+  const authToken = getCookie('token')
 
   const [form, setForm] = useState({ name: '', email: '', password: '' })
 
@@ -28,12 +32,14 @@ const RegistrationPage = () => {
   const submitHandler = useCallback(
     e => {
       e.preventDefault()
-      dispatch(registerUser({...form, a:true}))
+      dispatch(registerUser({ ...form, a: true }))
     },
     [dispatch, form],
   )
 
-  return user ? (
+  return userRequest ? (
+    <Loading />
+  ) : user || authToken ? (
     <Redirect to='/' />
   ) : (
     <BasePage>

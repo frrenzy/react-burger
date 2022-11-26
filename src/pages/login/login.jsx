@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, Redirect, useLocation } from 'react-router-dom'
 
 import {
@@ -6,17 +7,20 @@ import {
   PasswordInput,
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import BasePage from 'pages/base'
+import { Loading } from 'components'
+import { BasePage } from 'pages'
+
+import { signIn } from 'services/actions/auth'
+import { getCookie } from 'utils/helpers'
 
 import loginStyles from './login.module.scss'
-import { useDispatch, useSelector } from 'react-redux'
-import { signIn } from 'services/actions/auth'
-import { Loading } from 'components'
 
 const LoginPage = () => {
   const { state } = useLocation()
   const { user, userRequest } = useSelector(store => store.auth)
   const dispatch = useDispatch()
+
+  const authToken = getCookie('token')
 
   const [form, setForm] = useState({ email: '', password: '' })
 
@@ -35,7 +39,7 @@ const LoginPage = () => {
 
   return userRequest ? (
     <Loading />
-  ) : user ? (
+  ) : user || authToken ? (
     <Redirect to={state?.from || '/'} />
   ) : (
     <BasePage>

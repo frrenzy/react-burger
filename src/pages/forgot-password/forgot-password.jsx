@@ -1,17 +1,22 @@
 import { useCallback, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 
 import {
   Button,
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import BasePage from 'pages/base'
+import { BasePage } from 'pages'
 
-import { getUserRequest } from 'api'
+import { sendResetEmailRequest } from 'api'
+import { getCookie } from 'utils/helpers'
 
 import forgotPasswordStyles from './forgot-password.module.scss'
 
 const ForgotPasswordPage = () => {
+  const user = useSelector(store => store.auth.user)
+  const authToken = getCookie('token')
+
   const [form, setForm] = useState({ email: '' })
   const [isResetSuccess, setResetSuccess] = useState(false)
 
@@ -23,13 +28,17 @@ const ForgotPasswordPage = () => {
   const handleSubmit = useCallback(
     e => {
       e.preventDefault()
-      getUserRequest().then(res => setResetSuccess(true))
+      sendResetEmailRequest().then(res => setResetSuccess(true))
     },
     [setResetSuccess],
   )
 
-  return isResetSuccess ? (
-    <Redirect to='/reset-password' />
+  return user || authToken ? (
+    <Redirect to='/' />
+  ) : isResetSuccess ? (
+    <Redirect
+      to={{ pathname: '/reset-password', state: { from: 'forgot-password' } }}
+    />
   ) : (
     <BasePage>
       <form

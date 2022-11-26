@@ -1,6 +1,9 @@
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { useCallback, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { Switch, Route, useLocation, useHistory } from 'react-router-dom'
 
 import {
+  BasePage,
   HomePage,
   LoginPage,
   RegistrationPage,
@@ -8,13 +11,26 @@ import {
   ResetPasswordPage,
   ProfilePage,
 } from 'pages'
+import { IngredientDetails, Modal, ProtectedRoute } from 'components'
 
-import { ProtectedRoute } from 'components'
+import { getIngredients } from 'services/actions/ingredients'
 
 const App = () => {
+  const dispatch = useDispatch()
+
+  const location = useLocation()
+  const history = useHistory()
+  const background = location.state?.background
+
+  useEffect(() => {
+    dispatch(getIngredients())
+  }, [dispatch])
+
+  const closeModal = useCallback(() => history.goBack(), [history])
+
   return (
-    <Router>
-      <Switch>
+    <>
+      <Switch location={background || location}>
         <Route
           path='/'
           exact
@@ -51,8 +67,27 @@ const App = () => {
         >
           <ResetPasswordPage />
         </Route>
+        <Route
+          path='/ingredients/:id'
+          exact
+        >
+          <BasePage>
+            <IngredientDetails />
+          </BasePage>
+        </Route>
       </Switch>
-    </Router>
+
+      {background && (
+        <Route
+          path='/ingredients/:id'
+          exact
+        >
+          <Modal closeModal={closeModal}>
+            <IngredientDetails />
+          </Modal>
+        </Route>
+      )}
+    </>
   )
 }
 
