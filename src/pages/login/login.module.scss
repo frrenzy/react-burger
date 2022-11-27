@@ -12,3 +12,7 @@
 .button {
   padding: 0 0 0 calc(2 * var(--offset-base-size));
 }
+
+.error {
+  color: var(--colors-interface-error);
+}

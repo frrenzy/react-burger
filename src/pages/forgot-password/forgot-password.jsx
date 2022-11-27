@@ -28,9 +28,9 @@ const ForgotPasswordPage = () => {
   const handleSubmit = useCallback(
     e => {
       e.preventDefault()
-      sendResetEmailRequest().then(res => setResetSuccess(true))
+      sendResetEmailRequest(form).then(res => setResetSuccess(true))
     },
-    [setResetSuccess],
+    [setResetSuccess, form],
   )
 
   return user || authToken ? (

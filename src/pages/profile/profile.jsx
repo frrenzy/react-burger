@@ -27,19 +27,42 @@ const ProfilePage = () => {
     password: '',
   })
 
+  const resetForm = useCallback(
+    () =>
+      setForm(form => ({
+        ...form,
+        name: user?.name || '',
+        email: user?.email || '',
+      })),
+    [user?.name, user?.email],
+  )
+
+  const isFormChanged = form.name !== user?.name || form.email !== user?.email
+
   useEffect(() => {
-    setForm({ ...form, name: user?.name || '', email: user?.email || '' })
-  }, [setForm, user?.name, user?.email]) //reset form values when stored user changes
+    resetForm()
+  }, [resetForm]) //reset form values when stored user changes
 
   const handleInputChange = useCallback(
     e => setForm(form => ({ ...form, [e.target.name]: e.target.value })),
     [setForm],
   )
 
-  const submitHandler = e => {
-    e.preventDefault()
-    dispatch(editUser(form))
-  }
+  const submitHandler = useCallback(
+    e => {
+      e.preventDefault()
+      dispatch(editUser(form))
+    },
+    [dispatch, form],
+  )
+
+  const resetHandler = useCallback(
+    e => {
+      e.preventDefault()
+      resetForm()
+    },
+    [resetForm],
+  )
 
   const handleExit = useCallback(() => {
     dispatch(signOut())
@@ -75,6 +98,7 @@ const ProfilePage = () => {
         <form
           className={profileStyles.form}
           onSubmit={submitHandler}
+          onReset={resetHandler}
         >
           <Input
             name='name'
@@ -101,14 +125,26 @@ const ProfilePage = () => {
             extraClass='mb-6'
             icon='EditIcon'
           />
-          <Button
-            size='medium'
-            htmlType='submit'
-            type='primary'
-            extraClass='mb-20'
-          >
-            Сохранить
-          </Button>
+          {(isFormChanged || form.password) && (
+            <div className={profileStyles.controls}>
+              <Button
+                size='medium'
+                htmlType='submit'
+                type='primary'
+                extraClass='mb-20'
+              >
+                Сохранить
+              </Button>
+              <Button
+                size='medium'
+                htmlType='reset'
+                type='primary'
+                extraClass='mb-20'
+              >
+                Отменить
+              </Button>
+            </div>
+          )}
         </form>
       </div>
     </BasePage>

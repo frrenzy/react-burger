@@ -23,7 +23,7 @@ export const registerUser = userInfo => {
         dispatch({ type: USER_REQUEST_SUCCESS, user: res.user })
       })
       .catch(error =>
-        dispatch({ type: USER_REQUEST_FAILED, error: error.message }),
+        dispatch({ type: USER_REQUEST_FAILED, error: error.message })
       )
   }
 }

@@ -17,7 +17,7 @@ import { getCookie } from 'utils/helpers'
 import registrationStyles from './registration.module.scss'
 
 const RegistrationPage = () => {
-  const { user, userRequest } = useSelector(store => store.auth)
+  const { user, userRequest, userFailed, userError } = useSelector(store => store.auth)
   const dispatch = useDispatch()
 
   const authToken = getCookie('token')
@@ -56,6 +56,8 @@ const RegistrationPage = () => {
           placeholder='Имя'
           value={form.name}
           extraClass='mb-6'
+          errorText={userError}
+          error={!!userFailed}
         />
         <EmailInput
           name='email'
@@ -71,6 +73,7 @@ const RegistrationPage = () => {
           placeholder='Пароль'
           value={form.password}
           extraClass='mb-6'
+          errorText='Длина пароля должна составлять минимум 6 символов'
         />
         <Button
           size='medium'

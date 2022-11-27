@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, Redirect, useLocation } from 'react-router-dom'
+import { Link, Redirect, useHistory, useLocation } from 'react-router-dom'
 
 import {
   Button,
@@ -17,7 +17,8 @@ import loginStyles from './login.module.scss'
 
 const LoginPage = () => {
   const { state } = useLocation()
-  const { user, userRequest } = useSelector(store => store.auth)
+  const history = useHistory()
+  const { user, userRequest, userFailed } = useSelector(store => store.auth)
   const dispatch = useDispatch()
 
   const authToken = getCookie('token')
@@ -36,6 +37,8 @@ const LoginPage = () => {
     },
     [dispatch, form],
   )
+
+  const handleClick = useCallback(() => history.push('/register'), [history])
 
   return userRequest ? (
     <Loading />
@@ -64,7 +67,13 @@ const LoginPage = () => {
           placeholder='Пароль'
           value={form.password}
           extraClass='mb-6'
+          errorText='Длина пароля должна составлять минимум 6 символов'
         />
+        {userFailed && (
+          <p className={`${loginStyles.error} text text_type_main-default m-4`}>
+            Логин или пароль неверны.
+          </p>
+        )}
         <Button
           size='medium'
           htmlType='submit'
@@ -78,16 +87,15 @@ const LoginPage = () => {
         >
           Вы - новый пользователь?
           {
-            <Link to='/register'>
-              <Button
-                size='medium'
-                htmlType='button'
-                type='secondary'
-                extraClass={`${loginStyles.button} mb-2`}
-              >
-                Зарегистрироваться
-              </Button>
-            </Link>
+            <Button
+              size='medium'
+              htmlType='button'
+              type='secondary'
+              extraClass={`${loginStyles.button} mb-2`}
+              onClick={handleClick}
+            >
+              Зарегистрироваться
+            </Button>
           }
         </p>
         <p

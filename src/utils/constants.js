@@ -20,8 +20,8 @@ const API_BASE_URL = 'https://norma.nomoreparties.space/api'
 export const INGREDIENTS_URL = `${API_BASE_URL}/ingredients`
 export const ORDERS_URL = `${API_BASE_URL}/orders`
 
-export const RESET_PASSWORD_URL = `${API_BASE_URL}/reset-password`
-export const RESET_PASSWORD_NEW_URL = `${API_BASE_URL}/reset-password/reset`
+export const RESET_PASSWORD_URL = `${API_BASE_URL}/password-reset`
+export const RESET_PASSWORD_NEW_URL = `${API_BASE_URL}/password-reset/reset`
 
 export const REGISTER_URL = `${API_BASE_URL}/auth/register`
 export const AUTHORIZATION_URL = `${API_BASE_URL}/auth/login`

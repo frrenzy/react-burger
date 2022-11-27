@@ -3,8 +3,7 @@ import { TOKEN_URL } from './constants'
 export const checkResponse = response =>
   response.ok
     ? response.json()
-    : (response.status === 401 || response.status === 403) &&
-      response.url !== TOKEN_URL
+    : response.status === 401 && response.url !== TOKEN_URL
     ? Promise.reject(response)
     : response.json().then(error => error)
 

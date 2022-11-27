@@ -42,7 +42,7 @@ export const createOrderRequest = ids =>
 export const sendResetEmailRequest = email =>
   request(RESET_PASSWORD_URL, {
     method: 'POST',
-    body: JSON.stringify({ email }),
+    body: JSON.stringify(email),
   })
 
 export const resetPasswordRequest = data =>

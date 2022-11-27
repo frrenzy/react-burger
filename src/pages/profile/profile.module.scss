@@ -18,3 +18,8 @@
   width: 320px;
   text-decoration: none;
 }
+
+.controls {
+  @include shared.flex(row, center);
+  gap: calc(4 * var(--offset-base-size));
+}
