@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, Redirect, useHistory, useLocation } from 'react-router-dom'
+import { Redirect, useHistory, useLocation } from 'react-router-dom'
 
 import { useForm } from 'hooks'
 

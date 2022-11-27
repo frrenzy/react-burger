@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
 
@@ -46,7 +46,7 @@ const ProfilePage = () => {
       dispatch(editUser(form))
       resetForm()
     },
-    [dispatch, form],
+    [dispatch, form, resetForm],
   )
 
   const resetHandler = useCallback(
