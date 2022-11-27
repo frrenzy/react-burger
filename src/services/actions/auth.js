@@ -18,12 +18,15 @@ export const registerUser = userInfo => {
     dispatch({ type: USER_REQUEST })
     registerUserRequest(userInfo)
       .then(res => {
-        setCookie('token', res.accessToken.split('Bearer ')[1])
+        const SECONDS_IN_MINUTE = 60
+        setCookie('token', res.accessToken.split('Bearer ')[1], {
+          expires: 15 * SECONDS_IN_MINUTE,
+        })
         sessionStorage.setItem('refreshToken', res.refreshToken)
         dispatch({ type: USER_REQUEST_SUCCESS, user: res.user })
       })
       .catch(error =>
-        dispatch({ type: USER_REQUEST_FAILED, error: error.message })
+        dispatch({ type: USER_REQUEST_FAILED, error: error.message }),
       )
   }
 }
@@ -33,7 +36,10 @@ export const signIn = credentials => {
     dispatch({ type: USER_REQUEST })
     authenticateUserRequest(credentials)
       .then(res => {
-        setCookie('token', res.accessToken.split('Bearer ')[1])
+        const SECONDS_IN_MINUTE = 60
+        setCookie('token', res.accessToken.split('Bearer ')[1], {
+          expires: 15 * SECONDS_IN_MINUTE,
+        })
         sessionStorage.setItem('refreshToken', res.refreshToken)
         dispatch({ type: USER_REQUEST_SUCCESS, user: res.user })
       })

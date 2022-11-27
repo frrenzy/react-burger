@@ -1,12 +1,13 @@
 import { useCallback, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, Redirect } from 'react-router-dom'
+import { Link, Redirect, useHistory } from 'react-router-dom'
+
+import { useForm } from 'hooks'
 
 import {
   Button,
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import { BasePage } from 'pages'
 
 import { sendResetEmailRequest } from 'api'
 import { getCookie } from 'utils/helpers'
@@ -17,13 +18,10 @@ const ForgotPasswordPage = () => {
   const user = useSelector(store => store.auth.user)
   const authToken = getCookie('token')
 
-  const [form, setForm] = useState({ email: '' })
-  const [isResetSuccess, setResetSuccess] = useState(false)
+  const history = useHistory()
 
-  const handleInputChange = useCallback(
-    e => setForm(form => ({ ...form, [e.target.name]: e.target.value })),
-    [setForm],
-  )
+  const { form, handleChange } = useForm({ email: '' })
+  const [isResetSuccess, setResetSuccess] = useState(false)
 
   const handleSubmit = useCallback(
     e => {
@@ -33,6 +31,8 @@ const ForgotPasswordPage = () => {
     [setResetSuccess, form],
   )
 
+  const handleClick = useCallback(() => history.push('/login'), [history])
+
   return user || authToken ? (
     <Redirect to='/' />
   ) : isResetSuccess ? (
@@ -40,49 +40,46 @@ const ForgotPasswordPage = () => {
       to={{ pathname: '/reset-password', state: { from: 'forgot-password' } }}
     />
   ) : (
-    <BasePage>
-      <form
-        className={forgotPasswordStyles.form}
-        onSubmit={handleSubmit}
+    <form
+      className={forgotPasswordStyles.form}
+      onSubmit={handleSubmit}
+    >
+      <h2 className='text text_type_main-medium text_color_primary mb-6'>
+        Восстановление пароля
+      </h2>
+      <EmailInput
+        name='email'
+        onChange={handleChange}
+        placeholder='Укажите e-mail'
+        value={form.email}
+        errorText='Ой! Кажется, в Вашем адресе ошибка :('
+        extraClass='mb-6'
+      />
+      <Button
+        size='medium'
+        htmlType='submit'
+        type='primary'
+        extraClass='mb-20'
       >
-        <h2 className='text text_type_main-medium text_color_primary mb-6'>
-          Восстановление пароля
-        </h2>
-        <EmailInput
-          name='email'
-          onChange={handleInputChange}
-          placeholder='Укажите e-mail'
-          value={form.email}
-          errorText='Ой! Кажется, в Вашем адресе ошибка :('
-          extraClass='mb-6'
-        />
-        <Button
-          size='medium'
-          htmlType='submit'
-          type='primary'
-          extraClass='mb-20'
-        >
-          Восстановить
-        </Button>
-        <p
-          className={`${forgotPasswordStyles.paragraph} text text_type_main-default text_color_inactive mb-4`}
-        >
-          Вспомнили пароль?
-          {
-            <Link to='/login'>
-              <Button
-                size='medium'
-                htmlType='button'
-                type='secondary'
-                extraClass={`${forgotPasswordStyles.button} mb-2`}
-              >
-                Войти
-              </Button>
-            </Link>
-          }
-        </p>
-      </form>
-    </BasePage>
+        Восстановить
+      </Button>
+      <p
+        className={`${forgotPasswordStyles.paragraph} text text_type_main-default text_color_inactive mb-4`}
+      >
+        Вспомнили пароль?
+        {
+          <Button
+            size='medium'
+            htmlType='button'
+            type='secondary'
+            extraClass={`${forgotPasswordStyles.button} mb-2`}
+            onClick={handleClick}
+          >
+            Войти
+          </Button>
+        }
+      </p>
+    </form>
   )
 }
 

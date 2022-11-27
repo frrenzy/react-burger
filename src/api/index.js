@@ -69,7 +69,10 @@ export const refreshTokenRequest = () => {
     method: 'POST',
     body: JSON.stringify({ token }),
   }).then(res => {
-    setCookie('token', res.accessToken.split('Bearer ')[1])
+    const SECONDS_IN_MINUTE = 60
+    setCookie('token', res.accessToken.split('Bearer ')[1], {
+      expires: 15 * SECONDS_IN_MINUTE,
+    })
     sessionStorage.setItem('refreshToken', res.refreshToken)
   })
 }

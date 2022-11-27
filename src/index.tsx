@@ -9,7 +9,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import reportWebVitals from './reportWebVitals'
 
-import App from 'app'
+import { App } from 'components'
 import { rootReducer } from 'services/reducers'
 
 import './index.scss'

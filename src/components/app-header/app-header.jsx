@@ -9,6 +9,7 @@ import {
 import { HeaderLink } from 'components'
 
 import headerStyles from './app-header.module.scss'
+import { Link } from 'react-router-dom'
 
 const AppHeader = () => {
   const [current, setCurrent] = useState('constructor')
@@ -30,7 +31,9 @@ const AppHeader = () => {
             />
           </li>
           <li className={headerStyles.item}>
-            <Logo />
+            <Link to='/'>
+              <Logo />
+            </Link>
           </li>
           <li className={headerStyles.item}>
             <HeaderLink
