@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 import { BasePage } from 'pages'
 
@@ -18,8 +18,6 @@ import profileStyles from './profile.module.scss'
 const ProfilePage = () => {
   const { user } = useSelector(store => store.auth)
   const dispatch = useDispatch()
-
-  const history = useHistory()
 
   const [form, setForm] = useState({
     name: user?.name || '',
@@ -66,29 +64,37 @@ const ProfilePage = () => {
 
   const handleExit = useCallback(() => {
     dispatch(signOut())
-    history.push('/login')
-  }, [dispatch, history])
+  }, [dispatch])
+
+  const generateNavLinkClassname = useCallback(
+    isActive => `${profileStyles.tab} text text_type_main-medium ${!isActive && 'text_color_inactive'} pt-4 pb-4`,
+    []
+  )
 
   return (
     <BasePage>
       <div className={`${profileStyles.container} mt-30`}>
         <div>
-          <p
-            className={`${profileStyles.tab} text text_type_main-medium text_color_primary pt-4 pb-4`}
+          <NavLink
+            className={generateNavLinkClassname}
+            activeClassName={'text_color_primary'}
+            to='/profile'
           >
             Профиль
-          </p>
-          <p
+          </NavLink>
+          <NavLink
             className={`${profileStyles.tab} text text_type_main-medium text_color_inactive pt-4 pb-4`}
+            to='/profile/orders'
           >
             История заказов
-          </p>
-          <p
+          </NavLink>
+          <Link
             className={`${profileStyles.tab} text text_type_main-medium text_color_inactive pt-4 pb-4`}
+            to='/login'
             onClick={handleExit}
           >
             Выход
-          </p>
+          </Link>
           <p
             className={`${profileStyles.tab} text text_type_main-default text_color_inactive mt-20`}
           >
