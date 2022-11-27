@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { useCallback, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 
 import headerButtonStyles from './header-link.module.scss'

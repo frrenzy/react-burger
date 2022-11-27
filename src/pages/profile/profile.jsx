@@ -79,12 +79,15 @@ const ProfilePage = () => {
             className={generateNavLinkClassname}
             activeClassName={'text_color_primary'}
             to='/profile'
+            exact
           >
             Профиль
           </NavLink>
           <NavLink
-            className={`${profileStyles.tab} text text_type_main-medium text_color_inactive pt-4 pb-4`}
+            className={generateNavLinkClassname}
+            activeClassName={'text_color_primary'}
             to='/profile/orders'
+            exact
           >
             История заказов
           </NavLink>

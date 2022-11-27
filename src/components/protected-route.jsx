@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect, Route } from 'react-router-dom'
-import { getUser } from 'services/actions/auth'
+
 import { Loading } from 'components'
 
-const ProtectedRoute = ({ children, ...rest }) => {
-  const { user, userRequest, userFailed } = useSelector(store => store.auth)
-  const dispatch = useDispatch()
+import { getUser } from 'services/actions/auth'
 
-  // const [userLoading, setUserLoading] = useState(true)
+const ProtectedRoute = ({ children, ...rest }) => {
+  const { user, userFailed } = useSelector(store => store.auth)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(getUser())
