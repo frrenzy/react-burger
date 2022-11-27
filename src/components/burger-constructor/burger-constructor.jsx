@@ -70,13 +70,11 @@ const BurgerConstructor = () => {
 
   const handleClick = useCallback(() => {
     if (!user) {
-      console.warn('redirect')
       history.push({
         pathname: '/login',
         state: { from: location },
       })
     } else {
-      console.log('order')
       dispatch(createOrder([bun._id, ...cart.map(item => item._id), bun._id]))
     }
   }, [dispatch, cart, bun, history, user, location])
