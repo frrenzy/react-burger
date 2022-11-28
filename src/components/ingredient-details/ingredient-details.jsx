@@ -1,23 +1,29 @@
 import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+
+import { Loading } from 'components'
 
 import ingredientDetailsStyles from './ingredient-details.module.scss'
 
 const IngredientDetails = () => {
-  const { image_large, name, fat, calories, proteins, carbohydrates } =
-    useSelector(store => store.detail.ingredient)
+  const { id } = useParams()
+  const ingredients = useSelector(store => store.ingredients.items)
+  const ingredient = ingredients.find(item => item._id === id)
 
-  return (
+  return !ingredient ? (
+    <Loading />
+  ) : (
     <div className={`${ingredientDetailsStyles.container} mt-15 mb-15`}>
       <h2 className='text text_type_main-large text_color_primary'>
         Детали ингредиента
       </h2>
       <img
-        src={image_large}
-        alt={name}
+        src={ingredient.image_large}
+        alt={ingredient.name}
         className='mb-4'
       />
       <h3 className='text text_type_main-medium text_color_primary mb-8'>
-        {name}
+        {ingredient.name}
       </h3>
       <div className={ingredientDetailsStyles.specs}>
         <div className={ingredientDetailsStyles.spec}>
@@ -34,7 +40,7 @@ const IngredientDetails = () => {
           <span
             className={`${ingredientDetailsStyles.item} text text_type_digits-default text_color_inactive`}
           >
-            {calories}
+            {ingredient.calories}
           </span>
         </div>
         <div className={ingredientDetailsStyles.spec}>
@@ -51,7 +57,7 @@ const IngredientDetails = () => {
           <span
             className={`${ingredientDetailsStyles.item} text text_type_digits-default text_color_inactive`}
           >
-            {proteins}
+            {ingredient.proteins}
           </span>
         </div>
         <div className={ingredientDetailsStyles.spec}>
@@ -68,7 +74,7 @@ const IngredientDetails = () => {
           <span
             className={`${ingredientDetailsStyles.item} text text_type_digits-default text_color_inactive`}
           >
-            {fat}
+            {ingredient.fat}
           </span>
         </div>
         <div className={ingredientDetailsStyles.spec}>
@@ -85,7 +91,7 @@ const IngredientDetails = () => {
           <span
             className={`${ingredientDetailsStyles.item} text text_type_digits-default text_color_inactive`}
           >
-            {carbohydrates}
+            {ingredient.carbohydrates}
           </span>
         </div>
       </div>

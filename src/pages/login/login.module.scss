@@ -1,0 +1,18 @@
+@use 'shared';
+
+.form {
+  @include shared.flex(column);
+  padding: 0 0 88px;
+}
+
+.paragraph {
+  text-align: center;
+}
+
+.button {
+  padding: 0 0 0 calc(2 * var(--offset-base-size));
+}
+
+.error {
+  color: var(--colors-interface-error);
+}

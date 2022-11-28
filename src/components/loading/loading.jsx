@@ -1,6 +1,6 @@
 import loadingStyles from './loading.module.scss'
 
-const Loading = props => {
+const Loading = () => {
   return <div className={loadingStyles.spinner}></div>
 }
 

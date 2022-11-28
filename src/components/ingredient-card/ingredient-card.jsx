@@ -1,24 +1,18 @@
 import { useCallback } from 'react'
-import { useDispatch } from 'react-redux'
+import { useHistory, useLocation } from 'react-router-dom'
 import { useDrag } from 'react-dnd'
 
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Price } from 'components'
 
-import { SET_DETAIL } from 'services/actions/detail'
-
-import { ingredient as ingredientType } from '../../utils/prop-types'
+import { DRAG_TYPES } from 'utils/constants'
+import { ingredient as ingredientType } from 'utils/prop-types'
 
 import ingredientCardStyles from './ingredient-card.module.scss'
-import { DRAG_TYPES } from 'utils/constants'
 
 const IngredientCard = ({ ingredient }) => {
-  const dispatch = useDispatch()
-  const onClick = useCallback(
-    () => dispatch({ type: SET_DETAIL, ingredient }),
-    [dispatch, ingredient],
-  )
-
+  const location = useLocation()
+  const history = useHistory()
   const [{ isDragged }, dragRef] = useDrag({
     type: DRAG_TYPES.INGREDIENT,
     item: ingredient,
@@ -26,6 +20,15 @@ const IngredientCard = ({ ingredient }) => {
       isDragged: monitor.isDragging(),
     }),
   })
+
+  const openModal = useCallback(
+    () =>
+      history.push({
+        pathname: `/ingredients/${ingredient._id}`,
+        state: { background: location },
+      }),
+    [history],
+  )
 
   return (
     <figure
@@ -37,7 +40,7 @@ const IngredientCard = ({ ingredient }) => {
         src={ingredient.image}
         alt={ingredient.name}
         className={`mr-4 ml-4 mb-1 ${ingredientCardStyles.image}`}
-        onClick={onClick}
+        onClick={openModal}
         ref={dragRef}
       />
       {ingredient.count > 0 && (

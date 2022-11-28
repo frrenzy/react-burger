@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useHistory, useLocation } from 'react-router-dom'
 import { useDrop } from 'react-dnd'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -24,13 +25,16 @@ import burgerConstructorStyles from './burger-constructor.module.scss'
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch()
-
+  const user = useSelector(store => store.auth.user)
   const {
     isModalOpen,
     cart,
     bun,
     orderRequest: isLoading,
   } = useSelector(store => store.order)
+
+  const history = useHistory()
+  const location = useLocation()
 
   const totalPrice = useMemo(() => {
     let sum = 0
@@ -64,10 +68,16 @@ const BurgerConstructor = () => {
     },
   })
 
-  const openModal = useCallback(
-    () => dispatch(createOrder([bun._id, cart.map(item => item._id), bun._id])),
-    [dispatch, cart, bun],
-  )
+  const handleClick = useCallback(() => {
+    if (!user) {
+      history.push({
+        pathname: '/login',
+        state: { from: location },
+      })
+    } else {
+      dispatch(createOrder([bun._id, ...cart.map(item => item._id), bun._id]))
+    }
+  }, [dispatch, cart, bun, history, user, location])
 
   const closeModal = useCallback(
     () => dispatch({ type: CLOSE_ORDER_MODAL }),
@@ -129,8 +139,9 @@ const BurgerConstructor = () => {
           size='medium'
         />
         <Button
-          onClick={openModal}
+          onClick={handleClick}
           type='primary'
+          htmlType='button'
           size='large'
           disabled={!bun}
         >
