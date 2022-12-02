@@ -1,5 +1,3 @@
-@use 'shared';
-
 .container {
   display: grid;
   grid-template-columns: 1fr max-content 1fr;
@@ -8,18 +6,8 @@
   height: 100%;
 }
 
-.form {
-  @include shared.flex(column);
-  padding: 0 0 calc(22 * var(--offset-base-size));
-}
-
 .tab {
   display: block;
   width: 320px;
   text-decoration: none;
-}
-
-.controls {
-  @include shared.flex(row, center);
-  gap: calc(4 * var(--offset-base-size));
 }

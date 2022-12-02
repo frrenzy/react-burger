@@ -1,6 +1,6 @@
+@use 'shared';
+
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include shared.flex(column);
   width: calc(100% - 2 * 25 * var(--offset-base-size));
 }

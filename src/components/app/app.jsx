@@ -48,7 +48,6 @@ const App = () => {
           </Route>
           <ProtectedRoute
             path='/profile'
-            exact
           >
             <ProfilePage />
           </ProtectedRoute>

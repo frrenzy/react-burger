@@ -1,0 +1,12 @@
+@use 'shared';
+
+.form {
+  @include shared.flex(column);
+  padding: 0 0 calc(22 * var(--offset-base-size));
+}
+
+.controls {
+  @include shared.flex(row, end);
+  gap: calc(4 * var(--offset-base-size));
+  width: 100%;
+}
