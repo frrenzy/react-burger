@@ -16,6 +16,7 @@ import {
   IngredientDetails,
   Modal,
   NotFound404,
+  OrderInfo,
   ProtectedRoute,
 } from 'components'
 
@@ -86,6 +87,14 @@ const App = () => {
           >
             <IngredientDetails />
           </Route>
+          <Route
+            path='/feed/:id'
+            exact
+          >
+            <Modal closeModal={closeModal}>
+              <OrderInfo />
+            </Modal>
+          </Route>
           <Route>
             <NotFound404 />
           </Route>
@@ -93,14 +102,24 @@ const App = () => {
       </main>
 
       {background && (
-        <Route
-          path='/ingredients/:id'
-          exact
-        >
-          <Modal closeModal={closeModal}>
-            <IngredientDetails />
-          </Modal>
-        </Route>
+        <Switch>
+          <Route
+            path='/ingredients/:id'
+            exact
+          >
+            <Modal closeModal={closeModal}>
+              <IngredientDetails />
+            </Modal>
+          </Route>
+          <Route
+            path='/feed/:id'
+            exact
+          >
+            <Modal closeModal={closeModal}>
+              <OrderInfo />
+            </Modal>
+          </Route>
+        </Switch>
       )}
     </>
   )

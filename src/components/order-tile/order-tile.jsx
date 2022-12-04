@@ -1,4 +1,6 @@
+import { useCallback } from 'react'
 import { useSelector } from 'react-redux'
+import { useHistory, useLocation } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import { FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -7,14 +9,27 @@ import { Price } from 'components'
 import orderTileStyles from './order-tile.module.scss'
 
 const OrderTile = ({ price, full }) => {
+  const history = useHistory()
+  const location = useLocation()
+
   const ingredients = useSelector(store => store.ingredients.items).slice(0, 7)
   const count = ingredients.length
+
+  const openModal = useCallback(
+    () =>
+      history.push({
+        pathname: `/feed/1`,
+        state: { background: location },
+      }),
+    [history],
+  )
 
   return (
     <div
       className={`${orderTileStyles.container} ${
         full ? orderTileStyles['container_full'] : ''
       } p-6`}
+      onClick={openModal}
     >
       <h2 className='text text_color_primary text_type_digits-default mb-6'>
         #034535

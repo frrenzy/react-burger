@@ -2,6 +2,7 @@
 
 .container {
   @include shared.flex(column, $ai: start);
+  width: 100%;
 }
 
 .statuses {

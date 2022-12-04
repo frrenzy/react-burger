@@ -31,12 +31,12 @@ const OrderInfo = () => {
   const bun = ingredients.find(item => item.type === INGREDIENT_TYPES.BUN)
 
   const total =
-    real.reduce((acc, item) => acc + item.price * item.count, 0) + 2 * bun.price
+    real.reduce((acc, item) => acc + item.price * item.count, 0) + 2 * bun?.price
 
-  return !ingredients.length ? (
+  return !ingredients.length || !bun ? (
     <Loading />
   ) : (
-    <div className={`${orderInfoStyles.container}`}>
+    <div className={`${orderInfoStyles.container} mt-10 mb-10`}>
       <h2
         className={`text text_color_primary text_type_digits-default mb-10 ${orderInfoStyles.number}`}
       >
