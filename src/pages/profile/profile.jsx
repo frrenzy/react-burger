@@ -1,6 +1,13 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
-import { Link, NavLink, Route, Switch, useRouteMatch} from 'react-router-dom'
+import {
+  Link,
+  NavLink,
+  Route,
+  Switch,
+  useLocation,
+  useRouteMatch,
+} from 'react-router-dom'
 
 import { signOut } from 'services/actions/auth'
 
@@ -12,6 +19,7 @@ const ProfilePage = () => {
   const dispatch = useDispatch()
 
   const { path } = useRouteMatch()
+  const { pathname: location } = useLocation()
 
   const generateNavLinkClassname = useCallback(
     isActive =>
@@ -25,9 +33,22 @@ const ProfilePage = () => {
     dispatch(signOut())
   }, [dispatch])
 
+  const containerClassName = useMemo(
+    () =>
+      location === '/profile'
+        ? `${profileStyles['container-form']} mt-30`
+        : `${profileStyles['container-orders']} mt-10`,
+    [location],
+  )
+
+  const tabsClassName = useMemo(
+    () => location === '/profile/orders' && 'mt-20',
+    [location],
+  )
+
   return (
-    <div className={`${profileStyles.container} mt-30`}>
-      <div>
+    <div className={containerClassName}>
+      <div className={tabsClassName}>
         <NavLink
           className={generateNavLinkClassname}
           activeClassName={'text_color_primary'}

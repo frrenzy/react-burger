@@ -1,0 +1,100 @@
+@use 'shared';
+
+.container {
+  display: grid;
+  grid-template-areas:
+    'number date'
+    'name name'
+    'images price';
+  box-sizing: border-box;
+  width: 584px;
+  height: 214px;
+  background-color: var(--background);
+  border-radius: 40px;
+}
+
+.number {
+  grid-area: number;
+}
+
+.date {
+  grid-area: date;
+  justify-self: end;
+}
+
+.name {
+  grid-area: name;
+}
+
+.images {
+  @include shared.flex(row-reverse);
+  grid-area: images;
+}
+
+.price {
+  grid-area: price;
+  justify-self: end;
+}
+
+.image-container {
+  @include shared.flex(row, center, center);
+  position: relative;
+  z-index: 12;
+  width: 112px;
+  height: 56px;
+  margin-right: -64px;
+
+  &:last-child {
+    margin-left: -24px;
+  }
+
+  &::before {
+    position: absolute;
+    top: -6px;
+    right: calc(50% - 34px);
+    z-index: 10;
+    width: 68px;
+    height: 68px;
+    background: linear-gradient(63.18deg, #801ab3 0%, #4c4cff 100%);
+    border-radius: 50%;
+    content: '';
+  }
+
+  &::after {
+    position: absolute;
+    top: -4px;
+    right: calc(50% - 32px);
+    z-index: 11;
+    width: 64px;
+    height: 64px;
+    background-color: #000000;
+    border-radius: 50%;
+    content: '';
+  }
+}
+
+.image {
+  position: relative;
+  z-index: 13;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.counter {
+  position: relative;
+  z-index: 13;
+
+  &::before {
+    position: absolute;
+    top: -20px;
+    right: calc(50% - 30px);
+    z-index: -1;
+    width: 64px;
+    height: 64px;
+    background-color: var(--background);
+    border-radius: 50%;
+    opacity: .6;
+    content: '';
+  }
+}
