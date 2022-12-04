@@ -8,9 +8,17 @@
     'images price';
   box-sizing: border-box;
   width: 584px;
-  height: 214px;
   background-color: var(--background);
   border-radius: 40px;
+
+  &_full {
+    grid-template-areas:
+      'number date'
+      'name name'
+      'status status'
+      'images price';
+    width: 844px;
+  }
 }
 
 .number {
@@ -97,4 +105,8 @@
     opacity: .6;
     content: '';
   }
+}
+
+.status {
+  grid-area: status;
 }

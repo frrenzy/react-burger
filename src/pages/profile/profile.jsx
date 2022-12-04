@@ -89,7 +89,7 @@ const ProfilePage = () => {
           path={`${path}/orders`}
           exact
         >
-          <OrderList />
+          <OrderList full={true} />
         </Route>
       </Switch>
     </div>

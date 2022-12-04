@@ -12,7 +12,7 @@ const FeedPage = () => {
         <h2 className='text text_color_primary text_type_main-large mt-10 mb-5'>
           Лента заказов
         </h2>
-        <OrderList />
+        <OrderList full={false} />
       </Section>
       <Section>
         <div className={`${feedStyles.container} mt-25`}>

@@ -6,12 +6,16 @@ import { Price } from 'components'
 
 import orderTileStyles from './order-tile.module.scss'
 
-const OrderTile = ({ price }) => {
+const OrderTile = ({ price, full }) => {
   const ingredients = useSelector(store => store.ingredients.items).slice(0, 7)
   const count = ingredients.length
 
   return (
-    <div className={`${orderTileStyles.container} p-6`}>
+    <div
+      className={`${orderTileStyles.container} ${
+        full ? orderTileStyles['container_full'] : ''
+      } p-6`}
+    >
       <h2 className='text text_color_primary text_type_digits-default mb-6'>
         #034535
       </h2>
@@ -25,10 +29,21 @@ const OrderTile = ({ price }) => {
         i-GMT+3
       </p>
       <h3
-        className={`${orderTileStyles.name} text text_color_primary text_type_main-medium mb-6`}
+        className={`${
+          orderTileStyles.name
+        } text text_color_primary text_type_main-medium ${
+          full ? 'mb-2' : 'mb-6'
+        }`}
       >
         Death Star Starship Main burger
       </h3>
+      {full && (
+        <p
+          className={`${orderTileStyles.status} text text_color_primary text_type_main-default mb-6`}
+        >
+          ready
+        </p>
+      )}
       <div className={orderTileStyles.images}>
         {count > 6 && (
           <p
