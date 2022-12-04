@@ -18,7 +18,7 @@ const OrderTile = ({ price, full }) => {
   const openModal = useCallback(
     () =>
       history.push({
-        pathname: `/feed/1`,
+        pathname: `${location.pathname}/1`,
         state: { background: location },
       }),
     [history],

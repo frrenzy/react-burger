@@ -13,7 +13,7 @@ import { signOut } from 'services/actions/auth'
 
 import profileStyles from './profile.module.scss'
 import ProfileForm from 'components/profile-form/profile-form'
-import { OrderList } from 'components'
+import { OrderInfo, OrderList } from 'components'
 
 const ProfilePage = () => {
   const dispatch = useDispatch()
@@ -42,7 +42,7 @@ const ProfilePage = () => {
   )
 
   const tabsClassName = useMemo(
-    () => location === '/profile/orders' ? 'mt-20' : '',
+    () => (location === '/profile' ? '' : 'mt-20'),
     [location],
   )
 
@@ -90,6 +90,12 @@ const ProfilePage = () => {
           exact
         >
           <OrderList full={true} />
+        </Route>
+        <Route
+          path={`${path}/orders/:id`}
+          exact
+        >
+          <OrderInfo />
         </Route>
       </Switch>
     </div>

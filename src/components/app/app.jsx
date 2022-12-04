@@ -91,9 +91,7 @@ const App = () => {
             path='/feed/:id'
             exact
           >
-            <Modal closeModal={closeModal}>
-              <OrderInfo />
-            </Modal>
+            <OrderInfo />
           </Route>
           <Route>
             <NotFound404 />
@@ -119,6 +117,14 @@ const App = () => {
               <OrderInfo />
             </Modal>
           </Route>
+          <ProtectedRoute
+            path='/profile/orders/:id'
+            exact
+          >
+            <Modal closeModal={closeModal}>
+              <OrderInfo />
+            </Modal>
+          </ProtectedRoute>
         </Switch>
       )}
     </>
