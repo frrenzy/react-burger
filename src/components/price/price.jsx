@@ -19,7 +19,7 @@ const Price = ({ value, size = 'default', className = '' }) => {
 }
 
 Price.propTypes = {
-  value: PropTypes.number.isRequired,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   size: PropTypes.string,
   className: PropTypes.string,
 }

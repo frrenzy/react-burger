@@ -42,7 +42,7 @@ const ProfilePage = () => {
   )
 
   const tabsClassName = useMemo(
-    () => location === '/profile/orders' && 'mt-20',
+    () => location === '/profile/orders' ? 'mt-20' : '',
     [location],
   )
 
