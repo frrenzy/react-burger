@@ -3,4 +3,9 @@
 .paragraph {
   @include shared.flex(row, center);
   gap: calc(2 * var(--offset-base-size));
+  width: max-content;
+}
+
+.span {
+  width: max-content;
 }

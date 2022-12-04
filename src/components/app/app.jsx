@@ -46,9 +46,7 @@ const App = () => {
           >
             <HomePage />
           </Route>
-          <ProtectedRoute
-            path='/profile'
-          >
+          <ProtectedRoute path='/profile'>
             <ProfilePage />
           </ProtectedRoute>
           <Route

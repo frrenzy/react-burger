@@ -4,14 +4,12 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 
 import priceStyles from './price.module.scss'
 
-const Price = ({ value, size = 'default' }) => {
+const Price = ({ value, size = 'default', className = '' }) => {
   return (
     <p
-      className={`text text_type_digits-${size} text_color_primary ${
-        size === 'default' ? 'mb-2' : ''
-      } ${priceStyles.paragraph}`}
+      className={`text text_type_digits-${size} text_color_primary ${priceStyles.paragraph} ${className}`}
     >
-      <span>{value}</span>
+      <span className={priceStyles.span}>{value}</span>
       <CurrencyIcon
         classname='ml-10'
         type='primary'
@@ -23,6 +21,7 @@ const Price = ({ value, size = 'default' }) => {
 Price.propTypes = {
   value: PropTypes.number.isRequired,
   size: PropTypes.string,
+  className: PropTypes.string,
 }
 
 export default Price
