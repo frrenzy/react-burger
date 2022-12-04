@@ -23,7 +23,7 @@ const AppHeader = () => {
             <HeaderLink
               text='Лента заказов'
               icon={ListIcon}
-              to='/orders'
+              to='/feed'
             />
           </li>
           <li className={headerStyles.item}>

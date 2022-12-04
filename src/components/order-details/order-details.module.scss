@@ -4,3 +4,7 @@
   @include shared.flex(column);
   width: calc(100% - 2 * 25 * var(--offset-base-size));
 }
+
+.shadow {
+  @include shared.shadow;
+}

@@ -1,0 +1,23 @@
+@use 'shared';
+
+.container {
+  @include shared.flex(column, $ai: start);
+}
+
+.statuses {
+  @include shared.flex(row, space-between);
+  width: 100%;
+}
+
+.status {
+  width: calc((100% - 9 * var(--offset-base-size)) / 2);
+}
+
+.list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.shadow {
+  @include shared.shadow;
+}

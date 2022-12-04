@@ -9,6 +9,7 @@ import {
   ForgotPasswordPage,
   ResetPasswordPage,
   ProfilePage,
+  FeedPage,
 } from 'pages'
 import {
   AppHeader,
@@ -45,6 +46,12 @@ const App = () => {
             exact
           >
             <HomePage />
+          </Route>
+          <Route
+            path='/feed'
+            exact
+          >
+            <FeedPage />
           </Route>
           <ProtectedRoute path='/profile'>
             <ProfilePage />

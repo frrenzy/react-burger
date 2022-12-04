@@ -9,7 +9,9 @@ const OrderDetails = () => {
 
   return (
     <div className={`${orderDetailsStyles.container} mt-30 mb-30`}>
-      <h2 className='text text_color_primary text_type_digits-large mb-8'>
+      <h2
+        className={`${orderDetailsStyles.shadow} text text_color_primary text_type_digits-large mb-8`}
+      >
         {orderId}
       </h2>
       <p className='text text_color_primary text_type_main-medium mb-15'>

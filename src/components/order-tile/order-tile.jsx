@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import { Price } from 'components'
 import { FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components'
+import { Price } from 'components'
 
 import orderTileStyles from './order-tile.module.scss'
 

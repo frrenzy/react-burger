@@ -28,7 +28,7 @@
     "editorconfig": "editorconfig-cli",
     "stylelint": "stylelint \"src/**/*.scss\" --custom-syntax 'postcss-scss'",
     "stylelint:fix": "stylelint \"src/**/*.scss\" --custom-syntax 'postcss-scss' --fix",
-    "lint": "yarn editorconfig && yarn stylelint",
+    "lint": "yarn editorconfig && yarn stylelint:fix",
     "prepare": "husky install",
     "staged": "lint-staged",
     "ci": "rm -rf node_modules && yarn install --frozen-lockfile"
