@@ -12,6 +12,8 @@ import {
   ALL_ORDERS_URL,
   INGREDIENT_TYPES,
   USER_ORDERS_URL,
+  RUSSIAN_ORDER_STATUSES,
+  ORDER_STATUS_COLORS,
 } from 'utils/constants'
 
 import orderInfoStyles from './order-info.module.scss'
@@ -79,11 +81,15 @@ const OrderInfo = () => {
       >
         {order.name}
       </h4>
-      <p className='text text_color_success text_type_main-default mb-15'>
-        {order.status}
+      <p
+        className={`text text_color_${
+          ORDER_STATUS_COLORS[order.status]
+        } text_type_main-default mb-15`}
+      >
+        {RUSSIAN_ORDER_STATUSES[order.status]}
       </p>
       <p className='text text_color_primary text_type_main-medium mb-6'>
-        Sostav:
+        Состав:
       </p>
       <div className={`${orderInfoStyles.images} mb-10`}>
         {orderWithCount.map(
@@ -100,7 +106,7 @@ const OrderInfo = () => {
               <p
                 className={`${orderInfoStyles.name} text text_color_primary text_type_main-default`}
               >
-                {`${name} aboba`}
+                {`${name}`}
               </p>
               <Price
                 value={`${

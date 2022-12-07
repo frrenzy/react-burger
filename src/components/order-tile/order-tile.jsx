@@ -7,8 +7,13 @@ import PropTypes from 'prop-types'
 import { FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Price } from 'components'
 
+import {
+  INGREDIENT_TYPES,
+  RUSSIAN_ORDER_STATUSES,
+  ORDER_STATUS_COLORS,
+} from 'utils/constants'
+
 import orderTileStyles from './order-tile.module.scss'
-import { INGREDIENT_TYPES } from 'utils/constants'
 
 const OrderTile = ({
   order: { name, number, createdAt, status, ingredients: orderIngredientsIds },
@@ -30,7 +35,7 @@ const OrderTile = ({
         pathname: `${location.pathname}/${number}`,
         state: { background: location },
       }),
-    [history, location],
+    [history, location, number],
   )
 
   const bunPrice = useMemo(
@@ -76,9 +81,9 @@ const OrderTile = ({
       </h3>
       {full && (
         <p
-          className={`${orderTileStyles.status} text text_color_primary text_type_main-default mb-6`}
+          className={`${orderTileStyles.status} text text_color_${ORDER_STATUS_COLORS[status]} text_type_main-default mb-6`}
         >
-          {status}
+          {RUSSIAN_ORDER_STATUSES[status]}
         </p>
       )}
       <div className={orderTileStyles.images}>
@@ -92,7 +97,7 @@ const OrderTile = ({
         {orderIngredients
           .slice(0, 6)
           .reverse()
-          .map((item, i) => (
+          .map(item => (
             <div
               className={`${orderTileStyles['image-container']} mb-1 mt-1`}
               key={uuidv4()}
@@ -111,6 +116,17 @@ const OrderTile = ({
       />
     </div>
   )
+}
+
+OrderTile.propTypes = {
+  order: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    number: PropTypes.number.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+    ingredients: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  }),
+  full: PropTypes.bool.isRequired,
 }
 
 export default OrderTile

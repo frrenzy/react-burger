@@ -15,6 +15,27 @@ export const TILE_TYPES = {
   BOTTOM: 'bottom',
 }
 
+const ORDER_STATUSES = {
+  DONE: 'done',
+  CREATED: 'created',
+  CANCELLED: 'cancelled',
+  PENDING: 'pending',
+}
+
+export const RUSSIAN_ORDER_STATUSES = {
+  [ORDER_STATUSES.CREATED]: 'Создан',
+  [ORDER_STATUSES.PENDING]: 'Готовится',
+  [ORDER_STATUSES.DONE]: 'Выполнен',
+  [ORDER_STATUSES.CANCELLED]: 'Отменён',
+}
+
+export const ORDER_STATUS_COLORS = {
+  [ORDER_STATUSES.CANCELLED]: 'error',
+  [ORDER_STATUSES.DONE]: 'success',
+  [ORDER_STATUSES.PENDING]: 'primary',
+  [ORDER_STATUSES.CREATED]: 'primary',
+}
+
 const API_BASE_URL = 'https://norma.nomoreparties.space/api'
 const WS_BASE_URL = 'wss://norma.nomoreparties.space/orders'
 
