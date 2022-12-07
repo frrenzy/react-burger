@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory, useLocation } from 'react-router-dom'
-import { v4 as uuidv4 } from 'uuid'
 import PropTypes from 'prop-types'
 
 import { FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -52,7 +51,7 @@ const OrderTile = ({
   )
 
   return (
-    <div
+    <li
       className={`${orderTileStyles.container} ${
         full ? orderTileStyles['container_full'] : ''
       } p-6`}
@@ -97,13 +96,13 @@ const OrderTile = ({
         {orderIngredients
           .slice(0, 6)
           .reverse()
-          .map(item => (
+          .map(({ _id, image_mobile }) => (
             <div
               className={`${orderTileStyles['image-container']} mb-1 mt-1`}
-              key={uuidv4()}
+              key={_id}
             >
               <img
-                src={item.image_mobile}
+                src={image_mobile}
                 alt='Ingredient pic'
                 className={orderTileStyles.image}
               />
@@ -114,7 +113,7 @@ const OrderTile = ({
         value={totalPrice}
         className={orderTileStyles.price}
       />
-    </div>
+    </li>
   )
 }
 

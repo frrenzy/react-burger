@@ -30,19 +30,15 @@ const OrderList = ({ full }) => {
   const orders = useSelector(store => store.feed.orders)
 
   return (
-    <div
-      className={`${orderListStyles.orders} ${
-        isProfile && orderListStyles.self
-      }`}
-    >
-      {orders.map(order => (
+    <ul className={orderListStyles.orders}>
+      {(isProfile ? [...orders].reverse() : orders).map(order => (
         <OrderTile
           order={order}
           full={full}
           key={order._id}
         />
       ))}
-    </div>
+    </ul>
   )
 }
 

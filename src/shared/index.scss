@@ -1,4 +1,6 @@
 @mixin custom-scroll($offset-bottom: 0, $offset-top: 0) {
+  overflow: auto;
+
   &::-webkit-scrollbar {
     width: 8px;
     height: 100%;

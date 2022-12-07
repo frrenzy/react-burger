@@ -5,7 +5,7 @@ import { useLocation, useParams } from 'react-router-dom'
 import { FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Loading, Price } from 'components'
 
-import { WS_CONNECTION_START } from 'services/actions/feed'
+import { WS_CONNECTION_END, WS_CONNECTION_START } from 'services/actions/feed'
 
 import { getCookie } from 'utils/helpers'
 import {
@@ -21,14 +21,16 @@ import orderInfoStyles from './order-info.module.scss'
 const OrderInfo = () => {
   const dispatch = useDispatch()
   const { id } = useParams()
-  const { pathname } = useLocation()
+  const { pathname, state } = useLocation()
 
   useEffect(() => {
     const url = pathname.startsWith('/profile')
       ? `${USER_ORDERS_URL}${getCookie('token')}`
       : ALL_ORDERS_URL
     dispatch({ type: WS_CONNECTION_START, url })
-  })
+
+    if (!state) return () => dispatch({ type: WS_CONNECTION_END })
+  }, [dispatch, pathname, state])
 
   const orders = useSelector(store => store.feed.orders)
   const order = useMemo(
