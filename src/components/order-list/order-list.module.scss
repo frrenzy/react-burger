@@ -7,3 +7,7 @@
   max-height: calc(100vh - 188px);
   overflow: auto;
 }
+
+.self {
+  @include shared.flex(column-reverse);
+}

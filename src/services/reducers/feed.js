@@ -1,4 +1,5 @@
 import {
+  WS_CONNECTION_CLOSED,
   WS_CONNECTION_ERROR,
   WS_CONNECTION_SUCCESS,
   WS_GET_MESSAGE,
@@ -27,6 +28,11 @@ export const feedReducer = (state = initialState, action) => {
       return {
         ...state,
         ...action.payload,
+      }
+    case WS_CONNECTION_CLOSED:
+      return {
+        ...state,
+        wsConnected: false,
       }
     default:
       return state

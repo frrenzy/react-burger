@@ -1,24 +1,11 @@
-import { useEffect, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-
-import { WS_CONNECTION_END, WS_CONNECTION_START } from 'services/actions/feed'
+import { useMemo } from 'react'
+import { useSelector } from 'react-redux'
 
 import { Loading, OrderList, Section } from 'components'
 
 import feedStyles from './feed.module.scss'
 
 const FeedPage = () => {
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch({
-      type: WS_CONNECTION_START,
-      url: 'wss://norma.nomoreparties.space/orders/all',
-    })
-
-    return () => dispatch({ type: WS_CONNECTION_END })
-  }, [dispatch])
-
   const { wsConnected, total, totalToday } = useSelector(store => store.feed)
 
   const readyOrders = useSelector(store =>
@@ -35,9 +22,7 @@ const FeedPage = () => {
   const ready = useMemo(() => readyOrders?.slice(0, 10), [readyOrders])
   const wip = useMemo(() => wipOrders?.slice(0, 10), [wipOrders])
 
-  return !wsConnected ? (
-    <Loading />
-  ) : (
+  return (
     <>
       <Section>
         <h2 className='text text_color_primary text_type_main-large mt-10 mb-5'>

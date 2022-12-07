@@ -1,16 +1,32 @@
-import { useMemo } from 'react'
-import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useEffect, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useLocation, useParams } from 'react-router-dom'
 
 import { FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Loading, Price } from 'components'
 
-import { INGREDIENT_TYPES } from 'utils/constants'
+import { WS_CONNECTION_START } from 'services/actions/feed'
+
+import { getCookie } from 'utils/helpers'
+import {
+  ALL_ORDERS_URL,
+  INGREDIENT_TYPES,
+  USER_ORDERS_URL,
+} from 'utils/constants'
 
 import orderInfoStyles from './order-info.module.scss'
 
 const OrderInfo = () => {
+  const dispatch = useDispatch()
   const { id } = useParams()
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    const url = pathname.startsWith('/profile')
+      ? `${USER_ORDERS_URL}${getCookie('token')}`
+      : ALL_ORDERS_URL
+    dispatch({ type: WS_CONNECTION_START, url })
+  })
 
   const orders = useSelector(store => store.feed.orders)
   const order = useMemo(

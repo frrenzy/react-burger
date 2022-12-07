@@ -9,7 +9,7 @@ export const socketMiddleware = wsActions => {
 
       if (type === wsInit) {
         const { url } = action
-        if (!socket) {
+        if (!socket || socket.readyState === 3) {
           socket = new WebSocket(`${url}`)
         } else if (socket.url !== url) {
           socket.close()
