@@ -1,27 +1,49 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory, useLocation } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid'
 import PropTypes from 'prop-types'
 
 import { FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Price } from 'components'
 
 import orderTileStyles from './order-tile.module.scss'
+import { INGREDIENT_TYPES } from 'utils/constants'
 
-const OrderTile = ({ price, full }) => {
+const OrderTile = ({
+  order: { name, number, createdAt, status, ingredients: orderIngredientsIds },
+  full,
+}) => {
   const history = useHistory()
   const location = useLocation()
 
-  const ingredients = useSelector(store => store.ingredients.items).slice(0, 7)
-  const count = ingredients.length
+  const ingredients = useSelector(store => store.ingredients.items)
+  const orderIngredients = useMemo(
+    () => ingredients.filter(({ _id }) => orderIngredientsIds.includes(_id)),
+    [ingredients, orderIngredientsIds],
+  )
+  const count = orderIngredients.length
 
   const openModal = useCallback(
     () =>
       history.push({
-        pathname: `${location.pathname}/1`,
+        pathname: `${location.pathname}/${number}`,
         state: { background: location },
       }),
-    [history],
+    [history, location],
+  )
+
+  const bunPrice = useMemo(
+    () =>
+      orderIngredients.find(
+        ingredient => ingredient.type === INGREDIENT_TYPES.BUN,
+      )?.price ?? 0,
+    [orderIngredients],
+  )
+  const totalPrice = useMemo(
+    () =>
+      bunPrice + orderIngredients.reduce((acc, item) => acc + item.price, 0),
+    [bunPrice, orderIngredients],
   )
 
   return (
@@ -32,13 +54,13 @@ const OrderTile = ({ price, full }) => {
       onClick={openModal}
     >
       <h2 className='text text_color_primary text_type_digits-default mb-6'>
-        #034535
+        {`#${number}`}
       </h2>
       <p
         className={`${orderTileStyles.date} text text_color_inactive text_type_main-default`}
       >
         <FormattedDate
-          date={new Date()}
+          date={new Date(createdAt)}
           className='pr-2'
         />
         i-GMT+3
@@ -50,13 +72,13 @@ const OrderTile = ({ price, full }) => {
           full ? 'mb-2' : 'mb-6'
         }`}
       >
-        Death Star Starship Main burger
+        {name}
       </h3>
       {full && (
         <p
           className={`${orderTileStyles.status} text text_color_primary text_type_main-default mb-6`}
         >
-          ready
+          {status}
         </p>
       )}
       <div className={orderTileStyles.images}>
@@ -67,24 +89,24 @@ const OrderTile = ({ price, full }) => {
             {`+${count - 6}`}
           </p>
         )}
-        {ingredients
+        {orderIngredients
           .slice(0, 6)
           .reverse()
           .map((item, i) => (
             <div
               className={`${orderTileStyles['image-container']} mb-1 mt-1`}
-              key={i}
+              key={uuidv4()}
             >
               <img
                 src={item.image_mobile}
-                alt=''
+                alt='Ingredient pic'
                 className={orderTileStyles.image}
               />
             </div>
           ))}
       </div>
       <Price
-        value={price}
+        value={totalPrice}
         className={orderTileStyles.price}
       />
     </div>

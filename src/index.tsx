@@ -1,28 +1,21 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { createStore, applyMiddleware } from 'redux'
-import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import { composeWithDevTools } from 'redux-devtools-extension'
 import reportWebVitals from './reportWebVitals'
 
+import { store } from 'redux/store'
+
 import { App } from 'components'
-import { rootReducer } from 'services/reducers'
 
 import './index.scss'
 import '@ya.praktikum/react-developer-burger-ui-components'
 
-const store = createStore(
-  rootReducer,
-  composeWithDevTools(applyMiddleware(thunk)),
-)
-
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider store={store}>
       <DndProvider backend={HTML5Backend}>
         <Router>
@@ -30,7 +23,7 @@ root.render(
         </Router>
       </DndProvider>
     </Provider>
-  </React.StrictMode>,
+  // </React.StrictMode>,
 )
 
 // If you want to start measuring performance in your app, pass a function

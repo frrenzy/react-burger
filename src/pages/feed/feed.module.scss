@@ -6,7 +6,7 @@
 }
 
 .statuses {
-  @include shared.flex(row, space-between);
+  @include shared.flex(row, space-between, start);
   width: 100%;
 }
 

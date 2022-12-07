@@ -3,15 +3,18 @@ import PropTypes from 'prop-types'
 import { OrderTile } from 'components'
 
 import orderListStyles from './order-list.module.scss'
+import { useSelector } from 'react-redux'
 
 const OrderList = ({ full }) => {
+  const orders = useSelector(store => store.feed.orders)
+
   return (
     <div className={orderListStyles.orders}>
-      {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, i) => (
+      {orders.map(order => (
         <OrderTile
-          price={item}
+          order={order}
           full={full}
-          key={i}
+          key={order._id}
         />
       ))}
     </div>
