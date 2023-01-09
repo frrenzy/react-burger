@@ -1,4 +1,6 @@
 @mixin custom-scroll($offset-bottom: 0, $offset-top: 0) {
+  overflow: auto;
+
   &::-webkit-scrollbar {
     width: 8px;
     height: 100%;
@@ -25,4 +27,10 @@
   flex-direction: $dir;
   justify-content: $jc;
   align-items: $ai;
+}
+
+@mixin shadow {
+  text-shadow: 0 0 16px rgba(51, 51, 255, .25),
+    0 0 8px rgba(51, 51, 255, .25),
+    0 4px 32px rgba(51, 51, 255, .5);
 }

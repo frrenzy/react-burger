@@ -1,65 +1,25 @@
-import { useCallback, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, NavLink } from 'react-router-dom'
-
+import { useCallback, useMemo } from 'react'
+import { useDispatch } from 'react-redux'
 import {
-  Button,
-  EmailInput,
-  Input,
-  PasswordInput,
-} from '@ya.praktikum/react-developer-burger-ui-components'
+  Link,
+  NavLink,
+  Route,
+  Switch,
+  useLocation,
+  useRouteMatch,
+} from 'react-router-dom'
 
-import { editUser, signOut } from 'services/actions/auth'
+import { signOut } from 'services/actions/auth'
 
 import profileStyles from './profile.module.scss'
-import { useForm } from 'hooks'
+import ProfileForm from 'components/profile-form/profile-form'
+import { OrderInfo, OrderList } from 'components'
 
 const ProfilePage = () => {
-  const { user } = useSelector(store => store.auth)
   const dispatch = useDispatch()
 
-  const { form, setForm, handleChange } = useForm({
-    name: '',
-    email: '',
-    password: '',
-  })
-
-  const resetForm = useCallback(
-    () =>
-      setForm(form => ({
-        name: user?.name || '',
-        email: user?.email || '',
-        password: '',
-      })),
-    [user?.name, user?.email, setForm],
-  )
-
-  const isFormChanged = form.name !== user?.name || form.email !== user?.email
-
-  useEffect(() => {
-    resetForm()
-  }, [resetForm]) //reset form values when stored user changes
-
-  const submitHandler = useCallback(
-    e => {
-      e.preventDefault()
-      dispatch(editUser(form))
-      resetForm()
-    },
-    [dispatch, form, resetForm],
-  )
-
-  const resetHandler = useCallback(
-    e => {
-      e.preventDefault()
-      resetForm()
-    },
-    [resetForm],
-  )
-
-  const handleExit = useCallback(() => {
-    dispatch(signOut())
-  }, [dispatch])
+  const { path } = useRouteMatch()
+  const { pathname: location } = useLocation()
 
   const generateNavLinkClassname = useCallback(
     isActive =>
@@ -69,9 +29,26 @@ const ProfilePage = () => {
     [],
   )
 
+  const handleExit = useCallback(() => {
+    dispatch(signOut())
+  }, [dispatch])
+
+  const containerClassName = useMemo(
+    () =>
+      location === '/profile'
+        ? `${profileStyles['container-form']} mt-30`
+        : `${profileStyles['container-orders']} mt-10`,
+    [location],
+  )
+
+  const tabsClassName = useMemo(
+    () => (location === '/profile' ? '' : 'mt-20'),
+    [location],
+  )
+
   return (
-    <div className={`${profileStyles.container} mt-30`}>
-      <div>
+    <div className={containerClassName}>
+      <div className={tabsClassName}>
         <NavLink
           className={generateNavLinkClassname}
           activeClassName={'text_color_primary'}
@@ -101,57 +78,26 @@ const ProfilePage = () => {
           В этом разделе вы можете изменить свои персональные данные
         </p>
       </div>
-      <form
-        className={profileStyles.form}
-        onSubmit={submitHandler}
-        onReset={resetHandler}
-      >
-        <Input
-          name='name'
-          onChange={handleChange}
-          placeholder='Имя'
-          value={form.name}
-          extraClass='mb-6'
-          icon='EditIcon'
-        />
-        <EmailInput
-          name='email'
-          onChange={handleChange}
-          placeholder='Логин'
-          value={form.email}
-          errorText='Ой! Кажется, в Вашем адресе ошибка :('
-          extraClass='mb-6'
-          icon='EditIcon'
-        />
-        <PasswordInput
-          name='password'
-          onChange={handleChange}
-          placeholder='Пароль'
-          value={form.password}
-          extraClass='mb-6'
-          icon='EditIcon'
-        />
-        {(isFormChanged || form.password) && (
-          <div className={profileStyles.controls}>
-            <Button
-              size='medium'
-              htmlType='submit'
-              type='primary'
-              extraClass='mb-20'
-            >
-              Сохранить
-            </Button>
-            <Button
-              size='medium'
-              htmlType='reset'
-              type='primary'
-              extraClass='mb-20'
-            >
-              Отменить
-            </Button>
-          </div>
-        )}
-      </form>
+      <Switch>
+        <Route
+          path={path}
+          exact
+        >
+          <ProfileForm />
+        </Route>
+        <Route
+          path={`${path}/orders`}
+          exact
+        >
+          <OrderList full={true} />
+        </Route>
+        <Route
+          path={`${path}/orders/:id`}
+          exact
+        >
+          <OrderInfo />
+        </Route>
+      </Switch>
     </div>
   )
 }

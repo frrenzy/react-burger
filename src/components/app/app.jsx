@@ -9,12 +9,14 @@ import {
   ForgotPasswordPage,
   ResetPasswordPage,
   ProfilePage,
+  FeedPage,
 } from 'pages'
 import {
   AppHeader,
   IngredientDetails,
   Modal,
   NotFound404,
+  OrderInfo,
   ProtectedRoute,
 } from 'components'
 
@@ -46,10 +48,13 @@ const App = () => {
           >
             <HomePage />
           </Route>
-          <ProtectedRoute
-            path='/profile'
+          <Route
+            path='/feed'
             exact
           >
+            <FeedPage />
+          </Route>
+          <ProtectedRoute path='/profile'>
             <ProfilePage />
           </ProtectedRoute>
           <Route
@@ -82,6 +87,12 @@ const App = () => {
           >
             <IngredientDetails />
           </Route>
+          <Route
+            path='/feed/:id'
+            exact
+          >
+            <OrderInfo />
+          </Route>
           <Route>
             <NotFound404 />
           </Route>
@@ -89,14 +100,32 @@ const App = () => {
       </main>
 
       {background && (
-        <Route
-          path='/ingredients/:id'
-          exact
-        >
-          <Modal closeModal={closeModal}>
-            <IngredientDetails />
-          </Modal>
-        </Route>
+        <Switch>
+          <Route
+            path='/ingredients/:id'
+            exact
+          >
+            <Modal closeModal={closeModal}>
+              <IngredientDetails />
+            </Modal>
+          </Route>
+          <Route
+            path='/feed/:id'
+            exact
+          >
+            <Modal closeModal={closeModal}>
+              <OrderInfo />
+            </Modal>
+          </Route>
+          <ProtectedRoute
+            path='/profile/orders/:id'
+            exact
+          >
+            <Modal closeModal={closeModal}>
+              <OrderInfo />
+            </Modal>
+          </ProtectedRoute>
+        </Switch>
       )}
     </>
   )

@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import {
   Logo,
   BurgerIcon,
@@ -12,8 +10,6 @@ import headerStyles from './app-header.module.scss'
 import { Link } from 'react-router-dom'
 
 const AppHeader = () => {
-  const [current, setCurrent] = useState('constructor')
-
   return (
     <header className={headerStyles.header}>
       <nav className={headerStyles.nav}>
@@ -27,7 +23,7 @@ const AppHeader = () => {
             <HeaderLink
               text='Лента заказов'
               icon={ListIcon}
-              to='/orders'
+              to='/feed'
             />
           </li>
           <li className={headerStyles.item}>

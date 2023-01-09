@@ -3,7 +3,7 @@
 .container {
   @include shared.flex(column);
   position: relative;
-  z-index: 10;
+  z-index: 20;
   box-sizing: border-box;
   width: 720px;
   background-color: var(--background);

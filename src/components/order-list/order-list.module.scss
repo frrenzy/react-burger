@@ -1,0 +1,10 @@
+@use 'shared';
+
+.orders {
+  @include shared.flex(column);
+  @include shared.custom-scroll(64px);
+  gap: calc(6 * var(--offset-base-size));
+  max-height: calc(100vh - 188px);
+  margin: 0;
+  padding-left: 0;
+}
