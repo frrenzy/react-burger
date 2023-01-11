@@ -17,7 +17,15 @@ import {
   USER_URL,
 } from 'utils/constants'
 
-import { IGetIngredientsResponse } from 'utils/types/api'
+import {
+  IGetIngredientsResponse,
+  ILoginResponse,
+  ILogoutResponse,
+  IRegisterResponse,
+  ITokenResponse,
+  IUserEditResponse,
+  IUserResponse,
+} from 'utils/types/api'
 
 type IRequestMethods = 'POST' | 'PATCH' | 'DELETE'
 
@@ -68,7 +76,7 @@ export const registerUserRequest = (user: {
   name: string
   email: string
   password: string
-}) =>
+}): Promise<IRegisterResponse> =>
   request(REGISTER_URL, {
     method: 'POST',
     body: JSON.stringify(user),
@@ -77,18 +85,18 @@ export const registerUserRequest = (user: {
 export const authenticateUserRequest = (credentials: {
   email: string
   password: string
-}) =>
+}): Promise<ILoginResponse> =>
   request(AUTHORIZATION_URL, {
     method: 'POST',
     body: JSON.stringify(credentials),
   })
 
-export const refreshTokenRequest = () => {
+export const refreshTokenRequest = (): Promise<void> => {
   const token = sessionStorage.getItem('refreshToken')
   return request(TOKEN_URL, {
     method: 'POST',
     body: JSON.stringify({ token }),
-  }).then(res => {
+  }).then((res: ITokenResponse) => {
     const SECONDS_IN_MINUTE = 60
     setCookie('token', res.accessToken.split('Bearer ')[1], {
       expires: 15 * SECONDS_IN_MINUTE,
@@ -97,7 +105,7 @@ export const refreshTokenRequest = () => {
   })
 }
 
-export const logoutRequest = () => {
+export const logoutRequest = (): Promise<ILogoutResponse> => {
   const token = sessionStorage.getItem('refreshToken')
   return request(LOGOUT_URL, {
     method: 'POST',
@@ -105,13 +113,14 @@ export const logoutRequest = () => {
   })
 }
 
-export const getUserRequest = () => requestWithRefreshToken(USER_URL)
+export const getUserRequest = (): Promise<IUserResponse> =>
+  requestWithRefreshToken(USER_URL)
 
 export const editUserRequest = (form: {
   name: string
   email: string
   password: string
-}) =>
+}): Promise<IUserEditResponse> =>
   requestWithRefreshToken(USER_URL, {
     method: 'PATCH',
     body: JSON.stringify(form),
