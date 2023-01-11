@@ -23,8 +23,6 @@ const wsActions = {
   onMessage: WS_GET_MESSAGE,
 }
 
-const wsUrl = 'wss://norma.nomoreparties.space/orders/all'
-
 export const store = createStore(
   rootReducer,
   composeWithDevTools(

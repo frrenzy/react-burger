@@ -1,16 +1,16 @@
 import { TOKEN_URL } from './constants'
+import { IResponseError } from './types/api'
 
-export const checkResponse = (response: any) =>
+export const checkResponse = (response: Response) =>
   response.ok
     ? response.json()
     : response.status === 401 && response.url !== TOKEN_URL
     ? Promise.reject(response)
-    : response.json().then((error: any) => error)
+    : response.json().then((error: IResponseError) => error)
 
 export const checkResponseSuccess = (data: any) =>
   data.success ? Promise.resolve(data) : Promise.reject(data)
-
-export const composeHeaders = () => {
+export const composeHeaders = (): HeadersInit => {
   const token = getCookie('token')
   return {
     'Content-Type': 'application/json',
@@ -32,30 +32,35 @@ export function getCookie(name: string): string | undefined {
 export function setCookie(
   name: string,
   value: string | null,
-  props?: { expires: number | string } & Record<
-    string,
-    string | number | boolean
-  >,
-) {
-  //@ts-ignore
-  props = props || {}
-  //@ts-ignore
-  let exp = props.expires
-  if (typeof exp == 'number' && exp) {
+  props?: { expires?: number } & Record<string, string | number | boolean>,
+): void {
+  type TPropsWithExpirationDate = Omit<typeof props, 'expires'> & {
+    expires: Date | null
+  }
+  type TSerializedProps = Omit<typeof props, 'expires'> & {
+    expires: string
+  }
+  let propsWithExpirationDate: TPropsWithExpirationDate = {
+    ...props,
+    expires: null,
+  }
+  let serializedProps: TSerializedProps = { ...props, expires: '' }
+  const exp = props?.expires
+  let expDate: Date | null = null
+  if (typeof exp === 'number' && exp) {
     const d = new Date()
     d.setTime(d.getTime() + exp * 1000)
-    //@ts-ignore
-    exp = props.expires = d
+    propsWithExpirationDate.expires = d
+    expDate = d
   }
-  if (exp && exp.toUTCString) {
-    //@ts-ignore
-    props.expires = exp.toUTCString()
+  if (expDate && expDate.toUTCString) {
+    serializedProps.expires = expDate.toUTCString()
   }
   value = encodeURIComponent(value ?? '')
-  let updatedCookie = name + '=' + value
-  for (const propName in props) {
+  let updatedCookie: string = name + '=' + value
+  for (const propName in serializedProps) {
     updatedCookie += '; ' + propName
-    const propValue = props[propName]
+    const propValue: string | number | boolean = serializedProps[propName]
     if (propValue !== true) {
       updatedCookie += '=' + propValue
     }
@@ -63,6 +68,6 @@ export function setCookie(
   document.cookie = updatedCookie
 }
 
-export function deleteCookie(name: string) {
+export function deleteCookie(name: string): void {
   setCookie(name, null, { expires: -1 })
 }

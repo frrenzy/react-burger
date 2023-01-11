@@ -14,13 +14,9 @@ import {
   RUSSIAN_ORDER_STATUSES,
   ORDER_STATUS_COLORS,
 } from 'utils/constants'
-import { IngredientType, IOrder, TIngredient } from 'utils/types'
+import { IngredientType, IOrder, IIngredient } from 'utils/types'
 
 import orderInfoStyles from './order-info.module.scss'
-
-interface IIngredientWithCount extends TIngredient {
-  count: number
-}
 
 const OrderInfo: FC<{}> = () => {
   const dispatch = useDispatch()
@@ -47,20 +43,20 @@ const OrderInfo: FC<{}> = () => {
     () => orders.find(orderItem => orderItem.number === parseInt(id)),
     [orders, id],
   )
-  const usedIngredients: TIngredient[] = useSelector(store =>
+  const usedIngredients: IIngredient[] = useSelector(store =>
     //@ts-ignore
     store.ingredients.items.filter((item: TIngredient) =>
       order?.ingredients.includes(item._id) ? item : null,
     ),
   )
 
-  const orderWithCount = useMemo<IIngredientWithCount[]>(
+  const orderWithCount = useMemo<IIngredient[]>(
     () =>
-      order?.ingredients.reduce((acc: IIngredientWithCount[], item: string) => {
-        const index: number = acc.findIndex((i: TIngredient) => i._id === item)
+      order?.ingredients.reduce((acc: IIngredient[], item: string) => {
+        const index: number = acc.findIndex((i: IIngredient) => i._id === item)
         if (index === -1) {
-          const ingredient: TIngredient = usedIngredients.find(
-            ingredient => ingredient._id === item,
+          const ingredient: IIngredient = usedIngredients.find(
+            (ingredient: IIngredient) => ingredient._id === item,
           )!
           acc.push({ ...ingredient, count: 1 })
         } else {
@@ -74,7 +70,7 @@ const OrderInfo: FC<{}> = () => {
   const total = useMemo<number>(
     () =>
       orderWithCount?.reduce(
-        (acc: number, item: IIngredientWithCount) =>
+        (acc: number, item: IIngredient) =>
           acc + (item.price ?? 0) * item.count,
         0,
       ),
@@ -107,7 +103,7 @@ const OrderInfo: FC<{}> = () => {
       </p>
       <div className={`${orderInfoStyles.images} mb-10`}>
         {orderWithCount.map(
-          ({ _id, name, type, count, price, image_mobile }: TIngredient) => (
+          ({ _id, name, type, count, price, image_mobile }: IIngredient) => (
             <div
               className={`${orderInfoStyles['image-container']} mb-6 pr-6`}
               key={_id}

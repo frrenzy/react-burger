@@ -1,3 +1,5 @@
+import { IIngredientRaw } from './api'
+
 export enum IngredientType {
   Bun = 'bun',
   Sauce = 'sauce',
@@ -15,20 +17,15 @@ export enum TileType {
   Bottom = 'bottom',
 }
 
-export type TIngredient = {
-  _id: string
-  name: string
-  type: IngredientType
-  proteins: number
-  fat: number
-  carbohydrates: number
-  calories: number
-  price: number
-  image: string
-  image_mobile: string
-  image_large: string
-  __v: number
+export interface IIngredient extends IIngredientRaw {
   count: number
+}
+
+export enum OrderStatuses {
+  DONE = 'done',
+  CREATED = 'created',
+  CANCELLED = 'cancelled',
+  PENDING = 'pending',
 }
 
 export interface IOrder {
@@ -36,7 +33,7 @@ export interface IOrder {
   number: number
   createdAt: string
   ingredients: string[]
-  status: string
+  status: OrderStatuses
   updatedAt: string
   _id: string
 }

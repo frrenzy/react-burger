@@ -17,6 +17,8 @@ import {
   USER_URL,
 } from 'utils/constants'
 
+import { IGetIngredientsResponse } from 'utils/types/api'
+
 type IRequestMethods = 'POST' | 'PATCH' | 'DELETE'
 
 interface IFetchOptions {
@@ -38,7 +40,8 @@ const requestWithRefreshToken = (url: string, options: IFetchOptions = {}) =>
     )
     .then(res => request(url, options))
 
-export const getIngredientsRequest = () => request(INGREDIENTS_URL)
+export const getIngredientsRequest = (): Promise<IGetIngredientsResponse> =>
+  request(INGREDIENTS_URL)
 
 export const createOrderRequest = (ids: string[]) =>
   request(ORDERS_URL, {
