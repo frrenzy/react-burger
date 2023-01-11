@@ -14,7 +14,8 @@ import {
   RUSSIAN_ORDER_STATUSES,
   ORDER_STATUS_COLORS,
 } from 'utils/constants'
-import { IngredientType, IOrder, IIngredient } from 'utils/types'
+import { IOrder, IIngredient } from 'services/types'
+import { IngredientType } from 'services/types/data'
 
 import orderInfoStyles from './order-info.module.scss'
 

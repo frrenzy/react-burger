@@ -6,9 +6,9 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import { IngredientsSection, Loading } from 'components'
 import type { IIngredientSectionProps } from 'components'
 
-import { SET_TAB } from 'services/actions/ingredients'
+import { setTabAction } from 'services/actions/ingredients'
 
-import { IngredientType } from 'utils/types'
+import { IngredientType } from 'services/types/data'
 
 import burgerIngredientsStyles from './burger-ingredients.module.scss'
 
@@ -61,11 +61,11 @@ const BurgerIngredients: FC = () => {
 
   useEffect(() => {
     if (bunInView) {
-      dispatch({ type: SET_TAB, tab: IngredientType.Bun })
+      dispatch(setTabAction(IngredientType.Bun))
     } else if (sauceInView) {
-      dispatch({ type: SET_TAB, tab: IngredientType.Sauce })
+      dispatch(setTabAction(IngredientType.Sauce))
     } else if (mainInView) {
-      dispatch({ type: SET_TAB, tab: IngredientType.Main })
+      dispatch(setTabAction(IngredientType.Main))
     }
   }, [bunInView, sauceInView, mainInView, dispatch])
 

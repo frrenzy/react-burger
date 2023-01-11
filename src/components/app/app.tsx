@@ -22,7 +22,7 @@ import {
 } from 'components'
 import type { TCloseModalCallback } from 'components'
 
-import { getIngredients } from 'services/actions/ingredients'
+import { getIngredientsThunk } from 'services/actions/ingredients'
 
 import appStyles from './app.module.scss'
 
@@ -39,7 +39,7 @@ const App: FC<{}> = () => {
 
   useEffect(() => {
     //@ts-ignore
-    dispatch(getIngredients())
+    dispatch(getIngredientsThunk())
   }, [dispatch])
 
   const closeModal = useCallback<TCloseModalCallback>(

@@ -4,19 +4,19 @@ import { useParams } from 'react-router-dom'
 
 import { Loading } from 'components'
 
-import { TIngredient } from 'utils/types'
+import { IIngredient } from 'services/types'
 
 import ingredientDetailsStyles from './ingredient-details.module.scss'
 
 const IngredientDetails: FC<{}> = () => {
   //@ts-ignore
   const { id } = useParams()
-  const ingredients: TIngredient[] = useSelector(
+  const ingredients: IIngredient[] = useSelector(
     //@ts-ignore
     store => store.ingredients.items,
   )
-  const ingredient: TIngredient | undefined = ingredients.find(
-    (item: TIngredient) => item._id === id,
+  const ingredient: IIngredient | undefined = ingredients.find(
+    (item: IIngredient) => item._id === id,
   )
 
   return !ingredient ? (

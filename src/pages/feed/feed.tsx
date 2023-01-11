@@ -1,14 +1,14 @@
 import { useMemo, FC } from 'react'
 import { useSelector } from 'react-redux'
 
-import { Loading, OrderList, Section } from 'components'
+import { OrderList, Section } from 'components'
 
 import feedStyles from './feed.module.scss'
-import { IOrder } from 'utils/types'
+import { IOrder } from 'services/types'
 
 const FeedPage: FC<{}> = () => {
   //@ts-ignore
-  const { wsConnected, total, totalToday } = useSelector(store => store.feed)
+  const { total, totalToday } = useSelector(store => store.feed)
 
   const readyOrders: number[] = useSelector(store =>
     //@ts-ignore

@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { useDrop } from 'react-dnd'
 import { v4 as uuidv4 } from 'uuid'
 
-import { TIngredient } from 'utils/types'
+import { IIngredient, IIngredientWithUUID } from 'services/types'
 
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import {
@@ -23,15 +23,14 @@ import {
   createOrder,
 } from 'services/actions/order'
 import {
-  DECREASE_COUNTER,
-  INCREASE_COUNTER,
+  decreaseCounterAction,
+  increaseCounterAction,
 } from 'services/actions/ingredients'
 
-import { DragType, IngredientType, TileType } from 'utils/types'
+import { DragType, TileType } from 'services/types'
+import { IngredientType } from 'services/types/data'
 
 import burgerConstructorStyles from './burger-constructor.module.scss'
-
-type TIngredientWithUUID = TIngredient & { uuid: string }
 
 const BurgerConstructor: FC<{}> = () => {
   const dispatch = useDispatch()
@@ -44,10 +43,10 @@ const BurgerConstructor: FC<{}> = () => {
     orderRequest: isLoading,
   }: //@ts-ignore
   {
-    bun: TIngredient
+    bun: IIngredient
     isModalOpen: boolean
     orderRequest: boolean
-    cart: TIngredientWithUUID[]
+    cart: IIngredientWithUUID[]
     //@ts-ignore
   } = useSelector(store => store.order)
 
@@ -58,14 +57,14 @@ const BurgerConstructor: FC<{}> = () => {
     let sum = 0
     sum += bun ? 2 * bun.price : 0
     sum += cart
-      ? cart.reduce((acc: number, { price }: TIngredient) => acc + price, 0)
+      ? cart.reduce((acc: number, { price }: IIngredient) => acc + price, 0)
       : 0
     return sum
   }, [cart, bun])
 
   const [, dropRef] = useDrop({
     accept: DragType.Ingredient,
-    drop: (ingredient: TIngredient) => {
+    drop: (ingredient: IIngredient) => {
       if (ingredient.type === IngredientType.Bun) {
         dispatch({
           type: SET_BUN,
@@ -80,11 +79,7 @@ const BurgerConstructor: FC<{}> = () => {
           },
         })
       }
-      dispatch({
-        type: INCREASE_COUNTER,
-        ingredientType: ingredient.type,
-        _id: ingredient._id,
-      })
+      dispatch(increaseCounterAction(ingredient.type, ingredient._id))
     },
   })
 
@@ -99,7 +94,7 @@ const BurgerConstructor: FC<{}> = () => {
         //@ts-ignore
         createOrder([
           bun._id,
-          ...cart.map((item: TIngredient) => item._id),
+          ...cart.map((item: IIngredient) => item._id),
           bun._id,
         ]),
       )
@@ -112,11 +107,11 @@ const BurgerConstructor: FC<{}> = () => {
   )
 
   const deleteFromCart = useCallback<
-    (idx: number, _id: TIngredient['_id']) => () => void
+    (idx: number, _id: IIngredient['_id']) => () => void
   >(
     (idx, _id) => () => {
       dispatch({ type: REMOVE_FROM_ORDER, idx })
-      dispatch({ type: DECREASE_COUNTER, _id })
+      dispatch(decreaseCounterAction(_id))
     },
     [dispatch],
   )
@@ -143,7 +138,7 @@ const BurgerConstructor: FC<{}> = () => {
         <ul className={`${burgerConstructorStyles.scrollable} mt-4 mb-4`}>
           {cart.map(
             (
-              { name, price, image, _id, uuid }: TIngredientWithUUID,
+              { name, price, image, _id, uuid }: IIngredientWithUUID,
               idx: number,
             ) => (
               <ConstructorTile

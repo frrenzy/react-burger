@@ -1,4 +1,25 @@
-import { IngredientType } from '.'
+export enum OrderStatuses {
+  Done = 'done',
+  Created = 'created',
+  Cancelled = 'cancelled',
+  Pending = 'pending',
+}
+
+export enum IngredientType {
+  Bun = 'bun',
+  Sauce = 'sauce',
+  Main = 'main',
+}
+
+export interface IOrder {
+  name: string
+  number: number
+  createdAt: string
+  ingredients: string[]
+  status: OrderStatuses
+  updatedAt: string
+  _id: string
+}
 
 export interface IIngredientRaw {
   _id: string
@@ -18,6 +39,18 @@ export interface IIngredientRaw {
 export interface IUser {
   name: string
   email: string
+}
+
+export interface IOrderRaw {
+  name: string
+  number: number
+  createdAt: string
+  ingredients: IIngredientRaw[]
+  status: OrderStatuses
+  updatedAt: string
+  _id: string
+  price: number
+  owner: IUser & { createdAt: string; updatedAt: string }
 }
 
 export interface IGetIngredientsResponse {
@@ -56,7 +89,11 @@ export interface ITokenResponse {
   refreshToken: string
 }
 
-export interface IResponseSuccess {}
+export interface ICreateOrderResponse {
+  success: true
+  name: string
+  order: IOrderRaw
+}
 
 export interface IResponseError {
   status: number

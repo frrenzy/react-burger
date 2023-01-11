@@ -5,12 +5,12 @@ import { useDrag } from 'react-dnd'
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Price } from 'components'
 
-import { DragType, TIngredient } from 'utils/types'
+import { DragType, IIngredient } from 'services/types'
 
 import ingredientCardStyles from './ingredient-card.module.scss'
 
 interface IIngredientCardProps {
-  ingredient: TIngredient
+  ingredient: IIngredient
 }
 
 const IngredientCard: FC<IIngredientCardProps> = ({ ingredient }) => {

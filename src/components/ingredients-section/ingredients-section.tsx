@@ -4,7 +4,8 @@ import { useSelector } from 'react-redux'
 
 import { IngredientCard } from 'components'
 
-import { IngredientType, TIngredient } from 'utils/types'
+import { IIngredient } from 'services/types'
+import { IngredientType } from 'services/types/data'
 
 import ingredientsSectionStyles from './ingredients-section.module.scss'
 
@@ -21,7 +22,7 @@ const IngredientsSection: FC<IIngredientSectionProps> = ({
   headerRef,
   type,
 }) => {
-  const ingredients: TIngredient[] = useSelector(store =>
+  const ingredients: IIngredient[] = useSelector(store =>
     //@ts-ignore
     store.ingredients.items.filter(ingredient => ingredient.type === type),
   )
@@ -36,7 +37,7 @@ const IngredientsSection: FC<IIngredientSectionProps> = ({
       </h2>
       <ul className={`${ingredientsSectionStyles.list} pt-6 pr-4 pl-4 pb-10`}>
         {ingredients.length > 0 ? (
-          ingredients.map((ingredient: TIngredient) => (
+          ingredients.map((ingredient: IIngredient) => (
             <li key={ingredient._id}>
               <IngredientCard ingredient={ingredient} />
             </li>

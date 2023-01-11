@@ -1,17 +1,17 @@
-import { OrderStatuses } from './types'
+import { OrderStatuses } from 'services/types/data'
 
 export const RUSSIAN_ORDER_STATUSES = {
-  [OrderStatuses.CREATED]: 'Создан',
-  [OrderStatuses.PENDING]: 'Готовится',
-  [OrderStatuses.DONE]: 'Выполнен',
-  [OrderStatuses.CANCELLED]: 'Отменён',
+  [OrderStatuses.Created]: 'Создан',
+  [OrderStatuses.Pending]: 'Готовится',
+  [OrderStatuses.Done]: 'Выполнен',
+  [OrderStatuses.Cancelled]: 'Отменён',
 }
 
 export const ORDER_STATUS_COLORS = {
-  [OrderStatuses.CANCELLED]: 'error',
-  [OrderStatuses.DONE]: 'success',
-  [OrderStatuses.PENDING]: 'primary',
-  [OrderStatuses.CREATED]: 'primary',
+  [OrderStatuses.Cancelled]: 'error',
+  [OrderStatuses.Done]: 'success',
+  [OrderStatuses.Pending]: 'primary',
+  [OrderStatuses.Created]: 'primary',
 }
 
 const API_BASE_URL: string = 'https://norma.nomoreparties.space/api'

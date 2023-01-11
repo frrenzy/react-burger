@@ -1,5 +1,5 @@
 import { TOKEN_URL } from './constants'
-import { IResponseError } from './types/api'
+import { IResponseError } from 'services/types/data'
 
 export const checkResponse = (response: Response) =>
   response.ok

@@ -9,7 +9,7 @@ import {
 
 import { MOVE_INGREDIENT } from 'services/actions/order'
 
-import { DragType, TileType } from 'utils/types'
+import { DragType, TileType } from 'services/types'
 
 import constructorTileStyles from './constructor-tile.module.scss'
 

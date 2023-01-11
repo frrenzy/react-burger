@@ -6,8 +6,9 @@ import {
   INCREASE_COUNTER,
   DECREASE_COUNTER,
   RESET_COUNTERS,
-} from 'services/actions/ingredients'
-import { IngredientType } from 'utils/types'
+} from 'services/constants/ingredients'
+
+import { IngredientType } from 'services/types/data'
 
 const initialState = {
   items: [],

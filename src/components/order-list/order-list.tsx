@@ -8,7 +8,7 @@ import { WS_CONNECTION_END, WS_CONNECTION_START } from 'services/actions/feed'
 
 import { ALL_ORDERS_URL, USER_ORDERS_URL } from 'utils/constants'
 import { getCookie } from 'utils/helpers'
-import { IOrder } from 'utils/types'
+import { IOrder } from 'services/types'
 
 import orderListStyles from './order-list.module.scss'
 

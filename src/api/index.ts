@@ -18,14 +18,17 @@ import {
 } from 'utils/constants'
 
 import {
+  ICreateOrderResponse,
   IGetIngredientsResponse,
   ILoginResponse,
   ILogoutResponse,
   IRegisterResponse,
+  IResetEmailResponse,
+  IResetPasswordResponse,
   ITokenResponse,
   IUserEditResponse,
   IUserResponse,
-} from 'utils/types/api'
+} from 'services/types/data'
 
 type IRequestMethods = 'POST' | 'PATCH' | 'DELETE'
 
@@ -34,13 +37,19 @@ interface IFetchOptions {
   body?: string
 }
 
-const request = (url: string, options: IFetchOptions = {}) =>
+const request = <T extends object>(
+  url: string,
+  options: IFetchOptions = {},
+): Promise<T> =>
   fetch(url, { ...options, headers: composeHeaders() })
     .then(checkResponse)
     .then(checkResponseSuccess)
 
-const requestWithRefreshToken = (url: string, options: IFetchOptions = {}) =>
-  request(url, options)
+const requestWithRefreshToken = <T extends {}>(
+  url: string,
+  options: IFetchOptions = {},
+): Promise<T> =>
+  request<T>(url, options)
     .catch(res =>
       res.status === 401 || res.status === 403
         ? refreshTokenRequest()
@@ -48,17 +57,17 @@ const requestWithRefreshToken = (url: string, options: IFetchOptions = {}) =>
     )
     .then(res => request(url, options))
 
-export const getIngredientsRequest = (): Promise<IGetIngredientsResponse> =>
-  request(INGREDIENTS_URL)
+export const getIngredientsRequest = () =>
+  request<IGetIngredientsResponse>(INGREDIENTS_URL)
 
 export const createOrderRequest = (ids: string[]) =>
-  request(ORDERS_URL, {
+  request<ICreateOrderResponse>(ORDERS_URL, {
     method: 'POST',
     body: JSON.stringify({ ingredients: ids }),
   })
 
 export const sendResetEmailRequest = (email: { email: string }) =>
-  request(RESET_PASSWORD_URL, {
+  request<IResetEmailResponse>(RESET_PASSWORD_URL, {
     method: 'POST',
     body: JSON.stringify(email),
   })
@@ -67,7 +76,7 @@ export const resetPasswordRequest = (data: {
   code: string
   password: string
 }) =>
-  request(RESET_PASSWORD_NEW_URL, {
+  request<IResetPasswordResponse>(RESET_PASSWORD_NEW_URL, {
     method: 'POST',
     body: JSON.stringify(data),
   })
@@ -76,8 +85,8 @@ export const registerUserRequest = (user: {
   name: string
   email: string
   password: string
-}): Promise<IRegisterResponse> =>
-  request(REGISTER_URL, {
+}) =>
+  request<IRegisterResponse>(REGISTER_URL, {
     method: 'POST',
     body: JSON.stringify(user),
   })
@@ -85,43 +94,43 @@ export const registerUserRequest = (user: {
 export const authenticateUserRequest = (credentials: {
   email: string
   password: string
-}): Promise<ILoginResponse> =>
-  request(AUTHORIZATION_URL, {
+}) =>
+  request<ILoginResponse>(AUTHORIZATION_URL, {
     method: 'POST',
     body: JSON.stringify(credentials),
   })
 
-export const refreshTokenRequest = (): Promise<void> => {
+export const refreshTokenRequest = () => {
   const token = sessionStorage.getItem('refreshToken')
-  return request(TOKEN_URL, {
+  return request<ITokenResponse>(TOKEN_URL, {
     method: 'POST',
     body: JSON.stringify({ token }),
-  }).then((res: ITokenResponse) => {
+  }).then((value: ITokenResponse) => {
     const SECONDS_IN_MINUTE = 60
-    setCookie('token', res.accessToken.split('Bearer ')[1], {
+    setCookie('token', value.accessToken.split('Bearer ')[1], {
       expires: 15 * SECONDS_IN_MINUTE,
     })
-    sessionStorage.setItem('refreshToken', res.refreshToken)
+    sessionStorage.setItem('refreshToken', value.refreshToken)
   })
 }
 
-export const logoutRequest = (): Promise<ILogoutResponse> => {
+export const logoutRequest = () => {
   const token = sessionStorage.getItem('refreshToken')
-  return request(LOGOUT_URL, {
+  return request<ILogoutResponse>(LOGOUT_URL, {
     method: 'POST',
     body: JSON.stringify({ token }),
   })
 }
 
-export const getUserRequest = (): Promise<IUserResponse> =>
-  requestWithRefreshToken(USER_URL)
+export const getUserRequest = () =>
+  requestWithRefreshToken<IUserResponse>(USER_URL)
 
 export const editUserRequest = (form: {
   name: string
   email: string
   password: string
-}): Promise<IUserEditResponse> =>
-  requestWithRefreshToken(USER_URL, {
+}) =>
+  requestWithRefreshToken<IUserEditResponse>(USER_URL, {
     method: 'PATCH',
     body: JSON.stringify(form),
   })
