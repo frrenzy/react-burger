@@ -49,9 +49,7 @@ const BurgerConstructor: FC<{}> = () => {
   const totalPrice = useMemo<number>(() => {
     let sum = 0
     sum += bun ? 2 * bun.price : 0
-    sum += cart
-      ? cart.reduce((acc: number, { price }: IIngredient) => acc + price, 0)
-      : 0
+    sum += cart ? cart.reduce((acc, { price }) => acc + price, 0) : 0
     return sum
   }, [cart, bun])
 
@@ -81,11 +79,7 @@ const BurgerConstructor: FC<{}> = () => {
     } else {
       dispatch(
         createOrderThunk({
-          ingredients: [
-            bun?._id,
-            ...cart.map((item: IIngredient) => item._id),
-            bun?._id,
-          ],
+          ingredients: [bun?._id, ...cart.map(({ _id }) => _id), bun?._id],
         }),
       )
     }
@@ -126,22 +120,17 @@ const BurgerConstructor: FC<{}> = () => {
           />
         )}
         <ul className={`${burgerConstructorStyles.scrollable} mt-4 mb-4`}>
-          {cart.map(
-            (
-              { name, price, image, _id, uuid }: IIngredientWithUUID,
-              idx: number,
-            ) => (
-              <ConstructorTile
-                key={uuid}
-                name={name}
-                price={price}
-                image={image}
-                deleteHandler={deleteFromCart(idx, _id)}
-                type={TileType.Center}
-                index={idx}
-              />
-            ),
-          )}
+          {cart.map(({ name, price, image, _id, uuid }, idx) => (
+            <ConstructorTile
+              key={uuid}
+              name={name}
+              price={price}
+              image={image}
+              deleteHandler={deleteFromCart(idx, _id)}
+              type={TileType.Center}
+              index={idx}
+            />
+          ))}
         </ul>
         {bun && (
           <ConstructorTile

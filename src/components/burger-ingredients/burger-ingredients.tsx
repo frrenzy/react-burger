@@ -51,7 +51,7 @@ const BurgerIngredients: FC = () => {
   const handleTabClick = (value: IngredientType | string) => {
     if (sectionsProps) {
       sectionsProps
-        ?.find(item => item.type === value)
+        ?.find(({ type }) => type === value)
         ?.headerRef?.current?.scrollIntoView({ behavior: 'smooth' })
     }
   }
@@ -106,22 +106,15 @@ const BurgerIngredients: FC = () => {
         {isLoading ? (
           <Loading />
         ) : (
-          sectionsProps.map(
-            ({
-              name,
-              type,
-              sectionRef,
-              headerRef,
-            }: IIngredientSectionProps) => (
-              <IngredientsSection
-                key={name}
-                name={name}
-                sectionRef={sectionRef}
-                headerRef={headerRef}
-                type={type}
-              />
-            ),
-          )
+          sectionsProps.map(({ name, type, sectionRef, headerRef }) => (
+            <IngredientsSection
+              key={name}
+              name={name}
+              sectionRef={sectionRef}
+              headerRef={headerRef}
+              type={type}
+            />
+          ))
         )}
       </div>
     </>

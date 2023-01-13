@@ -45,7 +45,7 @@ export const ingredientsReducer = (
       return {
         ...state,
         ingredientsRequest: false,
-        items: action.ingredients.map((item: IIngredientRaw) => ({
+        items: action.ingredients.map(item => ({
           ...item,
           count: 0,
         })),
@@ -68,7 +68,7 @@ export const ingredientsReducer = (
       if (action.ingredientType === IngredientType.Bun) {
         return {
           ...state,
-          items: [...state.items].map((item: IIngredient) => {
+          items: [...state.items].map(item => {
             if (item.type !== IngredientType.Bun) {
               return item
             } else if (item._id === action._id) {
@@ -84,7 +84,7 @@ export const ingredientsReducer = (
       } else {
         return {
           ...state,
-          items: [...state.items].map((item: IIngredient) =>
+          items: [...state.items].map(item =>
             item._id === action._id ? { ...item, count: item.count + 1 } : item,
           ),
         }
@@ -93,7 +93,7 @@ export const ingredientsReducer = (
     case DECREASE_COUNTER: {
       return {
         ...state,
-        items: [...state.items].map((item: IIngredient) =>
+        items: [...state.items].map(item =>
           item._id === action._id ? { ...item, count: item.count - 1 } : item,
         ),
       }
@@ -101,7 +101,7 @@ export const ingredientsReducer = (
     case RESET_COUNTERS: {
       return {
         ...state,
-        items: [...state.items].map((item: IIngredient) => ({
+        items: [...state.items].map(item => ({
           ...item,
           count: 0,
         })),

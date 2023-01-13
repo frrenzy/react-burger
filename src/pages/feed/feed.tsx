@@ -13,13 +13,13 @@ const FeedPage: FC<{}> = () => {
 
   const readyOrders: number[] = useSelector(store =>
     store.feed.orders
-      .filter((item: IOrder) => item.status === 'done')
-      .map((item: IOrder) => item.number),
+      .filter(({ status }) => status === 'done')
+      .map(({ number }) => number),
   )
   const wipOrders: number[] = useSelector(store =>
     store.feed.orders
-      .filter((item: IOrder) => item.status === 'pending')
-      .map((item: IOrder) => item.number),
+      .filter(({ status }) => status === 'pending')
+      .map(({ number }) => number),
   )
 
   const ready = useMemo<number[]>(
@@ -44,7 +44,7 @@ const FeedPage: FC<{}> = () => {
                 Готовы:
               </h3>
               <ul className={feedStyles.list}>
-                {ready.map((item: number) => (
+                {ready.map(item => (
                   <li
                     className='text text_color_success text_type_digits-default mb-2'
                     key={item}
@@ -59,7 +59,7 @@ const FeedPage: FC<{}> = () => {
                 В работе:
               </h3>
               <ul className={feedStyles.list}>
-                {wip.map((item: number) => (
+                {wip.map(item => (
                   <li
                     className='text text_color_primary text_type_digits-default mb-2'
                     key={item}

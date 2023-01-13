@@ -14,7 +14,7 @@ const IngredientDetails: FC<{}> = () => {
     store => store.ingredients.items,
   )
   const ingredient: IIngredient | undefined = ingredients.find(
-    (item: IIngredient) => item._id === id,
+    ({ _id }) => _id === id,
   )
 
   return !ingredient ? (

@@ -12,7 +12,6 @@ import { IFeedState } from 'services/reducers/feed'
 
 import { ALL_ORDERS_URL, USER_ORDERS_URL } from 'utils/constants'
 import { getCookie } from 'utils/helpers'
-import { IOrder } from 'services/types'
 
 import orderListStyles from './order-list.module.scss'
 
@@ -46,7 +45,7 @@ const OrderList: FC<IOrderListProps> = ({ full }) => {
     <Loading />
   ) : (
     <ul className={orderListStyles.orders}>
-      {(isProfile ? [...orders].reverse() : orders).map((order: IOrder) => (
+      {(isProfile ? [...orders].reverse() : orders).map(order => (
         <OrderTile
           order={order}
           full={full}

@@ -27,10 +27,7 @@ const OrderTile: FC<IOrderTileProps> = ({
     store => store.ingredients.items,
   )
   const orderIngredients = useMemo<IIngredient[]>(
-    () =>
-      ingredients.filter(({ _id }: IIngredient) =>
-        orderIngredientsIds.includes(_id),
-      ),
+    () => ingredients.filter(({ _id }) => orderIngredientsIds.includes(_id)),
     [ingredients, orderIngredientsIds],
   )
   const count = orderIngredients.length
@@ -46,14 +43,13 @@ const OrderTile: FC<IOrderTileProps> = ({
 
   const bunPrice = useMemo<number>(
     () =>
-      orderIngredients.find(
-        ingredient => ingredient.type === IngredientType.Bun,
-      )?.price ?? 0,
+      orderIngredients.find(({ type }) => type === IngredientType.Bun)?.price ??
+      0,
     [orderIngredients],
   )
   const totalPrice = useMemo<number>(
     () =>
-      bunPrice + orderIngredients.reduce((acc, item) => acc + item.price, 0),
+      bunPrice + orderIngredients.reduce((acc, { price }) => acc + price, 0),
     [bunPrice, orderIngredients],
   )
 
@@ -103,7 +99,7 @@ const OrderTile: FC<IOrderTileProps> = ({
         {orderIngredients
           .slice(0, 6)
           .reverse()
-          .map(({ _id, image_mobile }: IIngredient) => (
+          .map(({ _id, image_mobile }) => (
             <div
               className={`${orderTileStyles['image-container']} mb-1 mt-1`}
               key={_id}

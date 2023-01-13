@@ -36,7 +36,7 @@ const IngredientsSection: FC<IIngredientSectionProps> = ({
       </h2>
       <ul className={`${ingredientsSectionStyles.list} pt-6 pr-4 pl-4 pb-10`}>
         {ingredients.length > 0 ? (
-          ingredients.map((ingredient: IIngredient) => (
+          ingredients.map(ingredient => (
             <li key={ingredient._id}>
               <IngredientCard ingredient={ingredient} />
             </li>

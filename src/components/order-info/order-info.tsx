@@ -42,25 +42,24 @@ const OrderInfo: FC<{}> = () => {
 
   const orders: ReadonlyArray<IOrder> = useSelector(store => store.feed.orders)
   const order = useMemo<IOrder>(
-    () =>
-      orders.find((orderItem: IOrder) => orderItem.number === parseInt(id))!,
+    () => orders.find(({ number }) => number === parseInt(id))!,
     [orders, id],
   )
   const usedIngredients: IIngredient[] = useSelector(store =>
-    store.ingredients.items.filter((item: IIngredient) =>
-      order?.ingredients.includes(item._id),
+    store.ingredients.items.filter(({ _id }) =>
+      order?.ingredients.includes(_id),
     ),
   )
 
   const orderWithCount = useMemo<IIngredient[]>(
     () =>
-      order?.ingredients.reduce((acc: IIngredient[], item: string) => {
+      order?.ingredients.reduce((acc: IIngredient[], item) => {
         const index: number = acc.findIndex(
           ({ _id }: IIngredient) => _id === item,
         )
         if (index === -1) {
           const ingredient: IIngredient = usedIngredients.find(
-            ({ _id }: IIngredient) => _id === item,
+            ({ _id }) => _id === item,
           )!
           acc.push({ ...ingredient, count: 1 })
         } else {
@@ -74,8 +73,7 @@ const OrderInfo: FC<{}> = () => {
   const total = useMemo<number>(
     () =>
       orderWithCount?.reduce(
-        (acc: number, item: IIngredient) =>
-          acc + (item.price ?? 0) * item.count,
+        (acc, { price, count }) => acc + (price ?? 0) * count,
         0,
       ),
     [orderWithCount],
@@ -107,7 +105,7 @@ const OrderInfo: FC<{}> = () => {
       </p>
       <div className={`${orderInfoStyles.images} mb-10`}>
         {orderWithCount.map(
-          ({ _id, name, type, count, price, image_mobile }: IIngredient) => (
+          ({ _id, name, type, count, price, image_mobile }) => (
             <div
               className={`${orderInfoStyles['image-container']} mb-6 pr-6`}
               key={_id}
