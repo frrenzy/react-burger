@@ -10,7 +10,7 @@ import { TOrderWS } from 'services/types/data'
 
 export interface IWSConnectionStartAction {
   readonly type: typeof WS_CONNECTION_START
-  readonly url: string
+  readonly url: URL
 }
 
 export interface IWSConnectionEndAction {
@@ -46,7 +46,7 @@ export type TWSActions =
   | IWSGetMessageAction
 
 export const WSConnectionStartAction = (
-  url: string,
+  url: URL,
 ): IWSConnectionStartAction => ({
   type: WS_CONNECTION_START,
   url,

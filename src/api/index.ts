@@ -47,7 +47,7 @@ interface IFetchOptions {
 }
 
 const request = <T extends TAPIResponseSuccess>(
-  url: string,
+  url: URL,
   options: IFetchOptions = {},
 ): Promise<T> =>
   fetch(url, { ...options, headers: composeHeaders() })
@@ -55,7 +55,7 @@ const request = <T extends TAPIResponseSuccess>(
     .then(checkResponseSuccess<T>)
 
 const requestWithRefreshToken = <T extends TAPIResponseSuccess>(
-  url: string,
+  url: URL,
   options: IFetchOptions = {},
 ): Promise<T> =>
   request<T>(url, options)

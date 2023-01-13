@@ -10,16 +10,14 @@ export const checkResponse = <T extends TAPIResponseSuccess>(
 ): Promise<T | TAPIResponseError> =>
   response.ok
     ? response.json()
-    : response.status === 401 && response.url !== TOKEN_URL
+    : response.status === 401 && response.url !== TOKEN_URL.href
     ? Promise.reject(response)
-    : response
-        .json()
-        .then(
-          (error: TAPIResponseErrorRaw): TAPIResponseError => ({
-            ...error,
-            success: false,
-          }),
-        )
+    : response.json().then(
+        (error: TAPIResponseErrorRaw): TAPIResponseError => ({
+          ...error,
+          success: false,
+        }),
+      )
 
 export const checkResponseSuccess = <T extends TAPIResponseSuccess>(
   data: T | TAPIResponseError,

@@ -30,7 +30,7 @@ const OrderList: FC<IOrderListProps> = ({ full }) => {
 
   useEffect(() => {
     const url = isProfile
-      ? `${USER_ORDERS_URL}${getCookie('token')}`
+      ? new URL(getCookie('token')!, USER_ORDERS_URL)
       : ALL_ORDERS_URL
     dispatch(WSConnectionStartAction(url))
 
