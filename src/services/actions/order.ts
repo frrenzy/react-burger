@@ -1,16 +1,24 @@
 import { createOrderRequest } from 'api'
 import { resetCountersAction } from './ingredients'
-import { IIngredient, IIngredientWithUUID } from 'services/types'
-import { IOrderRaw } from 'services/types/data'
+import {
+  AppDispatch,
+  AppThunk,
+  IIngredient,
+  IIngredientWithUUID,
+} from 'services/types'
+import { ICreateOrderResponse, IOrderRaw } from 'services/types/data'
 
-export const ADD_TO_ORDER = 'ADD_TO_ORDER'
-export const REMOVE_FROM_ORDER = 'REMOVE_FROM_ORDER'
-export const SET_BUN = 'SET_BUN'
-export const CLOSE_ORDER_MODAL = 'CLOSE_ORDER_MODAL'
-export const CREATE_ORDER_REQUEST = 'CREATE_ORDER_REQUEST'
-export const CREATE_ORDER_SUCCESS = 'CREATE_ORDER_SUCCESS'
-export const CREATE_ORDER_FAILED = 'CREATE_ORDER_FAILED'
-export const MOVE_INGREDIENT = 'MOVE_INGREDIENT'
+import {
+  ADD_TO_ORDER,
+  CLOSE_ORDER_MODAL,
+  CREATE_ORDER_REQUEST,
+  CREATE_ORDER_FAILED,
+  CREATE_ORDER_SUCCESS,
+  MOVE_INGREDIENT,
+  REMOVE_FROM_ORDER,
+  SET_BUN,
+} from 'services/constants/order'
+import { ICreateOrderForm } from 'services/types/forms'
 
 export interface IAddToOrderAction {
   readonly type: typeof ADD_TO_ORDER
@@ -99,12 +107,13 @@ export const createOrderFailedAction = (
   error: string,
 ): ICreateOrderFailedAction => ({ type: CREATE_ORDER_FAILED, error })
 
-export const createOrder: any = (ids: string[]) => (dispatch: any) => {
-  dispatch({ type: CREATE_ORDER_REQUEST })
-  createOrderRequest(ids)
-    .then(order => {
-      dispatch({ type: CREATE_ORDER_SUCCESS, order: order })
-      dispatch(resetCountersAction())
-    })
-    .catch(error => dispatch({ type: CREATE_ORDER_FAILED, error }))
-}
+export const createOrderThunk: AppThunk =
+  (ingredients: ICreateOrderForm) => (dispatch: AppDispatch) => {
+    dispatch(createOrderAction())
+    createOrderRequest(ingredients)
+      .then(({ order }: ICreateOrderResponse) => {
+        dispatch(createOrderSuccessAction(order))
+        dispatch(resetCountersAction())
+      })
+      .catch((error: string) => dispatch(createOrderFailedAction(error)))
+  }

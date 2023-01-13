@@ -1,9 +1,7 @@
 import { useCallback, useState, FC, FormEventHandler } from 'react'
-import { useSelector } from 'react-redux'
+import { useForm, useSelector } from 'hooks'
 import { Redirect, useHistory, useLocation } from 'react-router-dom'
 import { Location } from 'history'
-
-import { useForm } from 'hooks'
 
 import {
   Button,
@@ -14,22 +12,19 @@ import {
 import { resetPasswordRequest } from 'api'
 import { getCookie } from 'utils/helpers'
 
+import { IResetPasswordForm } from 'services/types/forms'
+
 import resetPasswordStyles from './reset-password.module.scss'
+import { IUser } from 'services/types/data'
 
 interface ILocationWithState extends Location {
   state: { from: Location | string }
 }
 
-interface IResetPasswordForm {
-  code: string
-  password: string
-}
-
 const ResetPasswordPage: FC<{}> = () => {
   const { state }: ILocationWithState = useLocation()
   const authToken = getCookie('token')
-  //@ts-ignore
-  const user = useSelector(store => store.auth.user)
+  const user: IUser | null = useSelector(store => store.auth.user)
 
   const history = useHistory()
 

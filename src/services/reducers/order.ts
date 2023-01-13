@@ -1,3 +1,4 @@
+import { TOrderActions } from 'services/actions/order'
 import {
   ADD_TO_ORDER,
   SET_BUN,
@@ -7,9 +8,20 @@ import {
   CREATE_ORDER_SUCCESS,
   REMOVE_FROM_ORDER,
   MOVE_INGREDIENT,
-} from 'services/actions/order'
+} from 'services/constants/order'
+import { IIngredient, IIngredientWithUUID } from 'services/types'
 
-const initialState = {
+export interface IOrderState {
+  cart: ReadonlyArray<IIngredientWithUUID>
+  bun: IIngredient | null
+  isModalOpen: boolean
+  orderId: number | null
+  orderRequest: boolean
+  orderFailed: boolean
+  orderError: string
+}
+
+const initialState: IOrderState = {
   cart: [],
   bun: null,
   isModalOpen: false,
@@ -19,7 +31,10 @@ const initialState = {
   orderError: '',
 }
 
-export const orderReducer = (state = initialState, action) => {
+export const orderReducer = (
+  state: IOrderState = initialState,
+  action: TOrderActions,
+): IOrderState => {
   switch (action.type) {
     case CREATE_ORDER_REQUEST: {
       return {
@@ -38,12 +53,9 @@ export const orderReducer = (state = initialState, action) => {
     }
     case CREATE_ORDER_SUCCESS: {
       return {
-        ...state,
-        orderRequest: false,
-        orderId: action.order.order.number,
-        cart: [],
+        ...initialState,
+        orderId: action.order.number,
         isModalOpen: true,
-        bun: '',
       }
     }
     case ADD_TO_ORDER: {

@@ -1,8 +1,6 @@
 import { useCallback, useState, FC, FormEventHandler } from 'react'
-import { useSelector } from 'react-redux'
+import { useForm, useSelector } from 'hooks'
 import { Redirect, useHistory } from 'react-router-dom'
-
-import { useForm } from 'hooks'
 
 import {
   Button,
@@ -12,15 +10,13 @@ import {
 import { sendResetEmailRequest } from 'api'
 import { getCookie } from 'utils/helpers'
 
+import { IUser } from 'services/types/data'
+import { IForgotPasswordForm } from 'services/types/forms'
+
 import forgotPasswordStyles from './forgot-password.module.scss'
 
-interface IForgotPasswordForm {
-  email: string
-}
-
 const ForgotPasswordPage: FC<{}> = () => {
-  //@ts-ignore
-  const user = useSelector(store => store.auth.user)
+  const user: IUser | null = useSelector(store => store.auth.user)
   const authToken = getCookie('token')
 
   const history = useHistory()

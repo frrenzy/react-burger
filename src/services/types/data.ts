@@ -21,6 +21,15 @@ export interface IOrder {
   _id: string
 }
 
+export interface IOrderWSRaw {
+  success: boolean
+  orders: IOrder[]
+  total: number
+  totalToday: number
+}
+
+export type TOrderWS = Omit<IOrderWSRaw, 'success'>
+
 export interface IIngredientRaw {
   _id: string
   name: string
@@ -95,7 +104,20 @@ export interface ICreateOrderResponse {
   order: IOrderRaw
 }
 
-export interface IResponseError {
+export type TAPIResponseSuccess =
+  | IGetIngredientsResponse
+  | IUserResponse
+  | IUserEditResponse
+  | ILoginResponse
+  | ILogoutResponse
+  | IResetPasswordResponse
+  | IResetEmailResponse
+  | ITokenResponse
+  | ICreateOrderResponse
+
+export type TAPIResponseErrorRaw = {
   status: number
   message: string
 }
+
+export type TAPIResponseError = TAPIResponseErrorRaw & { success: false }

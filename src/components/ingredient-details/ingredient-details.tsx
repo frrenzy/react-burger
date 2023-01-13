@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector } from 'hooks'
 import { useParams } from 'react-router-dom'
 
 import { Loading } from 'components'
@@ -11,8 +11,7 @@ import ingredientDetailsStyles from './ingredient-details.module.scss'
 const IngredientDetails: FC<{}> = () => {
   //@ts-ignore
   const { id } = useParams()
-  const ingredients: IIngredient[] = useSelector(
-    //@ts-ignore
+  const ingredients: ReadonlyArray<IIngredient> = useSelector(
     store => store.ingredients.items,
   )
   const ingredient: IIngredient | undefined = ingredients.find(

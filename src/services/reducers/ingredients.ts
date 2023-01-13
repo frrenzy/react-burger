@@ -1,3 +1,4 @@
+import { TIngredientsActions } from 'services/actions/ingredients'
 import {
   GET_INGREDIENTS_REQUEST,
   GET_INGREDIENTS_SUCCESS,
@@ -8,9 +9,18 @@ import {
   RESET_COUNTERS,
 } from 'services/constants/ingredients'
 
-import { IngredientType } from 'services/types/data'
+import { IIngredient } from 'services/types'
+import { IIngredientRaw, IngredientType } from 'services/types/data'
 
-const initialState = {
+export interface IIngredientsState {
+  items: ReadonlyArray<IIngredient>
+  currentTab: string
+  ingredientsRequest: boolean
+  ingredientsFailed: boolean
+  ingredientsError: string
+}
+
+const initialState: IIngredientsState = {
   items: [],
   currentTab: '',
   ingredientsRequest: false,
@@ -18,7 +28,10 @@ const initialState = {
   ingredientsError: '',
 }
 
-export const ingredientsReducer = (state = initialState, action) => {
+export const ingredientsReducer = (
+  state: IIngredientsState = initialState,
+  action: TIngredientsActions,
+): IIngredientsState => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST: {
       return {
@@ -32,7 +45,7 @@ export const ingredientsReducer = (state = initialState, action) => {
       return {
         ...state,
         ingredientsRequest: false,
-        items: action.ingredients.map(item => ({
+        items: action.ingredients.map((item: IIngredientRaw) => ({
           ...item,
           count: 0,
         })),
@@ -55,7 +68,7 @@ export const ingredientsReducer = (state = initialState, action) => {
       if (action.ingredientType === IngredientType.Bun) {
         return {
           ...state,
-          items: [...state.items].map(item => {
+          items: [...state.items].map((item: IIngredient) => {
             if (item.type !== IngredientType.Bun) {
               return item
             } else if (item._id === action._id) {
@@ -71,7 +84,7 @@ export const ingredientsReducer = (state = initialState, action) => {
       } else {
         return {
           ...state,
-          items: [...state.items].map(item =>
+          items: [...state.items].map((item: IIngredient) =>
             item._id === action._id ? { ...item, count: item.count + 1 } : item,
           ),
         }
@@ -80,7 +93,7 @@ export const ingredientsReducer = (state = initialState, action) => {
     case DECREASE_COUNTER: {
       return {
         ...state,
-        items: [...state.items].map(item =>
+        items: [...state.items].map((item: IIngredient) =>
           item._id === action._id ? { ...item, count: item.count - 1 } : item,
         ),
       }
@@ -88,7 +101,10 @@ export const ingredientsReducer = (state = initialState, action) => {
     case RESET_COUNTERS: {
       return {
         ...state,
-        items: [...state.items].map(item => ({ ...item, count: 0 })),
+        items: [...state.items].map((item: IIngredient) => ({
+          ...item,
+          count: 0,
+        })),
       }
     }
     default: {

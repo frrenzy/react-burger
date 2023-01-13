@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch } from 'hooks'
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom'
 import { Location } from 'history'
 
@@ -38,7 +38,6 @@ const App: FC<{}> = () => {
   const background: Location | undefined = location.state?.background
 
   useEffect(() => {
-    //@ts-ignore
     dispatch(getIngredientsThunk())
   }, [dispatch])
 

@@ -1,5 +1,5 @@
 import { useCallback, useMemo, FC } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector } from 'hooks'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -23,8 +23,7 @@ const OrderTile: FC<IOrderTileProps> = ({
   const history = useHistory()
   const location = useLocation()
 
-  const ingredients: IIngredient[] = useSelector(
-    //@ts-ignore
+  const ingredients: ReadonlyArray<IIngredient> = useSelector(
     store => store.ingredients.items,
   )
   const orderIngredients = useMemo<IIngredient[]>(

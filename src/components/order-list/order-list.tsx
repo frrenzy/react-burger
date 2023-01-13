@@ -1,10 +1,14 @@
 import { useEffect, useMemo, FC } from 'react'
 import { useLocation } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'hooks'
 
 import { Loading, OrderTile } from 'components'
 
-import { WS_CONNECTION_END, WS_CONNECTION_START } from 'services/actions/feed'
+import {
+  WSConnectionEndAction,
+  WSConnectionStartAction,
+} from 'services/actions/feed'
+import { IFeedState } from 'services/reducers/feed'
 
 import { ALL_ORDERS_URL, USER_ORDERS_URL } from 'utils/constants'
 import { getCookie } from 'utils/helpers'
@@ -29,16 +33,14 @@ const OrderList: FC<IOrderListProps> = ({ full }) => {
     const url = isProfile
       ? `${USER_ORDERS_URL}${getCookie('token')}`
       : ALL_ORDERS_URL
-    dispatch({ type: WS_CONNECTION_START, url })
+    dispatch(WSConnectionStartAction(url))
 
     return () => {
-      dispatch({ type: WS_CONNECTION_END })
+      dispatch(WSConnectionEndAction())
     }
   }, [dispatch, pathname, isProfile])
 
-  const { orders, wsConnected }: { orders: IOrder[]; wsConnected: boolean } =
-    //@ts-ignore
-    useSelector(store => store.feed)
+  const { orders, wsConnected }: IFeedState = useSelector(store => store.feed)
 
   return !wsConnected ? (
     <Loading />

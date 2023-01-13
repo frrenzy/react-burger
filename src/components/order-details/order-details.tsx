@@ -1,13 +1,14 @@
 import { FC } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector } from 'hooks'
+
+import { IOrderState } from 'services/reducers/order'
 
 import doneIcon from 'images/done.png'
 
 import orderDetailsStyles from './order-details.module.scss'
 
 const OrderDetails: FC<{}> = () => {
-  //@ts-ignore
-  const { orderId } = useSelector(store => store.order)
+  const { orderId }: IOrderState = useSelector(store => store.order)
 
   return (
     <div className={`${orderDetailsStyles.container} mt-30 mb-30`}>

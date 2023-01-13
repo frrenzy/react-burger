@@ -1,11 +1,14 @@
 import { useEffect, useMemo, FC } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'hooks'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Loading, Price } from 'components'
 
-import { WS_CONNECTION_END, WS_CONNECTION_START } from 'services/actions/feed'
+import {
+  WSConnectionEndAction,
+  WSConnectionStartAction,
+} from 'services/actions/feed'
 
 import { getCookie } from 'utils/helpers'
 import {
@@ -29,35 +32,36 @@ const OrderInfo: FC<{}> = () => {
     const url = pathname.startsWith('/profile')
       ? `${USER_ORDERS_URL}${getCookie('token')}`
       : ALL_ORDERS_URL
-    dispatch({ type: WS_CONNECTION_START, url })
+    dispatch(WSConnectionStartAction(url))
 
-    if (!state)
-      return () => {
-        dispatch({ type: WS_CONNECTION_END })
-      }
+    if (!state) {
+      return () => dispatch(WSConnectionEndAction())
+    } else {
+      return () => {}
+    }
   }, [dispatch, pathname, state])
 
-  //@ts-ignore
-  const orders: IOrder[] = useSelector(store => store.feed.orders)
+  const orders: ReadonlyArray<IOrder> = useSelector(store => store.feed.orders)
   const order = useMemo<IOrder>(
-    //@ts-ignore
-    () => orders.find(orderItem => orderItem.number === parseInt(id)),
+    () =>
+      orders.find((orderItem: IOrder) => orderItem.number === parseInt(id))!,
     [orders, id],
   )
   const usedIngredients: IIngredient[] = useSelector(store =>
-    //@ts-ignore
-    store.ingredients.items.filter((item: TIngredient) =>
-      order?.ingredients.includes(item._id) ? item : null,
+    store.ingredients.items.filter((item: IIngredient) =>
+      order?.ingredients.includes(item._id),
     ),
   )
 
   const orderWithCount = useMemo<IIngredient[]>(
     () =>
       order?.ingredients.reduce((acc: IIngredient[], item: string) => {
-        const index: number = acc.findIndex((i: IIngredient) => i._id === item)
+        const index: number = acc.findIndex(
+          ({ _id }: IIngredient) => _id === item,
+        )
         if (index === -1) {
           const ingredient: IIngredient = usedIngredients.find(
-            (ingredient: IIngredient) => ingredient._id === item,
+            ({ _id }: IIngredient) => _id === item,
           )!
           acc.push({ ...ingredient, count: 1 })
         } else {

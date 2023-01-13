@@ -1,5 +1,5 @@
 import { FC, useCallback, useMemo } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'hooks'
 import { useHistory, useLocation } from 'react-router-dom'
 import { useDrop } from 'react-dnd'
 import { v4 as uuidv4 } from 'uuid'
@@ -16,16 +16,17 @@ import {
 } from 'components'
 
 import {
-  ADD_TO_ORDER,
-  CLOSE_ORDER_MODAL,
-  REMOVE_FROM_ORDER,
-  SET_BUN,
-  createOrder,
+  createOrderThunk,
+  addToOrderAction,
+  closeOrderModalAction,
+  removeFromOrderAction,
+  setBunAction,
 } from 'services/actions/order'
 import {
   decreaseCounterAction,
   increaseCounterAction,
 } from 'services/actions/ingredients'
+import { IOrderState } from 'services/reducers/order'
 
 import { DragType, TileType } from 'services/types'
 import { IngredientType } from 'services/types/data'
@@ -34,21 +35,13 @@ import burgerConstructorStyles from './burger-constructor.module.scss'
 
 const BurgerConstructor: FC<{}> = () => {
   const dispatch = useDispatch()
-  //@ts-ignore
   const user = useSelector(store => store.auth.user)
   const {
     isModalOpen,
     cart,
     bun,
     orderRequest: isLoading,
-  }: //@ts-ignore
-  {
-    bun: IIngredient
-    isModalOpen: boolean
-    orderRequest: boolean
-    cart: IIngredientWithUUID[]
-    //@ts-ignore
-  } = useSelector(store => store.order)
+  }: IOrderState = useSelector(store => store.order)
 
   const history = useHistory()
   const location = useLocation()
@@ -66,18 +59,14 @@ const BurgerConstructor: FC<{}> = () => {
     accept: DragType.Ingredient,
     drop: (ingredient: IIngredient) => {
       if (ingredient.type === IngredientType.Bun) {
-        dispatch({
-          type: SET_BUN,
-          bun: ingredient,
-        })
+        dispatch(setBunAction(ingredient))
       } else {
-        dispatch({
-          type: ADD_TO_ORDER,
-          ingredient: {
+        dispatch(
+          addToOrderAction({
             ...ingredient,
             uuid: uuidv4(),
-          },
-        })
+          }),
+        )
       }
       dispatch(increaseCounterAction(ingredient.type, ingredient._id))
     },
@@ -91,18 +80,19 @@ const BurgerConstructor: FC<{}> = () => {
       })
     } else {
       dispatch(
-        //@ts-ignore
-        createOrder([
-          bun._id,
-          ...cart.map((item: IIngredient) => item._id),
-          bun._id,
-        ]),
+        createOrderThunk({
+          ingredients: [
+            bun?._id,
+            ...cart.map((item: IIngredient) => item._id),
+            bun?._id,
+          ],
+        }),
       )
     }
   }, [dispatch, cart, bun, history, user, location])
 
   const closeModal = useCallback<TCloseModalCallback>(
-    () => dispatch({ type: CLOSE_ORDER_MODAL }),
+    () => dispatch(closeOrderModalAction()),
     [dispatch],
   )
 
@@ -110,7 +100,7 @@ const BurgerConstructor: FC<{}> = () => {
     (idx: number, _id: IIngredient['_id']) => () => void
   >(
     (idx, _id) => () => {
-      dispatch({ type: REMOVE_FROM_ORDER, idx })
+      dispatch(removeFromOrderAction(idx))
       dispatch(decreaseCounterAction(_id))
     },
     [dispatch],

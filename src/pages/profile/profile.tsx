@@ -1,5 +1,5 @@
 import { useCallback, useMemo, FC } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch } from 'hooks'
 import {
   Link,
   NavLink,
@@ -9,11 +9,11 @@ import {
   useRouteMatch,
 } from 'react-router-dom'
 
-import { signOut } from 'services/actions/auth'
+import { OrderInfo, OrderList, ProfileForm } from 'components'
+
+import { signOutThunk } from 'services/actions/auth'
 
 import profileStyles from './profile.module.scss'
-import ProfileForm from 'components/profile-form/profile-form'
-import { OrderInfo, OrderList } from 'components'
 
 const ProfilePage: FC<{}> = () => {
   const dispatch = useDispatch()
@@ -29,10 +29,10 @@ const ProfilePage: FC<{}> = () => {
     [],
   )
 
-  const handleExit = useCallback<() => void>(() => {
-    //@ts-ignore
-    dispatch(signOut())
-  }, [dispatch])
+  const handleExit = useCallback<() => void>(
+    () => dispatch(signOutThunk()),
+    [dispatch],
+  )
 
   const containerClassName = useMemo<string>(
     () =>

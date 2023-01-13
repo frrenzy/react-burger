@@ -28,7 +28,16 @@ import {
   ITokenResponse,
   IUserEditResponse,
   IUserResponse,
+  TAPIResponseSuccess,
 } from 'services/types/data'
+import {
+  ICreateOrderForm,
+  IEditUserForm,
+  IForgotPasswordForm,
+  ILoginForm,
+  IRegistrationForm,
+  IResetPasswordForm,
+} from 'services/types/forms'
 
 type IRequestMethods = 'POST' | 'PATCH' | 'DELETE'
 
@@ -37,15 +46,15 @@ interface IFetchOptions {
   body?: string
 }
 
-const request = <T extends object>(
+const request = <T extends TAPIResponseSuccess>(
   url: string,
   options: IFetchOptions = {},
 ): Promise<T> =>
   fetch(url, { ...options, headers: composeHeaders() })
-    .then(checkResponse)
-    .then(checkResponseSuccess)
+    .then(checkResponse<T>)
+    .then(checkResponseSuccess<T>)
 
-const requestWithRefreshToken = <T extends {}>(
+const requestWithRefreshToken = <T extends TAPIResponseSuccess>(
   url: string,
   options: IFetchOptions = {},
 ): Promise<T> =>
@@ -60,41 +69,31 @@ const requestWithRefreshToken = <T extends {}>(
 export const getIngredientsRequest = () =>
   request<IGetIngredientsResponse>(INGREDIENTS_URL)
 
-export const createOrderRequest = (ids: string[]) =>
+export const createOrderRequest = (ingredients: ICreateOrderForm) =>
   request<ICreateOrderResponse>(ORDERS_URL, {
     method: 'POST',
-    body: JSON.stringify({ ingredients: ids }),
+    body: JSON.stringify(ingredients),
   })
 
-export const sendResetEmailRequest = (email: { email: string }) =>
+export const sendResetEmailRequest = (email: IForgotPasswordForm) =>
   request<IResetEmailResponse>(RESET_PASSWORD_URL, {
     method: 'POST',
     body: JSON.stringify(email),
   })
 
-export const resetPasswordRequest = (data: {
-  code: string
-  password: string
-}) =>
+export const resetPasswordRequest = (data: IResetPasswordForm) =>
   request<IResetPasswordResponse>(RESET_PASSWORD_NEW_URL, {
     method: 'POST',
     body: JSON.stringify(data),
   })
 
-export const registerUserRequest = (user: {
-  name: string
-  email: string
-  password: string
-}) =>
+export const registerUserRequest = (user: IRegistrationForm) =>
   request<IRegisterResponse>(REGISTER_URL, {
     method: 'POST',
     body: JSON.stringify(user),
   })
 
-export const authenticateUserRequest = (credentials: {
-  email: string
-  password: string
-}) =>
+export const authenticateUserRequest = (credentials: ILoginForm) =>
   request<ILoginResponse>(AUTHORIZATION_URL, {
     method: 'POST',
     body: JSON.stringify(credentials),
@@ -125,11 +124,7 @@ export const logoutRequest = () => {
 export const getUserRequest = () =>
   requestWithRefreshToken<IUserResponse>(USER_URL)
 
-export const editUserRequest = (form: {
-  name: string
-  email: string
-  password: string
-}) =>
+export const editUserRequest = (form: IEditUserForm) =>
   requestWithRefreshToken<IUserEditResponse>(USER_URL, {
     method: 'PATCH',
     body: JSON.stringify(form),

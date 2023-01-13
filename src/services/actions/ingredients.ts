@@ -9,7 +9,12 @@ import {
   DECREASE_COUNTER,
   RESET_COUNTERS,
 } from 'services/constants/ingredients'
-import { IIngredientRaw, IngredientType } from 'services/types/data'
+import { AppDispatch, AppThunk } from 'services/types'
+import {
+  IGetIngredientsResponse,
+  IIngredientRaw,
+  IngredientType,
+} from 'services/types/data'
 
 export interface IGetIngredientsAction {
   readonly type: typeof GET_INGREDIENTS_REQUEST
@@ -91,9 +96,11 @@ export const resetCountersAction = (): IResetCountersAction => ({
   type: RESET_COUNTERS,
 })
 
-export const getIngredientsThunk: any = () => (dispatch: any) => {
+export const getIngredientsThunk: AppThunk = () => (dispatch: AppDispatch) => {
   dispatch(getIngredientsAction())
   getIngredientsRequest()
-    .then(res => dispatch(getIngredientsSuccessAction(res.data)))
-    .catch(error => dispatch(getIngredientsFailedAction(error)))
+    .then(({ data }: IGetIngredientsResponse) =>
+      dispatch(getIngredientsSuccessAction(data)),
+    )
+    .catch((error: string) => dispatch(getIngredientsFailedAction(error)))
 }

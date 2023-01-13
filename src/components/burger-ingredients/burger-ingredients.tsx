@@ -1,5 +1,5 @@
 import { useEffect, useRef, FC } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'hooks'
 import { useInView } from 'react-intersection-observer'
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -7,21 +7,18 @@ import { IngredientsSection, Loading } from 'components'
 import type { IIngredientSectionProps } from 'components'
 
 import { setTabAction } from 'services/actions/ingredients'
+import { IIngredientsState } from 'services/reducers/ingredients'
 
 import { IngredientType } from 'services/types/data'
 
 import burgerIngredientsStyles from './burger-ingredients.module.scss'
 
 const BurgerIngredients: FC = () => {
-  const { currentTab, ingredientsRequest: isLoading } = useSelector(
-    //@ts-ignore
-    store => store.ingredients,
-  )
+  const { currentTab, ingredientsRequest: isLoading }: IIngredientsState =
+    useSelector(store => store.ingredients)
   const dispatch = useDispatch()
 
-  const { ref: bunSectionRef, inView: bunInView } = useInView({
-    threshold: 0.01,
-  })
+  const [bunSectionRef, bunInView] = useInView({ threshold: 0.01 })
   const [sauceSectionRef, sauceInView] = useInView({ threshold: 0.01 })
   const [mainSectionRef, mainInView] = useInView({ threshold: 0.01 })
 

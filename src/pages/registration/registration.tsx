@@ -1,8 +1,6 @@
 import { useCallback, FC, FormEventHandler } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useForm, useSelector } from 'hooks'
 import { Redirect, useHistory } from 'react-router-dom'
-
-import { useForm } from 'hooks'
 
 import {
   Button,
@@ -12,20 +10,16 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Loading } from 'components'
 
-import { registerUser } from 'services/actions/auth'
+import { registerUserThunk } from 'services/actions/auth'
+import { IAuthState } from 'services/reducers/auth'
 import { getCookie } from 'utils/helpers'
+
+import { IRegistrationForm } from 'services/types/forms'
 
 import registrationStyles from './registration.module.scss'
 
-interface IRegistrationPageForm {
-  name: string
-  email: string
-  password: string
-}
-
 const RegistrationPage: FC<{}> = () => {
-  const { user, userRequest, userFailed, userError } = useSelector(
-    //@ts-ignore
+  const { user, userRequest, userFailed, userError }: IAuthState = useSelector(
     store => store.auth,
   )
   const dispatch = useDispatch()
@@ -34,7 +28,7 @@ const RegistrationPage: FC<{}> = () => {
 
   const authToken = getCookie('token')
 
-  const { form, handleChange } = useForm<IRegistrationPageForm>({
+  const { form, handleChange } = useForm<IRegistrationForm>({
     name: '',
     email: '',
     password: '',
@@ -43,8 +37,7 @@ const RegistrationPage: FC<{}> = () => {
   const submitHandler = useCallback<FormEventHandler<HTMLFormElement>>(
     e => {
       e.preventDefault()
-      //@ts-ignore
-      dispatch(registerUser(form))
+      dispatch(registerUserThunk(form))
     },
     [dispatch, form],
   )

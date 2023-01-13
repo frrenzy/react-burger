@@ -1,23 +1,22 @@
 import { useMemo, FC } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector } from 'hooks'
 
 import { OrderList, Section } from 'components'
 
-import feedStyles from './feed.module.scss'
 import { IOrder } from 'services/types'
+import { IFeedState } from 'services/reducers/feed'
+
+import feedStyles from './feed.module.scss'
 
 const FeedPage: FC<{}> = () => {
-  //@ts-ignore
-  const { total, totalToday } = useSelector(store => store.feed)
+  const { total, totalToday }: IFeedState = useSelector(store => store.feed)
 
   const readyOrders: number[] = useSelector(store =>
-    //@ts-ignore
     store.feed.orders
       .filter((item: IOrder) => item.status === 'done')
       .map((item: IOrder) => item.number),
   )
   const wipOrders: number[] = useSelector(store =>
-    //@ts-ignore
     store.feed.orders
       .filter((item: IOrder) => item.status === 'pending')
       .map((item: IOrder) => item.number),

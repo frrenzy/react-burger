@@ -1,15 +1,30 @@
 import { TOKEN_URL } from './constants'
-import { IResponseError } from 'services/types/data'
+import {
+  TAPIResponseError,
+  TAPIResponseErrorRaw,
+  TAPIResponseSuccess,
+} from 'services/types/data'
 
-export const checkResponse = (response: Response) =>
+export const checkResponse = <T extends TAPIResponseSuccess>(
+  response: Response,
+): Promise<T | TAPIResponseError> =>
   response.ok
     ? response.json()
     : response.status === 401 && response.url !== TOKEN_URL
     ? Promise.reject(response)
-    : response.json().then((error: IResponseError) => error)
+    : response
+        .json()
+        .then(
+          (error: TAPIResponseErrorRaw): TAPIResponseError => ({
+            ...error,
+            success: false,
+          }),
+        )
 
-export const checkResponseSuccess = (data: any) =>
-  data.success ? Promise.resolve(data) : Promise.reject(data)
+export const checkResponseSuccess = <T extends TAPIResponseSuccess>(
+  data: T | TAPIResponseError,
+): Promise<T> => (data?.success ? Promise.resolve(data) : Promise.reject(data))
+
 export const composeHeaders = (): HeadersInit => {
   const token = getCookie('token')
   return {
@@ -32,7 +47,7 @@ export function getCookie(name: string): string | undefined {
 export function setCookie(
   name: string,
   value: string | null,
-  props?: { expires?: number } & Record<string, string | number | boolean>,
+  props?: { expires?: number },
 ): void {
   type TPropsWithExpirationDate = Omit<typeof props, 'expires'> & {
     expires: Date | null
@@ -58,13 +73,7 @@ export function setCookie(
   }
   value = encodeURIComponent(value ?? '')
   let updatedCookie: string = name + '=' + value
-  for (const propName in serializedProps) {
-    updatedCookie += '; ' + propName
-    const propValue: string | number | boolean = serializedProps[propName]
-    if (propValue !== true) {
-      updatedCookie += '=' + propValue
-    }
-  }
+  updatedCookie += `;expires=${serializedProps.expires}`
   document.cookie = updatedCookie
 }
 

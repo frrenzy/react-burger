@@ -1,6 +1,6 @@
 import { FC, RefObject } from 'react'
 import { InViewHookResponse } from 'react-intersection-observer'
-import { useSelector } from 'react-redux'
+import { useSelector } from 'hooks'
 
 import { IngredientCard } from 'components'
 
@@ -23,7 +23,6 @@ const IngredientsSection: FC<IIngredientSectionProps> = ({
   type,
 }) => {
   const ingredients: IIngredient[] = useSelector(store =>
-    //@ts-ignore
     store.ingredients.items.filter(ingredient => ingredient.type === type),
   )
 

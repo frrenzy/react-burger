@@ -1,5 +1,5 @@
 import { useRef, FC } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch } from 'hooks'
 import { useDrag, useDrop } from 'react-dnd'
 
 import {
@@ -7,7 +7,7 @@ import {
   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { MOVE_INGREDIENT } from 'services/actions/order'
+import { moveIngredientAction } from 'services/actions/order'
 
 import { DragType, TileType } from 'services/types'
 
@@ -59,7 +59,7 @@ const ConstructorTile: FC<IConstructorTileProps> = ({
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return
 
-      dispatch({ type: MOVE_INGREDIENT, from: dragIndex, to: hoverIndex })
+      dispatch(moveIngredientAction(dragIndex, hoverIndex))
 
       item.index = hoverIndex
     },

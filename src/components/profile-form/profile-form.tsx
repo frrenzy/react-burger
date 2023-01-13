@@ -1,7 +1,5 @@
 import { useEffect, useCallback, FC, FormEventHandler } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-
-import { useForm } from 'hooks'
+import { useDispatch, useForm, useSelector } from 'hooks'
 
 import {
   Button,
@@ -10,22 +8,18 @@ import {
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-import { editUser } from 'services/actions/auth'
+import { editUserThunk } from 'services/actions/auth'
+import { IAuthState } from 'services/reducers/auth'
+
+import { IEditUserForm } from 'services/types/forms'
 
 import profileFormStyles from './profile-form.module.scss'
 
-interface IProfileForm {
-  name: string
-  email: string
-  password: string
-}
-
 const ProfileForm: FC<{}> = () => {
-  //@ts-ignore
-  const { user } = useSelector(store => store.auth)
+  const { user }: IAuthState = useSelector(store => store.auth)
   const dispatch = useDispatch()
 
-  const { form, setForm, handleChange } = useForm<IProfileForm>({
+  const { form, setForm, handleChange } = useForm<IEditUserForm>({
     name: '',
     email: '',
     password: '',
@@ -50,8 +44,7 @@ const ProfileForm: FC<{}> = () => {
   const submitHandler = useCallback<FormEventHandler<HTMLFormElement>>(
     e => {
       e.preventDefault()
-      //@ts-ignore
-      dispatch(editUser(form))
+      dispatch(editUserThunk(form))
       resetForm()
     },
     [dispatch, form, resetForm],

@@ -1,9 +1,7 @@
 import { useCallback, FC, FormEventHandler } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useForm, useSelector } from 'hooks'
 import { Redirect, useHistory, useLocation } from 'react-router-dom'
 import { Location } from 'history'
-
-import { useForm } from 'hooks'
 
 import {
   Button,
@@ -12,15 +10,13 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Loading } from 'components'
 
-import { signIn } from 'services/actions/auth'
+import { ILoginForm } from 'services/types/forms'
+import { IAuthState } from 'services/reducers/auth'
+import { signInThunk } from 'services/actions/auth'
+
 import { getCookie } from 'utils/helpers'
 
 import loginStyles from './login.module.scss'
-
-interface ILoginForm {
-  email: string
-  password: string
-}
 
 interface ILocationWithState extends Location {
   state: { from: Location }
@@ -29,8 +25,7 @@ interface ILocationWithState extends Location {
 const LoginPage: FC<{}> = () => {
   const { state }: ILocationWithState = useLocation()
   const history = useHistory()
-  const { user, userRequest, userFailed, userError } = useSelector(
-    //@ts-ignore
+  const { user, userRequest, userFailed, userError }: IAuthState = useSelector(
     store => store.auth,
   )
   const dispatch = useDispatch()
@@ -45,8 +40,7 @@ const LoginPage: FC<{}> = () => {
   const handleSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     e => {
       e.preventDefault()
-      //@ts-ignore
-      dispatch(signIn(form))
+      dispatch(signInThunk(form))
     },
     [dispatch, form],
   )

@@ -1,18 +1,30 @@
+import { TWSActions } from 'services/actions/feed'
 import {
   WS_CONNECTION_CLOSED,
   WS_CONNECTION_ERROR,
   WS_CONNECTION_SUCCESS,
   WS_GET_MESSAGE,
-} from 'services/actions/feed'
+} from 'services/constants/feed'
+import { IOrder } from 'services/types/data'
 
-const initialState = {
+export interface IFeedState {
+  wsConnected: boolean
+  orders: ReadonlyArray<IOrder>
+  total: number | null
+  totalToday: number | null
+}
+
+const initialState: IFeedState = {
   wsConnected: false,
   orders: [],
   total: null,
   totalToday: null,
 }
 
-export const feedReducer = (state = initialState, action) => {
+export const feedReducer = (
+  state: IFeedState = initialState,
+  action: TWSActions,
+): IFeedState => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:
       return {
