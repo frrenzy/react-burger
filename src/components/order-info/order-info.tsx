@@ -24,8 +24,7 @@ import orderInfoStyles from './order-info.module.scss'
 
 const OrderInfo: FC<{}> = () => {
   const dispatch = useDispatch()
-  //@ts-ignore
-  const { id } = useParams()
+  const { id } = useParams<{ id: string }>()
   const { pathname, state } = useLocation()
 
   useEffect(() => {
