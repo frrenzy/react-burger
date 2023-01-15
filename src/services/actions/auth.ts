@@ -68,8 +68,8 @@ export const userRequestFailedAction = (
 
 export const logoutAction = (): ILogoutAction => ({ type: LOGOUT })
 
-export const registerUserThunk: AppThunk =
-  (userInfo: IRegistrationForm) => (dispatch: AppDispatch) => {
+export const registerUserThunk: (userInfo: IRegistrationForm) => AppThunk =
+  userInfo => dispatch => {
     dispatch(userRequestAction())
     registerUserRequest(userInfo)
       .then(({ refreshToken, accessToken, user }: IRegisterResponse) => {
@@ -83,8 +83,8 @@ export const registerUserThunk: AppThunk =
       .catch((error: string) => dispatch(userRequestFailedAction(error)))
   }
 
-export const signInThunk: AppThunk =
-  (credentials: ILoginForm) => (dispatch: AppDispatch) => {
+export const signInThunk: (credentials: ILoginForm) => AppThunk =
+  credentials => dispatch => {
     dispatch(userRequestAction())
     authenticateUserRequest(credentials)
       .then(({ accessToken, refreshToken, user }: ILoginResponse) => {
@@ -98,7 +98,7 @@ export const signInThunk: AppThunk =
       .catch((error: string) => dispatch(userRequestFailedAction(error)))
   }
 
-export const getUserThunk: AppThunk = () => (dispatch: AppDispatch) => {
+export const getUserThunk: () => AppThunk = () => dispatch => {
   dispatch(userRequestAction())
   getUserRequest()
     .then(({ user }: IUserResponse) => {
@@ -107,8 +107,8 @@ export const getUserThunk: AppThunk = () => (dispatch: AppDispatch) => {
     .catch((error: string) => dispatch(userRequestFailedAction(error)))
 }
 
-export const editUserThunk: AppThunk =
-  (form: IEditUserForm) => (dispatch: AppDispatch) => {
+export const editUserThunk: (form: IEditUserForm) => AppThunk =
+  form => dispatch => {
     dispatch(userRequestAction())
     editUserRequest(form)
       .then(({ user }: IUserEditResponse) =>
@@ -117,10 +117,10 @@ export const editUserThunk: AppThunk =
       .catch((error: string) => dispatch(userRequestFailedAction(error)))
   }
 
-export const signOutThunk: AppThunk = () => (dispatch: AppDispatch) => {
+export const signOutThunk: () => AppThunk = () => dispatch => {
   dispatch(userRequestAction())
   logoutRequest()
-    .then(res => {
+    .then((res: ILoginResponse) => {
       dispatch(logoutAction())
       deleteCookie('token')
     })

@@ -96,7 +96,7 @@ export const resetCountersAction = (): IResetCountersAction => ({
   type: RESET_COUNTERS,
 })
 
-export const getIngredientsThunk: AppThunk = () => (dispatch: AppDispatch) => {
+export const getIngredientsThunk: () => AppThunk = () => dispatch => {
   dispatch(getIngredientsAction())
   getIngredientsRequest()
     .then(({ data }: IGetIngredientsResponse) =>

@@ -1,4 +1,4 @@
 import { useDispatch as dispatchHook } from 'react-redux'
-import { AppDispatch, AppThunk } from 'services/types'
+import { AppDispatch } from 'services/types'
 
-export const useDispatch: () => AppDispatch | AppThunk = dispatchHook
+export const useDispatch: () => AppDispatch = dispatchHook

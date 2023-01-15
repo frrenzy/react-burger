@@ -1,5 +1,4 @@
-import { Action, ActionCreator, Dispatch } from 'redux'
-import { ThunkAction } from 'redux-thunk'
+import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
 import { IIngredientRaw, IOrderRaw } from 'services/types/data'
 import { TIngredientsActions } from 'services/actions/ingredients'
@@ -16,11 +15,9 @@ export type TAppActions =
   | TOrderActions
   | TAuthActions
 
-export type AppThunk<R = void> = ActionCreator<
-  ThunkAction<R, RootState, Action, TAppActions>
->
+export type AppThunk<R = void> = ThunkAction<R, RootState, never, TAppActions>
 
-export type AppDispatch = Dispatch<TAppActions>
+export type AppDispatch = ThunkDispatch<RootState, never, TAppActions>
 
 export enum DragType {
   Ingredient = 'Ingredient',

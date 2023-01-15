@@ -1,7 +1,6 @@
 import { createOrderRequest } from 'api'
 import { resetCountersAction } from './ingredients'
 import {
-  AppDispatch,
   AppThunk,
   IIngredient,
   IIngredientWithUUID,
@@ -107,8 +106,8 @@ export const createOrderFailedAction = (
   error: string,
 ): ICreateOrderFailedAction => ({ type: CREATE_ORDER_FAILED, error })
 
-export const createOrderThunk: AppThunk =
-  (ingredients: ICreateOrderForm) => (dispatch: AppDispatch) => {
+export const createOrderThunk: (ingredients: ICreateOrderForm) => AppThunk =
+  ingredients => dispatch => {
     dispatch(createOrderAction())
     createOrderRequest(ingredients)
       .then(({ order }: ICreateOrderResponse) => {
