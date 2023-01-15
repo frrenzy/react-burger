@@ -3,12 +3,11 @@ import { useSelector } from 'hooks'
 
 import { OrderList, Section } from 'components'
 
-import { IOrder } from 'services/types'
 import { IFeedState } from 'services/reducers/feed'
 
 import feedStyles from './feed.module.scss'
 
-const FeedPage: FC<{}> = () => {
+const FeedPage: FC = () => {
   const { total, totalToday }: IFeedState = useSelector(store => store.feed)
 
   const readyOrders: number[] = useSelector(store =>

@@ -30,7 +30,7 @@ interface ILocationWithState extends Location {
   state: { background?: Location }
 }
 
-const App: FC<{}> = () => {
+const App: FC = () => {
   const dispatch = useDispatch()
 
   const location: ILocationWithState = useLocation()

@@ -22,7 +22,7 @@ interface ILocationWithState extends Location {
   state: { from: Location }
 }
 
-const LoginPage: FC<{}> = () => {
+const LoginPage: FC = () => {
   const { state }: ILocationWithState = useLocation()
   const history = useHistory()
   const { user, userRequest, userFailed, userError }: IAuthState = useSelector(

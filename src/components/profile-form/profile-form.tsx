@@ -15,7 +15,7 @@ import { IEditUserForm } from 'services/types/forms'
 
 import profileFormStyles from './profile-form.module.scss'
 
-const ProfileForm: FC<{}> = () => {
+const ProfileForm: FC = () => {
   const { user }: IAuthState = useSelector(store => store.auth)
   const dispatch = useDispatch()
 

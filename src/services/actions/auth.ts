@@ -25,7 +25,7 @@ import {
   ILoginForm,
   IRegistrationForm,
 } from 'services/types/forms'
-import { AppDispatch, AppThunk } from 'services/types'
+import { AppThunk } from 'services/types'
 
 export interface IUserRequestAction {
   readonly type: typeof USER_REQUEST

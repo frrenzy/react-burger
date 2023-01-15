@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import loadingStyles from './loading.module.scss'
 
-const Loading: FC<{}> = () => {
+const Loading: FC = () => {
   return <div className={loadingStyles.spinner}></div>
 }
 

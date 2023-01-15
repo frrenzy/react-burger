@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { useDrop } from 'react-dnd'
 import { v4 as uuidv4 } from 'uuid'
 
-import { IIngredient, IIngredientWithUUID } from 'services/types'
+import { IIngredient } from 'services/types'
 
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import {
@@ -33,7 +33,7 @@ import { IngredientType } from 'services/types/data'
 
 import burgerConstructorStyles from './burger-constructor.module.scss'
 
-const BurgerConstructor: FC<{}> = () => {
+const BurgerConstructor: FC = () => {
   const dispatch = useDispatch()
   const user = useSelector(store => store.auth.user)
   const {

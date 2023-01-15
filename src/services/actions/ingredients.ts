@@ -9,7 +9,7 @@ import {
   DECREASE_COUNTER,
   RESET_COUNTERS,
 } from 'services/constants/ingredients'
-import { AppDispatch, AppThunk } from 'services/types'
+import { AppThunk } from 'services/types'
 import {
   IGetIngredientsResponse,
   IIngredientRaw,

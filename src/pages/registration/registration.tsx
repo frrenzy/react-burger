@@ -18,7 +18,7 @@ import { IRegistrationForm } from 'services/types/forms'
 
 import registrationStyles from './registration.module.scss'
 
-const RegistrationPage: FC<{}> = () => {
+const RegistrationPage: FC = () => {
   const { user, userRequest, userFailed, userError }: IAuthState = useSelector(
     store => store.auth,
   )

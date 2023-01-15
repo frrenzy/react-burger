@@ -14,11 +14,11 @@ export const socketMiddleware =
       const { dispatch } = store
       const { type } = action
 
-      if (type === wsInit('').type) {
+      if (type === wsInit(new URL('')).type) {
         const { url } = action
         if (!socket || socket.readyState === 3) {
           socket = new WebSocket(url)
-        } else if (socket.url !== url) {
+        } else if (socket.url !== url.href) {
           socket.close()
           socket = new WebSocket(url)
         }

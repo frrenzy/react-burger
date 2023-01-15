@@ -21,7 +21,7 @@ interface ILocationWithState extends Location {
   state: { from: Location | string }
 }
 
-const ResetPasswordPage: FC<{}> = () => {
+const ResetPasswordPage: FC = () => {
   const { state }: ILocationWithState = useLocation()
   const authToken = getCookie('token')
   const user: IUser | null = useSelector(store => store.auth.user)

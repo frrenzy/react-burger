@@ -22,7 +22,7 @@ import { IngredientType } from 'services/types/data'
 
 import orderInfoStyles from './order-info.module.scss'
 
-const OrderInfo: FC<{}> = () => {
+const OrderInfo: FC = () => {
   const dispatch = useDispatch()
   const { id } = useParams<{ id: string }>()
   const { pathname, state } = useLocation()

@@ -11,7 +11,7 @@ import { HeaderLink } from 'components'
 
 import headerStyles from './app-header.module.scss'
 
-const AppHeader: FC<{}> = () => {
+const AppHeader: FC = () => {
   return (
     <header className={headerStyles.header}>
       <nav className={headerStyles.nav}>

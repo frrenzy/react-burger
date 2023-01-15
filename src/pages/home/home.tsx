@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import { BurgerIngredients, BurgerConstructor, Section } from 'components'
 
-const HomePage: FC<{}> = () => {
+const HomePage: FC = () => {
   return (
     <>
       <Section>

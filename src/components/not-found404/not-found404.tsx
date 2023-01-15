@@ -5,7 +5,7 @@ import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import notFound404Styles from './not-found404.module.scss'
 
-const NotFound404: FC<{}> = () => {
+const NotFound404: FC = () => {
   const history = useHistory()
 
   const handleClick = useCallback(() => history.push('/'), [history])

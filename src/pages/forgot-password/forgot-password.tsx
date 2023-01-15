@@ -15,7 +15,7 @@ import { IForgotPasswordForm } from 'services/types/forms'
 
 import forgotPasswordStyles from './forgot-password.module.scss'
 
-const ForgotPasswordPage: FC<{}> = () => {
+const ForgotPasswordPage: FC = () => {
   const user: IUser | null = useSelector(store => store.auth.user)
   const authToken = getCookie('token')
 

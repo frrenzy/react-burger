@@ -31,7 +31,7 @@ const Modal: FC<IModalProps> = ({ closeModal, children }) => {
   useEffect(() => {
     modalRoot?.classList.add('modal_opened')
     return () => modalRoot?.classList.remove('modal_opened')
-  }, [])
+  }, [modalRoot])
 
   const modalWrapper = (
     <>

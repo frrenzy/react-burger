@@ -10,7 +10,7 @@ import {
 } from 'services/constants/ingredients'
 
 import { IIngredient } from 'services/types'
-import { IIngredientRaw, IngredientType } from 'services/types/data'
+import { IngredientType } from 'services/types/data'
 
 export interface IIngredientsState {
   items: ReadonlyArray<IIngredient>

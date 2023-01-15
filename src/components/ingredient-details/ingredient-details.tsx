@@ -8,7 +8,7 @@ import { IIngredient } from 'services/types'
 
 import ingredientDetailsStyles from './ingredient-details.module.scss'
 
-const IngredientDetails: FC<{}> = () => {
+const IngredientDetails: FC = () => {
   const { id } = useParams<{ id: string }>()
   const ingredients: ReadonlyArray<IIngredient> = useSelector(
     store => store.ingredients.items,

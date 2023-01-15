@@ -15,7 +15,7 @@ import { signOutThunk } from 'services/actions/auth'
 
 import profileStyles from './profile.module.scss'
 
-const ProfilePage: FC<{}> = () => {
+const ProfilePage: FC = () => {
   const dispatch = useDispatch()
 
   const { path } = useRouteMatch()

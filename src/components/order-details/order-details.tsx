@@ -7,7 +7,7 @@ import doneIcon from 'images/done.png'
 
 import orderDetailsStyles from './order-details.module.scss'
 
-const OrderDetails: FC<{}> = () => {
+const OrderDetails: FC = () => {
   const { orderId }: IOrderState = useSelector(store => store.order)
 
   return (
